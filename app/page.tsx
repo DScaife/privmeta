@@ -173,13 +173,7 @@ export default function Home() {
   }, []);
 
   const handleFilesAccepted = (newFiles: File[]) => {
-    const totalCount = fileStore.length + newFiles.length;
-    if (totalCount > MAX_FILE_COUNT) {
-      showErrorToast("file_count");
-      return;
-    }
-
-    setFileStore((prevFiles) => [...prevFiles, ...newFiles].slice(0, MAX_FILE_COUNT));
+    setFileStore((prevFiles) => [...prevFiles, ...newFiles]);
     toast.success(newFiles.length <= 1 ? "1 File queued" : `${newFiles.length} files queued`);
   };
 
