@@ -135,6 +135,7 @@ export default function Home() {
   const [fileStore, setFileStore] = useState<File[]>([]);
   const [processing, setProcessing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [processedCount, setProcessedCount] = useState(0);
 
   useEffect(() => {
     const infoTimeout = setTimeout(() => {
@@ -183,55 +184,56 @@ export default function Home() {
 
   const handleMetadataRemoval = async () => {
     setProcessing(true);
-
+    setProcessedCount(0);
     await new Promise((res) => setTimeout(res, 1000));
 
     try {
-      const cleanedFiles: File[] = [];
+      const zip = new JSZip();
 
-      for (const file of fileStore) {
+      for (let i = 0; i < fileStore.length; i++) {
+        const file = fileStore[i];
         let cleaned: File | null = null;
 
-        if (file.type.startsWith("image/")) {
-          cleaned = await stripImageMetadata(file);
-        } else if (file.type === "application/pdf") {
-          cleaned = await stripPdfMetadata(file);
-        } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-          cleaned = await stripDocxMetadata(file);
-        } else if (file.type.startsWith("video/")) {
-          cleaned = await stripVideoMetadata(file);
-        } else {
-          showErrorToast("unsupported_format");
-          continue;
+        try {
+          if (file.type.startsWith("image/")) {
+            cleaned = await stripImageMetadata(file);
+          } else if (file.type === "application/pdf") {
+            cleaned = await stripPdfMetadata(file);
+          } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+            cleaned = await stripDocxMetadata(file);
+          } else if (file.type.startsWith("video/")) {
+            cleaned = await stripVideoMetadata(file);
+          } else {
+            showErrorToast("unsupported_format");
+            continue;
+          }
+
+          if (cleaned) {
+            const renamed = new File([cleaned], renameWithSuffix(file), {
+              type: cleaned.type,
+            });
+
+            zip.file(renamed.name, renamed);
+            console.log(`Processed ${i + 1} / ${fileStore.length}: ${renamed.name}`);
+            setProcessedCount(i + 1);
+            URL.revokeObjectURL(URL.createObjectURL(file));
+          }
+        } catch (err) {
+          console.error(`Failed to process ${file.name}:`, err);
         }
 
-        if (cleaned) {
-          const renamed = new File([cleaned], renameWithSuffix(file), {
-            type: cleaned.type,
-          });
-          cleanedFiles.push(renamed);
-        }
+        // Allow the UI to update between iterations
+        await new Promise((res) => setTimeout(res, 10));
       }
 
-      if (cleanedFiles.length === 1) {
-        const file = cleanedFiles[0];
-        const url = URL.createObjectURL(file);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = file.name;
-        a.click();
-        URL.revokeObjectURL(url);
-      } else if (cleanedFiles.length > 1) {
-        const zip = new JSZip();
-        cleanedFiles.forEach((file) => zip.file(file.name, file));
-        const zipBlob = await zip.generateAsync({ type: "blob" });
-        const url = URL.createObjectURL(zipBlob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "PrivMeta_cleaned.zip";
-        a.click();
-        URL.revokeObjectURL(url);
-      }
+      // 🗜️ Generate final ZIP once all files processed
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(zipBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "PrivMeta_cleaned.zip";
+      a.click();
+      URL.revokeObjectURL(url);
 
       toast.success("Download ready ✨");
     } catch (error) {
@@ -308,6 +310,7 @@ export default function Home() {
             onFilesAccepted={handleFilesAccepted}
             onFileRemove={handleFileRemoved}
             onError={(type: ErrorType) => showErrorToast(type)}
+            processedCount={processedCount}
           />
           {loading ? (
             <div className="w-full flex justify-end gap-[var(--space-md)]">

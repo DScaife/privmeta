@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { MAX_FILE_SIZE_BYTES, ACCEPTED_FILE_TYPES } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { Skeleton } from "./ui/skeleton";
+import { Progress } from "@/components/ui/progress";
 
 type DropzoneProps = {
   fileStore: File[];
@@ -14,16 +15,28 @@ type DropzoneProps = {
   onError: (type: "unsupported_format" | "file_too_large" | "dropzone_error") => void;
   loading: boolean;
   processing: boolean;
+  processedCount: number;
 };
 
 const acceptedMimeTypes = Object.keys(ACCEPTED_FILE_TYPES);
 
-export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onError, loading, processing }: DropzoneProps) {
+export default function Dropzone({
+  fileStore,
+  onFilesAccepted,
+  onFileRemove,
+  onError,
+  loading,
+  processing,
+  processedCount,
+}: DropzoneProps) {
   const [highlight, setHighlight] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isAcceptedType = (file: File) => acceptedMimeTypes.includes(file.type);
   const isAcceptedSize = (file: File) => file.size <= MAX_FILE_SIZE_BYTES;
+
+  const filesCount = fileStore.length;
+  const processedPercentage = Math.round((processedCount / filesCount) * 100);
 
   const hasValidExtension = (file: File) => {
     const exts = ACCEPTED_FILE_TYPES[file.type] || [];
@@ -146,9 +159,9 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
               </p>
             </div>
             <p className="text-sm text-muted-foreground text-center">(Supported file types: {getFileExtensions()})</p>
-            {fileStore.length > 0 && (
+            {filesCount > 0 && (
               <>
-                {fileStore.length <= 10 ? (
+                {filesCount <= 10 ? (
                   <ul className="text-left text-sm font-bold text-muted-foreground">
                     {fileStore.map((file, index) => (
                       <li key={index} className="truncate flex items-center gap-[var(--space-sm)]">
@@ -169,14 +182,22 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
                   </ul>
                 ) : (
                   <div className="flex flex-col items-center pt-[var(--space-md)]">
-                    <p className="font-bold text-lg">{fileStore.length.toLocaleString()} files queued</p>
+                    <p className="font-bold text-lg">{filesCount.toLocaleString()} files queued</p>
                     <p className="text-sm text-muted-foreground">Displaying all filenames is disabled for performance.</p>
                   </div>
                 )}
               </>
             )}
+
+            {processing && (
+              <div className="flex flex-col items-end gap-[var(--space-md)] pt-[var(--space-md)]">
+                <Progress value={processedPercentage} className="w-96" />
+                <p className="text-sm text-muted-foreground right-[var(--space-xl)] bottom-[var(--space-md)]">{`${processedCount}/${filesCount}`}</p>
+              </div>
+            )}
+
             <p className="absolute text-sm text-muted-foreground right-[var(--space-xl)] bottom-[var(--space-md)]">
-              {`${fileStore.length}/unlimited`}
+              {`${filesCount}/unlimited`}
             </p>
           </div>
         </div>

@@ -20,27 +20,13 @@ export async function stripVideoMetadata(file: File): Promise<File | null> {
 
     await ffmpeg.writeFile(inputFile, await fetchFile(file));
 
-    await ffmpeg.exec([
-      "-i",
-      inputFile,
-      "-map_metadata",
-      "-1",
-      "-metadata",
-      "encoder=",
-      "-c",
-      "copy",
-      outputFile,
-    ]);
+    await ffmpeg.exec(["-i", inputFile, "-map_metadata", "-1", "-metadata", "encoder=", "-c", "copy", outputFile]);
 
     const data = await ffmpeg.readFile(outputFile);
     const blob = new Blob([data], { type: mimeType });
-    const cleanedFile = new File(
-      [blob],
-      file.name.replace(/\.[^.]+$/, `_cleaned.${extension}`),
-      {
-        type: mimeType,
-      }
-    );
+    const cleanedFile = new File([blob], file.name.replace(/\.[^.]+$/, `_cleaned.${extension}`), {
+      type: mimeType,
+    });
 
     return cleanedFile;
   } catch (err) {
@@ -123,11 +109,7 @@ export async function stripDocxMetadata(file: File): Promise<File | null> {
       throw new Error("Invalid DOCX file structure.");
     }
 
-    const metadataPaths = [
-      "docProps/core.xml",
-      "docProps/app.xml",
-      "docProps/custom.xml",
-    ];
+    const metadataPaths = ["docProps/core.xml", "docProps/app.xml", "docProps/custom.xml"];
 
     for (const path of metadataPaths) {
       if (zip.file(path)) {
