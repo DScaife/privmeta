@@ -69,6 +69,9 @@ export const metadata: Metadata = {
     creator: "@privmeta",
   },
   metadataBase: new URL("https://www.privmeta.com/"),
+  alternates: {
+    canonical: "./",
+  },
   authors: [{ name: "PrivMeta" }],
   creator: "PrivMeta",
 };
