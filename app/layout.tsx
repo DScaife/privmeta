@@ -87,7 +87,7 @@ export default function RootLayout({
           data-position="bottom-left"
           data-size="medium"
           data-primary-color="red"
-          data-allowed-paths="/"
+          data-allowed-paths="/, /how-it-works"
           data-config-id="eixyyn1xgjyKsuZti7J1"
           defer
         ></script>
