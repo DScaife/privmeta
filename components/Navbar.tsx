@@ -3,7 +3,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { NavMenu } from "./NavMenu";
-import { Code, Coffee, MessageSquareText } from "lucide-react";
+import { Code, Coffee, MessageSquareText, Info } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -34,6 +34,15 @@ const Navbar = () => {
           </div>
 
           <div className="flex gap-[var(--space-md)]">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="secondary" size="icon" className="buglet-trigger md:hidden">
+                  <Info />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Find out more about PrivMeta</TooltipContent>
+            </Tooltip>
+
             <Tooltip>
               <TooltipTrigger asChild>
                 <div>

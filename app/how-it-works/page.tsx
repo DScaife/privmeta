@@ -106,12 +106,12 @@ export default function HowItWorks() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <File className="text-lg font-semibold text-primary" /> Supported File Types
+              <File /> Supported File Types
             </CardTitle>
             <CardDescription>Private metadata removal for various formats</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-center gap-2">
                 <FileImage /> Images: JPG, PNG, WEBP
               </div>
