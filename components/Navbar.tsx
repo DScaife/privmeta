@@ -36,9 +36,11 @@ const Navbar = () => {
           <div className="flex gap-[var(--space-md)]">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="secondary" size="icon" className="buglet-trigger md:hidden">
-                  <Info />
-                </Button>
+                <Link href="/how-it-works">
+                  <Button variant="secondary" size="icon" className="buglet-trigger md:hidden">
+                    <Info />
+                  </Button>
+                </Link>
               </TooltipTrigger>
               <TooltipContent side="bottom">Find out more about PrivMeta</TooltipContent>
             </Tooltip>
