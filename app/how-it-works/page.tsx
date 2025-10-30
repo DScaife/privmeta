@@ -17,7 +17,7 @@ export default function HowItWorks() {
     <div className="w-full flex justify-center">
       <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-md)] flex flex-col gap-[var(--space-2xl)] py-[var(--space-2xl)]">
         <div className="flex flex-col gap-[var(--space-md)]">
-          <h1 className="text-3xl font-bold mb-4">How PrivMeta Removes Metadata and Protects Your Privacy</h1>
+          <h1 className="text-3xl font-bold mb-4">How PrivMeta removes metadata and protects your privacy</h1>
           <p className="text-lg text-muted-foreground">
             Learn how our client-side technology removes metadata without compromising your files&apos; privacy
           </p>
