@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:sm="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
 <xsl:output method="html" version="1.0" encoding="UTF-8" indent="yes"/>
+
 <xsl:template match="/">
   <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -13,11 +17,13 @@
       td { padding: 12px; border-bottom: 1px solid #eaeaea; }
       tr:hover { background-color: #f9f9f9; }
       .url-count { font-weight: bold; margin-bottom: 10px; }
+      a { color: #0070f3; text-decoration: none; }
+      a:hover { text-decoration: underline; }
     </style>
   </head>
   <body>
     <h1>XML Sitemap - PrivMeta</h1>
-    <div class="url-count">Total URLs: <xsl:value-of select="count(urlset/url)" /></div>
+    <div class="url-count">Total URLs: <xsl:value-of select="count(sm:urlset/sm:url)" /></div>
     <table>
       <thead>
         <tr>
@@ -28,15 +34,14 @@
         </tr>
       </thead>
       <tbody>
-        <xsl:for-each select="urlset/url">
+        <xsl:for-each select="sm:urlset/sm:url">
           <tr>
-            <td><xsl:element name="a">
-              <xsl:attribute name="href"><xsl:value-of select="loc"/></xsl:attribute>
-              <xsl:value-of select="loc"/>
-            </xsl:element></td>
-            <td><xsl:value-of select="lastmod"/></td>
-            <td><xsl:value-of select="changefreq"/></td>
-            <td><xsl:value-of select="priority"/></td>
+            <td>
+              <a href="{sm:loc}"><xsl:value-of select="sm:loc"/></a>
+            </td>
+            <td><xsl:value-of select="sm:lastmod"/></td>
+            <td><xsl:value-of select="sm:changefreq"/></td>
+            <td><xsl:value-of select="sm:priority"/></td>
           </tr>
         </xsl:for-each>
       </tbody>
