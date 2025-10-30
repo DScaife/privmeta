@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /tmp/
+
+Sitemap: https://www.privmeta.com/sitemap.xml
+
+# Crawl-delay: 10
+# Uncomment above if you want to limit crawl rate
