@@ -181,7 +181,9 @@ export default function Home() {
     }
 
     setFileStore((prevFiles) => [...prevFiles, ...newFiles].slice(0, MAX_FILE_COUNT));
-    toast.success(newFiles.length <= 1 ? "1 File queued" : `${newFiles.length} files queued`);
+    toast.success(newFiles.length <= 1 ? "1 File queued" : `${newFiles.length} files queued`, {
+      duration: 1700,
+    });
   };
 
   const handleFileRemoved = (index: number) => {
