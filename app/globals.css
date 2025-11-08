@@ -22,6 +22,12 @@
   }
 }
 
+@media (max-width: 1200px) {
+  #bmc-wbtn {
+    display: none !important;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
