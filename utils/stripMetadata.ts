@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, PDFName } from "pdf-lib";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 
@@ -20,27 +20,13 @@ export async function stripVideoMetadata(file: File): Promise<File | null> {
 
     await ffmpeg.writeFile(inputFile, await fetchFile(file));
 
-    await ffmpeg.exec([
-      "-i",
-      inputFile,
-      "-map_metadata",
-      "-1",
-      "-metadata",
-      "encoder=",
-      "-c",
-      "copy",
-      outputFile,
-    ]);
+    await ffmpeg.exec(["-i", inputFile, "-map_metadata", "-1", "-metadata", "encoder=", "-c", "copy", outputFile]);
 
     const data = await ffmpeg.readFile(outputFile);
-    const blob = new Blob([data], { type: mimeType });
-    const cleanedFile = new File(
-      [blob],
-      file.name.replace(/\.[^.]+$/, `_cleaned.${extension}`),
-      {
-        type: mimeType,
-      }
-    );
+    const blob = new Blob([data as BlobPart], { type: mimeType });
+    const cleanedFile = new File([blob], file.name.replace(/\.[^.]+$/, `_cleaned.${extension}`), {
+      type: mimeType,
+    });
 
     return cleanedFile;
   } catch (err) {
@@ -89,23 +75,45 @@ export async function stripImageMetadata(file: File): Promise<File | null> {
 }
 
 export async function stripPdfMetadata(file: File): Promise<File | null> {
-  const arrayBuffer = await file.arrayBuffer();
-  const pdfDoc = await PDFDocument.load(arrayBuffer);
+  try {
+    const arrayBuffer = await file.arrayBuffer();
 
-  pdfDoc.setTitle("");
-  pdfDoc.setAuthor("");
-  pdfDoc.setSubject("");
-  pdfDoc.setKeywords([]);
-  pdfDoc.setProducer("");
-  pdfDoc.setCreator("");
-  pdfDoc.setCreationDate(new Date(0));
-  pdfDoc.setModificationDate(new Date(0));
+    // Load without forcing metadata updates
+    const pdfDoc = await PDFDocument.load(arrayBuffer, {
+      updateMetadata: false,
+    });
 
-  const newPdfBytes = await pdfDoc.save();
-  return new File([newPdfBytes], file.name, { type: "application/pdf" });
+    // --- Remove XMP / Metadata stream from the Catalog (if present) ---
+    const metadataKey = PDFName.of("Metadata");
+    if (pdfDoc.catalog.get(metadataKey)) {
+      pdfDoc.catalog.delete(metadataKey);
+    }
+
+    if (pdfDoc.context && pdfDoc.context.trailerInfo?.Info) {
+      delete pdfDoc.context.trailerInfo.Info;
+    }
+
+    // --- Clear common metadata fields explicitly ---
+    pdfDoc.setTitle("");
+    pdfDoc.setAuthor("");
+    pdfDoc.setSubject("");
+    pdfDoc.setKeywords([]);
+    pdfDoc.setProducer("");
+    pdfDoc.setCreator("");
+    // pdf-lib requires a Date object — use epoch (neutral) instead of undefined
+    pdfDoc.setCreationDate(new Date(0));
+    pdfDoc.setModificationDate(new Date(0));
+
+    const newPdfBytes = await pdfDoc.save({ useObjectStreams: false });
+
+    return new File([newPdfBytes as BlobPart], file.name, { type: "application/pdf" });
+  } catch (err) {
+    console.error("PDF metadata stripping failed:", err);
+    return null;
+  }
 }
 
-let cachedJSZip: typeof import("jszip") | null = null;
+let cachedJSZip: import("jszip") | null = null;
 
 export async function stripDocxMetadata(file: File): Promise<File | null> {
   try {
@@ -123,11 +131,7 @@ export async function stripDocxMetadata(file: File): Promise<File | null> {
       throw new Error("Invalid DOCX file structure.");
     }
 
-    const metadataPaths = [
-      "docProps/core.xml",
-      "docProps/app.xml",
-      "docProps/custom.xml",
-    ];
+    const metadataPaths = ["docProps/core.xml", "docProps/app.xml", "docProps/custom.xml"];
 
     for (const path of metadataPaths) {
       if (zip.file(path)) {
