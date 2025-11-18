@@ -28,6 +28,10 @@
   }
 }
 
+buglet-widget::part(draggable) {
+  display: none !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
