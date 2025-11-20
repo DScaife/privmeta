@@ -38,10 +38,8 @@ export default function BlogPage() {
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
       <div className="text-center mb-12">
-        <h1 className="text-4xl">Buglet Blog</h1>
-        <p className="mt-4 text-lg max-w-2xl mx-auto">
-          Insights, tips, and best practices for improving user experience and leveraging visual bug reporting
-        </p>
+        <h1 className="text-4xl">PrivMeta Blog</h1>
+        <p className="mt-4 text-lg max-w-2xl mx-auto">Insights, tips, and best practices for maximising digital privacy.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
