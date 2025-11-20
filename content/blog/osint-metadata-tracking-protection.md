@@ -1,7 +1,7 @@
 ---
 title: "How OSINT Analysts Use Metadata to Track People (And How to Protect Yourself)"
 description: "Learn how investigators use metadata for OSINT tracking, discover privacy risks in your digital footprint, and protect yourself from unwanted surveillance."
-date: "2025-11-20"
+date: "2025-10-20"
 ---
 
 # The Metadata Trail: How Analysts Track People Using Digital Breadcrumbs

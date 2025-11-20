@@ -1,7 +1,7 @@
 ---
 title: "What Metadata Is Hidden Inside Your Photos (and How to Remove It)"
 description: "Discover the hidden EXIF, IPTC, and XMP data in your photos, learn privacy risks, and see how to remove photo metadata instantly with local tools."
-date: "2025-11-20"
+date: "2025-10-27"
 ---
 
 # Unseen Details: The Hidden World of Photo Metadata
