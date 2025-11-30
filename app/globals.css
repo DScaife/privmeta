@@ -1,8 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
-
-@tailwind utilities;
+@plugin "@tailwindcss/typography";
 
 @layer utilities {
   .animate-gradient {
@@ -158,4 +157,25 @@ buglet-widget::part(trigger) {
     font-family: "Roboto", sans-serif;
     @apply bg-background text-foreground;
   }
+}
+
+.article {
+  @apply max-w-3xl mx-auto px-4 flex flex-col text-[1.05rem] leading-relaxed tracking-normal;
+}
+
+.prose table {
+  @apply w-full border-collapse my-6;
+}
+
+.prose th,
+.prose td {
+  @apply border px-4 py-2;
+}
+
+.prose thead th {
+  @apply bg-neutral-100 font-semibold;
+}
+
+.prose * {
+  @apply mt-2 text-foreground
 }
