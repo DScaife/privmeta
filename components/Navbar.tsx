@@ -65,22 +65,19 @@ const Navbar = () => {
                   <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
                     <Button
                       aria-label="Support me on Buy Me a Coffee"
-                      className="relative md:hidden overflow-hidden text-white"
+                      className="md:hidden bg-[var(--bmc)] hover:bg-[var(--bmc)]/50  text-black border-2 border-black"
                       size="icon"
                     >
-                      <span className="absolute inset-0 animate-gradient bg-[length:400%_400%] bg-gradient-to-r from-[#245245] via-[#C57C5C] to-[#CAB796] opacity-90 transition-opacity hover:opacity-100" />
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Coffee />
-                      </span>
+                      <Coffee />
                     </Button>
                   </Link>
                   <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-                    <Button aria-label="Support me on Buy Me a Coffee" className="relative hidden md:inline overflow-hidden text-white">
-                      <span className="absolute inset-0 animate-gradient bg-[length:400%_400%] bg-gradient-to-r from-[#245245] via-[#C57C5C] to-[#CAB796] opacity-90 transition-opacity hover:opacity-100" />
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Coffee />
-                        Buy me a coffee
-                      </span>
+                    <Button
+                      aria-label="Support me on Buy Me a Coffee"
+                      className="hidden md:flex bg-[var(--bmc)] hover:bg-[var(--bmc)]/50  text-black border-2 border-black"
+                    >
+                      <Coffee />
+                      Buy me a coffee
                     </Button>
                   </Link>
                 </div>

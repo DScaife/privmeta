@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -22,13 +22,7 @@
   }
 }
 
-@media (max-width: 1200px) {
-  #bmc-wbtn {
-    display: none !important;
-  }
-}
-
-buglet-widget::part(draggable) {
+buglet-widget::part(trigger) {
   display: none !important;
 }
 
@@ -117,7 +111,7 @@ buglet-widget::part(draggable) {
   --space-3xl: 48px;
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
-  --coffee-primary: #725146;
+  --bmc: #ffdd00;
 }
 
 .dark {
@@ -152,9 +146,8 @@ buglet-widget::part(draggable) {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --accent-primary: #5896F3;
+  --accent-primary: #5896f3;
   --accent-secondary: #000d1f;
-  --coffee-primary: #a17f65;
 }
 
 @layer base {

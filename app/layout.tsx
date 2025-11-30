@@ -86,23 +86,13 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href="https://www.privmeta.com/" />
         <script
-          data-name="BMC-Widget"
-          data-cfasync="false"
-          src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
-          data-id="PrivCo"
-          data-description="Support PrivMeta on Buy me a coffee!"
-          data-message=""
-          data-color="var(--accent-primary)"
-          data-position="left"
-          data-x_margin="16"
-          data-y_margin="16"
-          defer
-        ></script>
-        <script
           src="https://buglet.vercel.app/buglet.js"
-          data-position="bottom-left"
+          data-position="left"
           data-size="medium"
-          data-primary-color="red"
+          data-primary-color="#E52828"
+          data-secondary-color="#E52828"
+          data-arrow-color="white"
+          data-border-color=""
           data-allowed-paths="/, /how-it-works"
           data-config-id="eixyyn1xgjyKsuZti7J1"
           defer
