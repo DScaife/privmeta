@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  nextjs-app:
+    container_name: privmeta
+    # "build: ." tells Compose to look for the Dockerfile in the current directory
+    build: .
+    ports:
+      # Maps port 3000 on your computer to port 3000 inside the container
+      - "3000:3000"
+    environment:
+      # Ensures Next.js runs in production mode
+      - NODE_ENV=production
+    restart: unless-stopped
