@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://www.privmeta.com/"),
   alternates: {
-    canonical: "./",
+    canonical: "https://www.privmeta.com/",
   },
   authors: [{ name: "PrivMeta" }],
   creator: "PrivMeta",
@@ -102,10 +102,29 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
+              "@type": "SoftwareApplication",
               name: "PrivMeta",
               url: "https://www.privmeta.com/",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://www.privmeta.com/PrivMetaLogoIconLightMode.png",
+              },
+              image: "https://www.privmeta.com/og-image.png",
               description: "Remove metadata from files with PrivMeta, a secure, offline-first tool for privacy-conscious users.",
+              foundingDate: "2025",
+              applicationCategory: "WebApplication",
+              operatingSystem: "All",
+              creator: {
+                "@type": "Organization",
+                name: "PrivMeta",
+                url: "https://www.privmeta.com/",
+                logo: "https://www.privmeta.com/PrivMetaLogoIconLightMode.png",
+              },
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "USD",
+              },
             }),
           }}
         />
