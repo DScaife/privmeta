@@ -1,5 +1,5 @@
 # 1. Use an official Node.js runtime as a parent image
-FROM node:18-alpine
+FROM node:25-alpine
 
 # 2. Set the working directory inside the container
 WORKDIR /app
