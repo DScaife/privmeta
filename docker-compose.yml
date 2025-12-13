@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   nextjs-app:
     container_name: privmeta
