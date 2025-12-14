@@ -20,10 +20,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { Loader2, Lock, WifiOff, CodeXml, Globe, Server, FileText, FileImage, Film, FileCheck } from "lucide-react";
+import { Loader2, Lock, WifiOff, CodeXml, Globe, FileText, FileImage, Film, FileCheck } from "lucide-react";
 import JSZip from "jszip";
 import Head from "next/head";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import ShareFunctions from "@/components/ShareFunctions";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
 
@@ -307,7 +308,7 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <div className="w-full flex justify-center">
-        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-md)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
+        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
           <Hero />
           <SeparatorSection />
           <Dropzone
@@ -335,75 +336,6 @@ export default function Home() {
           <SeparatorSection />
           <DisableInternetSection loading={loading} />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-lg)]">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg font-semibold text-primary">
-                  <Server /> How It Works
-                </CardTitle>
-                <CardDescription>The private metadata removal process</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-6">
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">1. File Processing in Browser</h3>
-                  <p className="text-muted-foreground">
-                    When you add files to PrivMeta, everything happens <strong>directly in your web browser</strong>. Your files never leave
-                    your device or get uploaded to any server.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">2. Metadata Stripping</h3>
-                  <p className="text-muted-foreground">
-                    Our specialized algorithms detect and remove metadata like location data, camera details, author information, and hidden
-                    comments while preserving the core file content.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">3. Secure Download</h3>
-                  <p className="text-muted-foreground">
-                    Cleaned files are immediately available for download as a ZIP archive. No copies are stored anywhere - we have no access
-                    to your files at any point.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg font-semibold text-primary">
-                  <FileText /> Why Remove Metadata?
-                </CardTitle>
-                <CardDescription>Protect your private information</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-6">
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">Privacy Protection</h3>
-                  <p className="text-muted-foreground">
-                    Metadata can contain sensitive information like GPS locations, device identifiers, and creation timestamps that reveal
-                    more than you intend to share.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">Security Enhancement</h3>
-                  <p className="text-muted-foreground">
-                    Hidden metadata can contain tracking information, hidden comments, or sensitive document properties that could
-                    compromise security.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">Professional Publishing</h3>
-                  <p className="text-muted-foreground">
-                    Remove confidential details from files before sharing them publicly or with clients to maintain professional standards.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -428,6 +360,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
+          <ShareFunctions />
         </div>
       </div>
     </>
