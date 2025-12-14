@@ -109,7 +109,7 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
       ) : (
         <div className="w-full" araria-label="File dropzone">
           <div
-            className={`relative flex flex-col items-center justify-center w-full min-h-96 gap-[var(--space-md)] border-3 border-dashed p-[var(--space-2xl)] rounded-xl transition-colors ${
+            className={`relative flex flex-col items-center justify-center w-full min-h-96 gap-[var(--space-lg)] border-3 border-dashed p-[var(--space-2xl)] rounded-xl transition-colors ${
               highlight ? "border-[var(--accent-primary)] bg-[var(--accent-secondary)]" : "border-muted-foreground/50"
             } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             onClick={() => {

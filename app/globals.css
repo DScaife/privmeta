@@ -110,7 +110,7 @@ buglet-widget::part(trigger) {
   --space-3xl: 48px;
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
-  --bmc: #ffdd00;
+  --red: #e52828;
 }
 
 .dark {

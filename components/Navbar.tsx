@@ -3,14 +3,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { NavMenu } from "./NavMenu";
-import { Code, Coffee, MessageSquareText, Info } from "lucide-react";
+import { Code, Heart, MessageSquareText, Info } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
 const Navbar = () => {
   return (
     <header className="sticky top-0 z-50 flex justify-center w-full border-b border-[var(--border)] backdrop-blur-lg">
-      <nav className="flex justify-between items-center w-full max-w-[var(--max-content-width)] px-[var(--space-md)] h-14">
+      <nav className="flex justify-between items-center w-full max-w-[var(--max-content-width)] px-[var(--space-xl)] h-14">
         <TooltipProvider>
           <div className="flex gap-[var(--space-2xl)] items-center">
             <Link href="/" passHref>
@@ -37,7 +37,7 @@ const Navbar = () => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link href="/how-it-works">
-                  <Button variant="secondary" size="icon" className="buglet-trigger md:hidden">
+                  <Button variant="secondary" size="icon" className="sm:hidden">
                     <Info />
                   </Button>
                 </Link>
@@ -64,20 +64,22 @@ const Navbar = () => {
                 <div>
                   <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
                     <Button
-                      aria-label="Support me on Buy Me a Coffee"
-                      className="md:hidden bg-[var(--bmc)] hover:bg-[var(--bmc)]/50  text-black border-2 border-black"
+                      aria-label="Support PrivMeta on Buy Me a Coffee"
+                      className="md:hidden bg-[var(--bmc)] hover:bg-[var(--bmc)]/50 border-1 border-black"
+                      variant="outline"
                       size="icon"
                     >
-                      <Coffee />
+                      <Heart fill="var(--red)" />
                     </Button>
                   </Link>
                   <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
                     <Button
-                      aria-label="Support me on Buy Me a Coffee"
-                      className="hidden md:flex bg-[var(--bmc)] hover:bg-[var(--bmc)]/50  text-black border-1 border-black"
+                      variant="outline"
+                      aria-label="Support PrivMeta on Buy Me a Coffee"
+                      className="hidden md:flex border-1 border-black"
                     >
-                      <Coffee />
-                      Buy me a coffee
+                      <Heart fill="var(--red)" />
+                      Support PrivMeta
                     </Button>
                   </Link>
                 </div>
