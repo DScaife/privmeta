@@ -74,7 +74,7 @@ const Navbar = () => {
                   <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
                     <Button
                       aria-label="Support me on Buy Me a Coffee"
-                      className="hidden md:flex bg-[var(--bmc)] hover:bg-[var(--bmc)]/50  text-black border-2 border-black"
+                      className="hidden md:flex bg-[var(--bmc)] hover:bg-[var(--bmc)]/50  text-black border-1 border-black"
                     >
                       <Coffee />
                       Buy me a coffee

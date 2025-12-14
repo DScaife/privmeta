@@ -14,14 +14,14 @@ const Hero = () => {
         <h2 className="sm:hidden">Clean your files of hidden metadata.</h2>
         <h2 className="sm:hidden">No uploads. No tracking. Open source.</h2>
       </div>
-      <div className="flex gap-[var(--space-md)]">
-        <Badge variant="secondary">
+      <div className="flex gap-[var(--space-lg)]">
+        <Badge variant="secondary" className="text-sm md:text-base">
           Private <Lock />
         </Badge>
-        <Badge variant="secondary">
+        <Badge variant="secondary" className="text-sm md:text-base">
           Open source <CodeXml />
         </Badge>
-        <Badge variant="secondary">
+        <Badge variant="secondary" className="text-sm md:text-base">
           Works offline <Globe />
         </Badge>
       </div>

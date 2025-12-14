@@ -1,5 +1,4 @@
 import { Skeleton } from "./ui/skeleton";
-import { WifiOff } from "lucide-react";
 
 const DisableInternet = ({ loading }: { loading: boolean }) => {
   return (
@@ -13,11 +12,10 @@ const DisableInternet = ({ loading }: { loading: boolean }) => {
           </div>
         </div>
       ) : (
-        <div className="flex w-full gap-[var(--space-lg)] items-center bg-[var(--foreground)] text-[var(--background)] p-[var(--space-lg)] rounded-md">
-          <WifiOff size={32} strokeWidth={2} className="hidden sm:block" />
-          <div>
-            <h3 className="font-bold">If you are reading this...</h3>
-            <p className="text-sm text-muted-foreground">
+        <div className="flex w-full gap-[var(--space-lg)] items-center border-[var(--foreground)] border-1 p-[var(--space-xl)] rounded-md">
+          <div className="flex flex-col gap-[var(--space-sm)]">
+            <h3 className="font-semibold">If you are reading this...</h3>
+            <p className="text-sm md:text-base text-muted-foreground">
               You can safely disable your internet — all files are processed in-browser and never touch a server.
             </p>
           </div>

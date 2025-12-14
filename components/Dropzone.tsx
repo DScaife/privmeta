@@ -139,7 +139,7 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
               className="hidden"
             />
             <File size={64} strokeWidth={2} />
-            <div className="flex flex-col items-center text-lg text-muted-foreground">
+            <div className="flex flex-col items-center text-lg">
               <p>Drag & drop files</p>
               <p>
                 or <span className="text-[var(--accent-primary)] font-bold hover:underline">click to browse</span>

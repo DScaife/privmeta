@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import Dropzone from "@/components/Dropzone";
 import { useState, useEffect } from "react";
@@ -216,9 +215,8 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <div className="w-full flex justify-center">
-        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
+        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
           <Hero />
-          <Separator />
           <Dropzone
             loading={loading}
             processing={processing}
@@ -241,7 +239,6 @@ export default function Home() {
               </Button>
             </div>
           )}
-          <Separator />
           <DisableInternet loading={loading} />
           <ShareFunctions />
         </div>
