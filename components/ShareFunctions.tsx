@@ -25,10 +25,10 @@ const ShareFunctions = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-[var(--space-md)]">
+    <div className="w-full flex flex-col gap-[var(--space-lg)]">
       {/* Social sharing */}
       <div className="flex items-center gap-6">
-        <p className="w-32">Sharing is caring</p>
+        <p className="w-36">Sharing is caring</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <Button
             variant="outline"
@@ -99,7 +99,7 @@ const ShareFunctions = () => {
 
       {/* Bookmark */}
       <div className="flex items-center gap-6">
-        <p className="w-32">Come back!</p>
+        <p className="w-36">Come back!</p>
         <Button variant="outline" className="border-black" onClick={handleBookmark}>
           <Bookmark />
           Bookmark page
@@ -110,13 +110,24 @@ const ShareFunctions = () => {
 
       {/* Link */}
       <div className="flex items-center gap-6">
-        <p className="w-32">Link to this tool</p>
+        <p className="w-36">Link to this tool</p>
         <div className="relative">
-          <Input readOnly value={SHARE_URL} className="rounded-r-none border-black" />
+          <Input readOnly value={SHARE_URL} className="rounded-r-none border-[var(--foreground)]" />
           <Button onClick={handleCopy} className="absolute left-full rounded-l-none">
             {copied ? <Check /> : <Copy />}
           </Button>
         </div>
+      </div>
+
+      <Separator />
+
+      {/* BMC */}
+      <div className="flex items-center gap-6">
+        <p className="w-36">Support this project</p>
+        <Button variant="outline" className="border-black" onClick={handleBookmark}>
+          <Bookmark />
+          Bookmark page
+        </Button>
       </div>
     </div>
   );
