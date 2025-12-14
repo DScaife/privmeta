@@ -1,29 +1,19 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 import Dropzone from "@/components/Dropzone";
 import { useState, useEffect } from "react";
 import { stripImageMetadata, stripPdfMetadata, stripDocxMetadata, stripVideoMetadata } from "@/utils/stripMetadata";
 import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { Loader2, Lock, WifiOff, CodeXml, Globe, Server, FileText, FileImage, Film, FileCheck } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import JSZip from "jszip";
 import Head from "next/head";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import Hero from "@/components/Hero";
+import ClearAllButton from "@/components/ClearAllButton";
+import DisableInternet from "@/components/DisableInternet";
+import ShareFunctions from "@/components/ShareFunctions";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
 
@@ -70,66 +60,6 @@ const showErrorToast = (type: ErrorType) => {
     duration: 5000,
     dismissible: true,
   });
-};
-
-const Hero = () => {
-  return (
-    <div className="flex flex-col gap-[var(--space-lg)] w-full">
-      <div className="flex gap-[var(--space-lg)] items-center sm:text-start">
-        <h1 className="text-2xl sm:text-4xl font-bold">Remove metadata privately</h1>
-        <Lock size={28} strokeWidth={3} className="hidden sm:inline" />
-      </div>
-      <div className="text-lg text-muted-foreground">
-        <h2 className="hidden sm:block">Clean hidden metadata from your files, right in your browser.</h2>
-        <h2 className="hidden sm:block">No uploads. No tracking. Open source. Private by design.</h2>
-        <h2 className="sm:hidden">Clean your files of hidden metadata.</h2>
-        <h2 className="sm:hidden">No uploads. No tracking. Open source.</h2>
-      </div>
-      <div className="flex gap-[var(--space-md)]">
-        <Badge variant="secondary">
-          Private <Lock />
-        </Badge>
-        <Badge variant="secondary">
-          Open source <CodeXml />
-        </Badge>
-        <Badge variant="secondary">
-          Works offline <Globe />
-        </Badge>
-      </div>
-    </div>
-  );
-};
-
-const SeparatorSection = () => (
-  <div className="w-full">
-    <Separator />
-  </div>
-);
-
-const DisableInternetSection = ({ loading }: { loading: boolean }) => {
-  return (
-    <>
-      {loading ? (
-        <div className="flex w-full gap-[var(--space-lg)] items-center bg-[var(--accent-secondary)] p-[var(--space-lg)] rounded-md">
-          <Skeleton className="h-8 w-8 rounded-full" />
-          <div className="flex flex-col gap-2 w-full">
-            <Skeleton className="h-5 w-1/2" />
-            <Skeleton className="h-4 w-3/4" />
-          </div>
-        </div>
-      ) : (
-        <div className="flex w-full gap-[var(--space-lg)] items-center bg-[var(--accent-secondary)] p-[var(--space-lg)] rounded-md">
-          <WifiOff size={32} strokeWidth={2} className="hidden sm:block" />
-          <div>
-            <h3 className="font-bold">If you are reading this...</h3>
-            <p className="text-sm text-muted-foreground">
-              You can safely disable your internet — all files are processed in-browser and never touch a server.
-            </p>
-          </div>
-        </div>
-      )}
-    </>
-  );
 };
 
 export default function Home() {
@@ -251,28 +181,6 @@ export default function Home() {
     }
   };
 
-  const ClearAllButton = () => (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button disabled={fileStore.length <= 0 || processing} variant="ghost">
-          Clear all
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Clear all files?</AlertDialogTitle>
-          <AlertDialogDescription>Are you sure you want to clear all files? This can’t be undone.</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => setFileStore([])} className="bg-destructive hover:bg-destructive/90">
-            Continue
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-
   return (
     <>
       <Head>
@@ -307,9 +215,8 @@ export default function Home() {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <div className="w-full flex justify-center">
-        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-md)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
+        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
           <Hero />
-          <SeparatorSection />
           <Dropzone
             loading={loading}
             processing={processing}
@@ -325,109 +232,15 @@ export default function Home() {
             </div>
           ) : (
             <div className="w-full flex justify-end gap-[var(--space-md)]">
-              <ClearAllButton />
+              <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
               <Button disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
                 {processing && <Loader2 className="animate-spin mr-2" />}
                 Remove metadata
               </Button>
             </div>
           )}
-          <SeparatorSection />
-          <DisableInternetSection loading={loading} />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-lg)]">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg font-semibold text-primary">
-                  <Server /> How It Works
-                </CardTitle>
-                <CardDescription>The private metadata removal process</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-6">
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">1. File Processing in Browser</h3>
-                  <p className="text-muted-foreground">
-                    When you add files to PrivMeta, everything happens <strong>directly in your web browser</strong>. Your files never leave
-                    your device or get uploaded to any server.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">2. Metadata Stripping</h3>
-                  <p className="text-muted-foreground">
-                    Our specialized algorithms detect and remove metadata like location data, camera details, author information, and hidden
-                    comments while preserving the core file content.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">3. Secure Download</h3>
-                  <p className="text-muted-foreground">
-                    Cleaned files are immediately available for download as a ZIP archive. No copies are stored anywhere - we have no access
-                    to your files at any point.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg font-semibold text-primary">
-                  <FileText /> Why Remove Metadata?
-                </CardTitle>
-                <CardDescription>Protect your private information</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-6">
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">Privacy Protection</h3>
-                  <p className="text-muted-foreground">
-                    Metadata can contain sensitive information like GPS locations, device identifiers, and creation timestamps that reveal
-                    more than you intend to share.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">Security Enhancement</h3>
-                  <p className="text-muted-foreground">
-                    Hidden metadata can contain tracking information, hidden comments, or sensitive document properties that could
-                    compromise security.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="font-bold text-lg">Professional Publishing</h3>
-                  <p className="text-muted-foreground">
-                    Remove confidential details from files before sharing them publicly or with clients to maintain professional standards.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileCheck /> Supported File Types
-              </CardTitle>
-              <CardDescription>Private metadata removal for various formats</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="flex items-center gap-2">
-                  <FileImage /> Images: JPG, PNG, WEBP
-                </div>
-                <div className="flex items-center gap-2">
-                  <FileText /> Documents: PDF, DOCX
-                </div>
-                <div className="flex items-center gap-2">
-                  <Film /> Videos: MP4, MOV
-                </div>
-                <div className="flex items-center gap-2">
-                  <FileCheck /> More formats coming soon
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <DisableInternet loading={loading} />
+          <ShareFunctions />
         </div>
       </div>
     </>

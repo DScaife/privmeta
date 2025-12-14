@@ -77,10 +77,10 @@ buglet-widget::part(trigger) {
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: #ededed;
+  --secondary: #eaeaea;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.4423 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -110,7 +110,7 @@ buglet-widget::part(trigger) {
   --space-3xl: 48px;
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
-  --bmc: #ffdd00;
+  --red: #e52828;
 }
 
 .dark {
@@ -177,5 +177,5 @@ buglet-widget::part(trigger) {
 }
 
 .prose * {
-  @apply mt-2 text-foreground
+  @apply mt-2 text-foreground;
 }
