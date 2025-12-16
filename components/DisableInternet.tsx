@@ -1,5 +1,5 @@
 import { Skeleton } from "./ui/skeleton";
-import { WifiOff } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 const DisableInternet = ({ loading }: { loading: boolean }) => {
   return (
@@ -14,14 +14,14 @@ const DisableInternet = ({ loading }: { loading: boolean }) => {
         </div>
       ) : (
         <div className="relative flex w-full gap-[var(--space-lg)] items-center border-[var(--foreground)] border-1 p-[var(--space-lg)] sm:p-[var(--space-xl)] rounded-md">
-          <div className="flex flex-col gap-[var(--space-sm)] w-full">
+          <div className="flex flex-col gap-[var(--space-sm)] w-full pr-[100px]">
             <h3 className="font-semibold">If you are reading this...</h3>
-            <p className="text-sm md:text-base text-muted-foreground pr-[100px]">
+            <p className="text-sm md:text-base text-muted-foreground">
               You can safely disable your internet — all files are processed in-browser and never touch a server.
             </p>
           </div>
-          <div className="absolute bg-muted flex justify-center items-center right-0 border-l-1 border-foreground rounded-r-md h-full w-24">
-            <WifiOff size={32} />
+          <div className="absolute bg-muted/70 flex justify-center items-center right-0 border-l-1 border-foreground rounded-r-md h-full w-24">
+            <Sparkles size={32} />
           </div>
         </div>
       )}
