@@ -4,7 +4,25 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
+import localFont from "next/font/local";
 import "./globals.css";
+
+const roboto = localFont({
+  variable: "--font-roboto",
+  display: "swap",
+  src: [
+    {
+      path: "../public/fonts/Roboto-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/Roboto-Bold.woff2",
+      weight: "400",
+      style: "bold",
+    },
+  ],
+});
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -136,7 +154,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
       </head>
-      <body suppressHydrationWarning className="antialiased min-h-screen flex flex-col">
+      <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${roboto.variable} font-roboto`}>
         <Analytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <div className="flex flex-col flex-1">
