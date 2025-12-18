@@ -178,3 +178,7 @@ buglet-widget::part(trigger) {
 .prose * {
   @apply mt-2 text-foreground;
 }
+
+.prose code {
+  @apply text-background;
+}

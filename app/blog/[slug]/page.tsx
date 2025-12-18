@@ -54,7 +54,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
       <Card className="border-none shadow-none">
         <CardHeader className="text-center">
-          <h1 className="text-3xl md:text-4xl">{post.title}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">{post.title}</h1>
           <p className="text-muted-foreground">
             {new Date(post.date).toLocaleDateString("en-US", {
               year: "numeric",

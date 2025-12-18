@@ -18,7 +18,7 @@ const roboto = localFont({
     },
     {
       path: "../public/fonts/Roboto-Bold.woff2",
-      weight: "400",
+      weight: "600",
       style: "bold",
     },
   ],
