@@ -21,7 +21,7 @@ const DisableInternet = ({ loading }: { loading: boolean }) => {
             </p>
           </div>
           <div className="absolute bg-muted/70 flex justify-center items-center right-0 border-l-1 border-foreground rounded-r-md h-full w-24">
-            <Sparkles size={32} />
+            <Sparkles size={32} strokeWidth={1.5}/>
           </div>
         </div>
       )}
