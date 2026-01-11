@@ -1,6 +1,34 @@
 import { PDFDocument, PDFName } from "pdf-lib";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
+import piexif from "piexifjs";
+
+export async function stripJpegMetadata(file: File): Promise<File | null> {
+  console.log("Stripping metadata of JPEG");
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(arrayBuffer);
+
+    let binary = "";
+    for (let i = 0; i < bytes.length; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    const cleanedBinary = piexif.remove(binary);
+
+    const cleanedBytes = new Uint8Array(cleanedBinary.length);
+    for (let i = 0; i < cleanedBinary.length; i++) {
+      cleanedBytes[i] = cleanedBinary.charCodeAt(i);
+    }
+
+    const blob = new Blob([cleanedBytes], { type: "image/jpeg" });
+
+    return new File([blob], file.name, { type: "image/jpeg" });
+  } catch (err) {
+    console.error("JPEG metadata stripping failed:", err);
+    return null;
+  }
+}
 
 export async function stripAudioMetadata(file: File): Promise<File | null> {
   try {
