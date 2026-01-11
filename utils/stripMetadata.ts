@@ -2,6 +2,31 @@ import { PDFDocument, PDFName } from "pdf-lib";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 
+export async function stripAudioMetadata(file: File): Promise<File | null> {
+  try {
+    if (typeof window === "undefined") return null;
+    const ffmpeg = new FFmpeg();
+    await ffmpeg.load();
+    const extension = file.name.split(".").pop()?.toLowerCase();
+    const supported = ["wav", "mp3", "flac", "aac", "ogg", "m4a"];
+    if (!extension || !supported.includes(extension)) {
+      throw new Error("Unsupported audio format");
+    }
+    const inputFile = `input.${extension}`;
+    const outputFile = `output.${extension}`;
+    const mimeType = file.type || `audio/${extension}`;
+    await ffmpeg.writeFile(inputFile, await fetchFile(file));
+    await ffmpeg.exec(["-i", inputFile, "-map_metadata", "-1", "-metadata", "encoder=", "-c", "copy", outputFile]);
+    const data = await ffmpeg.readFile(outputFile);
+    const blob = new Blob([data as BlobPart], { type: mimeType });
+    const cleanedFile = new File([blob], file.name.replace(/\.[^.]+$/, `_cleaned.${extension}`), { type: mimeType });
+    return cleanedFile;
+  } catch (err) {
+    console.error("Audio metadata stripping failed:", err);
+    return null;
+  }
+}
+
 export async function stripVideoMetadata(file: File): Promise<File | null> {
   try {
     if (typeof window === "undefined") return null;
