@@ -145,7 +145,7 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
                 or <span className="text-[var(--accent-primary)] font-bold hover:underline">click to browse</span>
               </p>
             </div>
-            <p className="text-sm text-muted-foreground text-center">(Supported file types: {getFileExtensions()})</p>
+            <p className="text-sm text-muted-foreground text-center max-w-md">(Supported file types: {getFileExtensions()})</p>
             {fileStore.length > 0 && (
               <ul className="text-left text-sm font-bold text-muted-foreground">
                 {fileStore.map((file, index) => (

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Dropzone from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import { stripImageMetadata, stripPdfMetadata, stripDocxMetadata, stripVideoMetadata } from "@/utils/stripMetadata";
+import { stripImageMetadata, stripPdfMetadata, stripDocxMetadata, stripVideoMetadata, stripAudioMetadata } from "@/utils/stripMetadata";
 import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
@@ -139,6 +139,8 @@ export default function Home() {
           cleaned = await stripDocxMetadata(file);
         } else if (file.type.startsWith("video/")) {
           cleaned = await stripVideoMetadata(file);
+        } else if (file.type.startsWith("audio/")) {
+          cleaned = await stripAudioMetadata(file);
         } else {
           showErrorToast("unsupported_format");
           continue;
