@@ -3,7 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import Dropzone from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import { stripImageMetadata, stripPdfMetadata, stripDocxMetadata, stripVideoMetadata, stripAudioMetadata } from "@/utils/stripMetadata";
+import {
+  stripImageMetadata,
+  stripPdfMetadata,
+  stripDocxMetadata,
+  stripVideoMetadata,
+  stripAudioMetadata,
+  stripJpegMetadata,
+} from "@/utils/stripMetadata";
 import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
@@ -131,8 +138,10 @@ export default function Home() {
       for (const file of fileStore) {
         let cleaned: File | null = null;
 
-        if (file.type.startsWith("image/")) {
-          cleaned = await stripImageMetadata(file);
+        if (file.type === "image/jpeg" || file.type === "image/jpg") {
+          cleaned = await stripJpegMetadata(file);
+        } else if (file.type.startsWith("image/")) {
+          cleaned = await stripImageMetadata(file); // PNG, WebP, etc.
         } else if (file.type === "application/pdf") {
           cleaned = await stripPdfMetadata(file);
         } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
