@@ -4,7 +4,6 @@ import { fetchFile } from "@ffmpeg/util";
 import piexif from "piexifjs";
 
 export async function stripJpegMetadata(file: File): Promise<File | null> {
-  console.log("Stripping metadata of JPEG");
   try {
     const arrayBuffer = await file.arrayBuffer();
     const bytes = new Uint8Array(arrayBuffer);
