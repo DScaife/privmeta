@@ -248,6 +248,7 @@ export default function Home() {
             </Button>
           </div>
         )}
+        <div className="h-[3px] w-full bg-foreground" />
         <ShareFunctions />
       </div>
     </div>

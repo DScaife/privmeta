@@ -25,7 +25,7 @@ const ShareFunctions = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-[var(--space-2xl)] py-[var(--space-lg)] text-lg">
+    <div className="w-full flex flex-col gap-[var(--space-2xl)] text-lg">
       {/* Social sharing */}
       <div className="flex  flex-col sm:flex-row sm:items-center gap-6">
         <p className="w-40">Sharing is caring</p>
