@@ -69,8 +69,11 @@ const showErrorToast = (type: ErrorType) => {
   });
 };
 
+type FileStatus = "idle" | "processing" | "done" | "failed";
+
 export default function Home() {
   const [fileStore, setFileStore] = useState<File[]>([]);
+  const [fileStatuses, setFileStatuses] = useState<Record<number, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -125,23 +128,37 @@ export default function Home() {
 
   const handleFileRemoved = (index: number) => {
     setFileStore((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setFileStatuses((prev) => {
+      const next: Record<number, FileStatus> = {};
+      Object.entries(prev).forEach(([k, v]) => {
+        const ki = Number(k);
+        if (ki < index) next[ki] = v;
+        else if (ki > index) next[ki - 1] = v;
+      });
+      return next;
+    });
   };
 
   const handleMetadataRemoval = async () => {
     setProcessing(true);
+    setFileStatuses({});
 
     await new Promise((res) => setTimeout(res, 1000));
 
     try {
       const cleanedFiles: File[] = [];
+      let failedCount = 0;
 
-      for (const file of fileStore) {
+      for (let i = 0; i < fileStore.length; i++) {
+        const file = fileStore[i];
+        setFileStatuses((prev) => ({ ...prev, [i]: "processing" }));
+
         let cleaned: File | null = null;
 
         if (file.type === "image/jpeg" || file.type === "image/jpg") {
           cleaned = await stripJpegMetadata(file);
         } else if (file.type.startsWith("image/")) {
-          cleaned = await stripImageMetadata(file); // PNG, WebP, etc.
+          cleaned = await stripImageMetadata(file);
         } else if (file.type === "application/pdf") {
           cleaned = await stripPdfMetadata(file);
         } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
@@ -152,6 +169,8 @@ export default function Home() {
           cleaned = await stripAudioMetadata(file);
         } else {
           showErrorToast("unsupported_format");
+          setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
+          failedCount++;
           continue;
         }
 
@@ -160,6 +179,10 @@ export default function Home() {
             type: cleaned.type,
           });
           cleanedFiles.push(renamed);
+          setFileStatuses((prev) => ({ ...prev, [i]: "done" }));
+        } else {
+          setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
+          failedCount++;
         }
       }
 
@@ -183,7 +206,13 @@ export default function Home() {
         URL.revokeObjectURL(url);
       }
 
-      toast.success("Download ready ✨");
+      if (failedCount === 0) {
+        toast.success("Download ready ✨");
+      } else if (cleanedFiles.length > 0) {
+        toast.warning(`Download ready — ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
+      } else {
+        showErrorToast("general");
+      }
     } catch (error) {
       console.error("Error during metadata removal:", error);
       showErrorToast("general");
@@ -232,6 +261,7 @@ export default function Home() {
             loading={loading}
             processing={processing}
             fileStore={fileStore}
+            fileStatuses={fileStatuses}
             onFilesAccepted={handleFilesAccepted}
             onFileRemove={handleFileRemoved}
             onError={(type: ErrorType) => showErrorToast(type)}

@@ -3,6 +3,16 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
 import piexif from "piexifjs";
 
+let ffmpegInstance: FFmpeg | null = null;
+
+async function getFFmpeg(): Promise<FFmpeg> {
+  if (!ffmpegInstance) {
+    ffmpegInstance = new FFmpeg();
+    await ffmpegInstance.load();
+  }
+  return ffmpegInstance;
+}
+
 export async function stripJpegMetadata(file: File): Promise<File | null> {
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -32,8 +42,7 @@ export async function stripJpegMetadata(file: File): Promise<File | null> {
 export async function stripAudioMetadata(file: File): Promise<File | null> {
   try {
     if (typeof window === "undefined") return null;
-    const ffmpeg = new FFmpeg();
-    await ffmpeg.load();
+    const ffmpeg = await getFFmpeg();
     const extension = file.name.split(".").pop()?.toLowerCase();
     const supported = ["wav", "mp3", "flac", "aac", "ogg", "m4a"];
     if (!extension || !supported.includes(extension)) {
@@ -58,11 +67,10 @@ export async function stripVideoMetadata(file: File): Promise<File | null> {
   try {
     if (typeof window === "undefined") return null;
 
-    const ffmpeg = new FFmpeg();
-    await ffmpeg.load();
+    const ffmpeg = await getFFmpeg();
 
     const extension = file.name.split(".").pop()?.toLowerCase();
-    if (!extension || !["mp4", "webm", "avi"].includes(extension)) {
+    if (!extension || !["mp4", "webm", "avi", "mov", "mkv"].includes(extension)) {
       throw new Error("Unsupported video format");
     }
 
@@ -141,20 +149,23 @@ export async function stripPdfMetadata(file: File): Promise<File | null> {
       pdfDoc.catalog.delete(metadataKey);
     }
 
-    if (pdfDoc.context && pdfDoc.context.trailerInfo?.Info) {
-      delete pdfDoc.context.trailerInfo.Info;
-    }
-
-    // --- Clear common metadata fields explicitly ---
+    // --- Clear text fields first (modifies the existing Info dict in-place so the
+    //     original values are overwritten in the serialized output, not just de-referenced) ---
     pdfDoc.setTitle("");
     pdfDoc.setAuthor("");
     pdfDoc.setSubject("");
     pdfDoc.setKeywords([]);
     pdfDoc.setProducer("");
     pdfDoc.setCreator("");
-    // pdf-lib requires a Date object — use epoch (neutral) instead of undefined
-    pdfDoc.setCreationDate(new Date(0));
-    pdfDoc.setModificationDate(new Date(0));
+
+    // --- Remove the Info dict reference from the trailer entirely.
+    //     Do this AFTER the set* calls above — calling set* first rewrites the existing
+    //     Info object's fields in-place, then we remove the trailer pointer so no Info
+    //     dict is visible to PDF readers. Dates are intentionally not set to epoch
+    //     (D:19700101) as that pattern is an identifiable fingerprint. ---
+    if (pdfDoc.context?.trailerInfo?.Info) {
+      delete pdfDoc.context.trailerInfo.Info;
+    }
 
     const newPdfBytes = await pdfDoc.save({ useObjectStreams: false });
 

@@ -8,6 +8,7 @@ const ACCEPTED_FILE_TYPES: Record<string, string[]> = {
   "image/jpeg": [".jpeg", ".jpg"],
   "image/png": [".png"],
   "image/webp": [".webp"],
+  "image/gif": [".gif"],
 
   // Application
   "application/pdf": [".pdf"],
@@ -17,6 +18,8 @@ const ACCEPTED_FILE_TYPES: Record<string, string[]> = {
   "video/mp4": [".mp4"],
   "video/avi": [".avi"],
   "video/webm": [".webm"],
+  "video/quicktime": [".mov"],
+  "video/x-matroska": [".mkv"],
 
   // Audio
   "audio/wav": [".wav"],
