@@ -7,36 +7,29 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <header className="z-50 flex justify-center w-full">
-      <nav className="h-40 flex justify-between items-center w-full">
-        <div className="flex gap-[var(--space-2xl)] items-center">
-          <p className="text-5xl font-semibold">PrivMeta</p>
+    <header className="relative z-50">
+      <nav className="h-40 flex flex-col sm:flex-row gap-(--space-lg) justify-center sm:justify-between items-start sm:items-center">
+        <h1 className="text-5xl font-semibold">PrivMeta</h1>
+
+        <div>
+          <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
+            <Button
+              aria-label="Support PrivMeta on Buy Me a Coffee"
+              className="h-16 w-64 text-xl font-semibold text-foreground bg-background hover:bg-muted border-2 border-foreground"
+            >
+              <Heart fill="var(--red)" />
+              Buy me a coffee
+            </Button>
+          </Link>
         </div>
 
-        <div className="flex flex-col items-end gap-[var(--space-md)]">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div>
-                <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-                  <Button
-                    aria-label="Support PrivMeta on Buy Me a Coffee"
-                    className="h-16 w-64 text-xl font-semibold text-foreground bg-background hover:bg-muted border-2 border-foreground"
-                  >
-                    <Heart fill="var(--red)" />
-                    Buy me a coffee
-                  </Button>
-                </Link>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">Support PrivMeta</TooltipContent>
-          </Tooltip>
-
+        <div className="absolute bottom-0 right-0">
           <div className="flex gap-[var(--space-md)]">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="View source on GitHub" asChild>
+                <Button variant="ghost" size="icon-lg" aria-label="View source on GitHub" asChild>
                   <a href="https://github.com/DScaife/privmeta/tree/master" target="_blank" rel="noopener noreferrer">
-                    <Code className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+                    <Code />
                   </a>
                 </Button>
               </TooltipTrigger>
