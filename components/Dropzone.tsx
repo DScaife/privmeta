@@ -4,7 +4,6 @@ import React, { useCallback, useRef, useState } from "react";
 import { File, X, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { MAX_FILE_SIZE_BYTES, MAX_FILE_COUNT, ACCEPTED_FILE_TYPES } from "@/utils/constants";
-import { getFileExtensions } from "@/utils/utils";
 import { Skeleton } from "./ui/skeleton";
 
 type FileStatus = "idle" | "processing" | "done" | "failed";
@@ -112,7 +111,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
       ) : (
         <div className="w-full" aria-label="File dropzone">
           <div
-            className={`relative flex flex-col items-center justify-center w-full min-h-96 gap-(--space-lg) border-3 border-dashed rounded-lg transition-colors ${
+            className={`relative flex flex-col items-center justify-center w-full min-h-96 p-(--space-3xl) gap-(--space-lg) border-3 border-dashed rounded-lg transition-colors ${
               highlight ? "border-(--accent-primary) bg-(--accent-secondary)" : "border-foreground"
             } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             onClick={() => {
@@ -141,22 +140,23 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
               onChange={handleChange}
               className="hidden"
             />
-            <File size={64} strokeWidth={2} />
-            <div className="flex flex-col items-center text-lg">
-              <p>Drag & drop files</p>
-              <p>
-                or <span className="text-(--accent-primary) font-bold hover:underline">click to browse</span>
-              </p>
+            <div className="flex flex-col items-center gap-6 text-lg text-foreground">
+              <File size={40} strokeWidth={2} />
+              <div className="flex flex-col items-center text-center leading-tight">
+                <p className="text-base">Drag & drop files</p>
+                <p className="text-base">
+                  or <span className="text-xl font-semibold hover:underline text-(--accent-primary)">click to browse</span>
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground text-center max-w-md">(Supported file types: {getFileExtensions()})</p>
             {fileStore.length > 0 && (
-              <ul className="text-left text-sm font-bold text-muted-foreground">
+              <ul className="w-full max-w-lg flex flex-col gap-(--space-md) text-left text-sm font-bold text-muted-foreground">
                 {fileStore.map((file, index) => {
                   const status = fileStatuses[index] ?? "idle";
                   return (
-                    <li key={index} className="truncate flex items-center gap-(--space-sm)">
-                      <File className="mr-(--space-sm) shrink-0" size={20} strokeWidth={2} />
-                      <p className="truncate pr-(--space-md)">{file.name}</p>
+                    <li key={index} className="truncate flex items-center gap-(--space-lg)">
+                      <File className=" shrink-0" size={20} strokeWidth={2} />
+                      <p className="truncate flex-1">{file.name}</p>
                       {status === "processing" && <Loader2 className="shrink-0 animate-spin text-muted-foreground" size={16} />}
                       {status === "done" && <CheckCircle2 className="shrink-0 text-green-500" size={16} />}
                       {status === "failed" && <XCircle className="shrink-0 text-red-500" size={16} />}
@@ -176,7 +176,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
                 })}
               </ul>
             )}
-            <p className="absolute text-sm text-muted-foreground right-(--space-xl) bottom-(--space-md)">
+            <p className="absolute text-base text-muted-foreground right-(--space-xl) bottom-(--space-md)">
               {`${fileStore.length}/${MAX_FILE_COUNT}`}
             </p>
           </div>

@@ -26,7 +26,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div>
+        <div className="relative">
           <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
             <Button
               aria-label="Support PrivMeta on Buy Me a Coffee"
@@ -36,10 +36,7 @@ const Navbar = () => {
               Buy me a coffee
             </Button>
           </Link>
-        </div>
-
-        <div className="absolute bottom-0 right-0 hidden sm:inline">
-          <div className="flex gap-(--space-md)">
+          <div className="absolute gap-(--space-md) top-full mt-(--space-lg) right-0 hidden sm:flex">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon-lg" aria-label="View source on GitHub" asChild>

@@ -109,6 +109,7 @@ buglet-widget::part(trigger) {
   --space-xl: 24px;
   --space-2xl: 32px;
   --space-3xl: 48px;
+  --space-4xl: 96px;
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
   --red: #e52828;
