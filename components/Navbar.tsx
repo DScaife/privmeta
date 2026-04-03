@@ -8,7 +8,7 @@ import Link from "next/link";
 const Navbar = () => {
   return (
     <header className="z-50 flex justify-center w-full">
-      <nav className="h-40 flex justify-between items-center w-full max-w-[var(--max-content-width)] px-[var(--space-xl)]">
+      <nav className="h-40 flex justify-between items-center w-full">
         <div className="flex gap-[var(--space-2xl)] items-center">
           <p className="text-5xl font-semibold">PrivMeta</p>
         </div>

@@ -17,7 +17,6 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import JSZip from "jszip";
 import ClearAllButton from "@/components/ClearAllButton";
-import DisableInternet from "@/components/DisableInternet";
 import ShareFunctions from "@/components/ShareFunctions";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
@@ -225,7 +224,7 @@ export default function Home() {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
+      <div className="w-full flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
         <Dropzone
           loading={loading}
           processing={processing}
@@ -249,7 +248,6 @@ export default function Home() {
             </Button>
           </div>
         )}
-        <DisableInternet loading={loading} />
         <ShareFunctions />
       </div>
     </div>

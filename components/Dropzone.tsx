@@ -112,7 +112,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
       ) : (
         <div className="w-full" aria-label="File dropzone">
           <div
-            className={`relative flex flex-col items-center justify-center w-full min-h-96 gap-[var(--space-lg)] border-3 border-dashed p-[var(--space-2xl)] rounded-lg transition-colors ${
+            className={`relative flex flex-col items-center justify-center w-full min-h-96 gap-[var(--space-lg)] border-3 border-dashed rounded-lg transition-colors ${
               highlight ? "border-[var(--accent-primary)] bg-[var(--accent-secondary)]" : "border-foreground"
             } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             onClick={() => {
