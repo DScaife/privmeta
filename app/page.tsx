@@ -242,7 +242,7 @@ export default function Home() {
         ) : (
           <div className="w-full flex justify-end gap-(--space-md)">
             <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
-            <Button disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
+            <Button size="lg" className="text-lg" disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
               {processing && <Loader2 className="animate-spin mr-2" />}
               Remove metadata
             </Button>

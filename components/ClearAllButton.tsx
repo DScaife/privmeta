@@ -20,14 +20,14 @@ type ClearAllButtonProps = {
 const ClearAllButton = ({ fileStore, setFileStore, processing }: ClearAllButtonProps) => (
   <AlertDialog>
     <AlertDialogTrigger asChild>
-      <Button disabled={fileStore.length <= 0 || processing} variant="ghost">
+      <Button size="lg" className="text-lg" disabled={fileStore.length <= 0 || processing} variant="link">
         Clear all
       </Button>
     </AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Clear all files?</AlertDialogTitle>
-        <AlertDialogDescription>Are you sure you want to clear all files? This can’t be undone.</AlertDialogDescription>
+        <AlertDialogDescription>Are you sure you want to clear all files? This can&apos;t be undone.</AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancel</AlertDialogCancel>
