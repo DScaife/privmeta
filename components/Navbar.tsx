@@ -1,92 +1,37 @@
 "use client";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { NavMenu } from "./NavMenu";
-import { Code, Heart, MessageSquareText, Info } from "lucide-react";
+import { Code, Heart } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 
 const Navbar = () => {
   return (
-    <header className="sticky top-0 z-50 flex justify-center w-full border-b border-[var(--border)] backdrop-blur-lg">
-      <nav className="flex justify-between items-center w-full max-w-[var(--max-content-width)] px-[var(--space-xl)] h-14">
-        <TooltipProvider>
-          <div className="flex gap-[var(--space-2xl)] items-center">
-            <Link href="/" passHref>
-              <Image
-                src="/PrivMetaLogoLightMode.png"
-                alt="PrivMeta Logo"
-                width={516}
-                height={115}
-                className="w-24 h-auto cursor-pointer dark:hidden"
-              />
-              <Image
-                src="/PrivMetaLogoDarkMode.png"
-                alt="PrivMeta Logo"
-                width={516}
-                height={115}
-                className="hidden dark:inline w-24 h-auto cursor-pointer"
-              />
-            </Link>
+    <header className="z-50 flex justify-center w-full">
+      <nav className="h-40 flex justify-between items-center w-full max-w-[var(--max-content-width)] px-[var(--space-xl)]">
+        <div className="flex gap-[var(--space-2xl)] items-center">
+          <p className="text-5xl font-semibold">PrivMeta</p>
+        </div>
 
-            <NavMenu />
-          </div>
-
-          <div className="flex gap-[var(--space-md)]">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link href="/how-it-works">
-                  <Button variant="secondary" size="icon" className="sm:hidden">
-                    <Info />
+        <div className="flex flex-col items-end gap-[var(--space-md)]">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
+                  <Button
+                    aria-label="Support PrivMeta on Buy Me a Coffee"
+                    className="h-16 w-64 text-xl font-semibold text-foreground bg-background hover:bg-muted border-2 border-foreground"
+                  >
+                    <Heart fill="var(--red)" />
+                    Buy me a coffee
                   </Button>
                 </Link>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">Find out more about PrivMeta</TooltipContent>
-            </Tooltip>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Support PrivMeta</TooltipContent>
+          </Tooltip>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <Button variant="secondary" className="buglet-trigger hidden md:inline">
-                    Feedback
-                  </Button>
-                  <Button variant="secondary" size="icon" className="buglet-trigger md:hidden">
-                    <MessageSquareText />
-                  </Button>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">Share your feedback</TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-                    <Button
-                      aria-label="Support PrivMeta on Buy Me a Coffee"
-                      className="md:hidden bg-[var(--bmc)] hover:bg-[var(--bmc)]/50 border-1 border-black"
-                      variant="outline"
-                      size="icon"
-                    >
-                      <Heart fill="var(--red)" />
-                    </Button>
-                  </Link>
-                  <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-                    <Button
-                      variant="outline"
-                      aria-label="Support PrivMeta on Buy Me a Coffee"
-                      className="hidden md:flex border-1 border-black"
-                    >
-                      <Heart fill="var(--red)" />
-                      Support PrivMeta
-                    </Button>
-                  </Link>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom">Support PrivMeta</TooltipContent>
-            </Tooltip>
-
+          <div className="flex gap-[var(--space-md)]">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="View source on GitHub" asChild>
@@ -99,7 +44,7 @@ const Navbar = () => {
             </Tooltip>
             <ThemeToggle />
           </div>
-        </TooltipProvider>
+        </div>
       </nav>
     </header>
   );

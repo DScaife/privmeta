@@ -2,6 +2,7 @@ import type { Viewport, Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import localFont from "next/font/local";
@@ -147,15 +148,18 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
       </head>
+
       <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${roboto.variable} font-roboto`}>
         <Analytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="flex flex-col flex-1">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Toaster richColors />
-            <Footer />
-          </div>
+          <TooltipProvider>
+            <div className="flex flex-col flex-1">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Toaster richColors />
+              <Footer />
+            </div>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

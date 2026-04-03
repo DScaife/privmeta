@@ -16,7 +16,6 @@ import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import JSZip from "jszip";
-import Hero from "@/components/Hero";
 import ClearAllButton from "@/components/ClearAllButton";
 import DisableInternet from "@/components/DisableInternet";
 import ShareFunctions from "@/components/ShareFunctions";
@@ -221,41 +220,38 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = processing
-      ? "PrivMeta | Cleaning metadata..."
-      : "PrivMeta — Remove Metadata from Files Privately";
+    document.title = processing ? "PrivMeta | Cleaning metadata..." : "PrivMeta — Remove Metadata from Files Privately";
   }, [processing]);
 
   return (
     <div className="w-full flex justify-center">
-        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
-          <Hero />
-          <Dropzone
-            loading={loading}
-            processing={processing}
-            fileStore={fileStore}
-            fileStatuses={fileStatuses}
-            onFilesAccepted={handleFilesAccepted}
-            onFileRemove={handleFileRemoved}
-            onError={(type: ErrorType) => showErrorToast(type)}
-          />
-          {loading ? (
-            <div className="w-full flex justify-end gap-[var(--space-md)]">
-              <Skeleton className="h-10 w-40" />
-              <Skeleton className="h-10 w-24" />
-            </div>
-          ) : (
-            <div className="w-full flex justify-end gap-[var(--space-md)]">
-              <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
-              <Button disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
-                {processing && <Loader2 className="animate-spin mr-2" />}
-                Remove metadata
-              </Button>
-            </div>
-          )}
-          <DisableInternet loading={loading} />
-          <ShareFunctions />
-        </div>
+      <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
+        <Dropzone
+          loading={loading}
+          processing={processing}
+          fileStore={fileStore}
+          fileStatuses={fileStatuses}
+          onFilesAccepted={handleFilesAccepted}
+          onFileRemove={handleFileRemoved}
+          onError={(type: ErrorType) => showErrorToast(type)}
+        />
+        {loading ? (
+          <div className="w-full flex justify-end gap-[var(--space-md)]">
+            <Skeleton className="h-10 w-40" />
+            <Skeleton className="h-10 w-24" />
+          </div>
+        ) : (
+          <div className="w-full flex justify-end gap-[var(--space-md)]">
+            <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
+            <Button disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
+              {processing && <Loader2 className="animate-spin mr-2" />}
+              Remove metadata
+            </Button>
+          </div>
+        )}
+        <DisableInternet loading={loading} />
+        <ShareFunctions />
       </div>
+    </div>
   );
 }
