@@ -154,7 +154,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider>
             <div className="flex flex-col flex-1 items-center">
-              <div className="max-w-[1400px] flex flex-col flex-1 w-full h-full px-[var(--space-xl)]">
+              <div className="max-w-[1400px] flex flex-col flex-1 w-full h-full px-(--space-xl)">
                 <Navbar />
                 <main className="flex-1">{children}</main>
                 <Toaster richColors />

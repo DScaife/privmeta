@@ -24,7 +24,7 @@ const Navbar = () => {
         </div>
 
         <div className="absolute bottom-0 right-0">
-          <div className="flex gap-[var(--space-md)]">
+          <div className="flex gap-(--space-md)">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon-lg" aria-label="View source on GitHub" asChild>

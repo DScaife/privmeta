@@ -85,14 +85,14 @@ export default function HowItWorks() {
   return (
     <div className="w-full flex justify-center">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-md)] flex flex-col gap-[var(--space-2xl)] py-[var(--space-2xl)]">
-        <div className="flex flex-col gap-[var(--space-md)]">
+      <div className="w-full max-w-(--max-content-width) px-(--space-md) flex flex-col gap-(--space-2xl) py-(--space-2xl)">
+        <div className="flex flex-col gap-(--space-md)">
           <h1 className="text-3xl font-bold mb-4">How PrivMeta removes metadata and protects your privacy</h1>
           <p className="text-lg text-muted-foreground">
             Learn how our client-side technology removes metadata without compromising your files&apos; privacy
           </p>
 
-          <div className="flex gap-[var(--space-md)] flex-wrap">
+          <div className="flex gap-(--space-md) flex-wrap">
             <Badge variant="secondary">
               <Lock className="mr-1" size={16} /> Private Metadata Removal
             </Badge>
@@ -104,7 +104,7 @@ export default function HowItWorks() {
 
         <SeparatorSection />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-lg)]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-(--space-lg)">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg font-semibold text-primary">

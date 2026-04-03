@@ -25,14 +25,14 @@ const ShareFunctions = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-[var(--space-2xl)] text-lg">
+    <div className="w-full flex flex-col gap-(--space-2xl) text-lg">
       {/* Social sharing */}
       <div className="flex  flex-col sm:flex-row sm:items-center gap-6">
         <p className="w-40">Sharing is caring</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Button
             variant="outline"
-            className="border-[var(--foreground)]"
+            className="border-(--foreground)"
             onClick={() => openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -49,7 +49,7 @@ const ShareFunctions = () => {
           </Button>
           <Button
             variant="outline"
-            className="border-[var(--foreground)]"
+            className="border-(--foreground)"
             onClick={() => openShare(`https://twitter.com/intent/tweet?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -66,7 +66,7 @@ const ShareFunctions = () => {
           </Button>
           <Button
             variant="outline"
-            className="border-[var(--foreground)]"
+            className="border-(--foreground)"
             onClick={() => openShare(`https://www.reddit.com/submit?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-reddit" viewBox="0 0 16 16">
@@ -77,7 +77,7 @@ const ShareFunctions = () => {
           </Button>
           <Button
             variant="outline"
-            className="border-[var(--foreground)]"
+            className="border-(--foreground)"
             onClick={() => openShare(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -98,7 +98,7 @@ const ShareFunctions = () => {
       {/* Bookmark */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
         <p className="w-40">Come back!</p>
-        <Button variant="outline" className="border-[var(--foreground)]" onClick={handleBookmark}>
+        <Button variant="outline" className="border-(--foreground)" onClick={handleBookmark}>
           <Bookmark />
           Bookmark page
         </Button>
@@ -108,7 +108,7 @@ const ShareFunctions = () => {
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
         <p className="w-40">Link to this tool</p>
         <div className="relative w-full sm:max-w-sm">
-          <Input readOnly value={SHARE_URL} className="border-[var(--foreground)]" />
+          <Input readOnly value={SHARE_URL} className="border-(--foreground)" />
           <Button onClick={handleCopy} className="absolute right-0 rounded-l-none">
             {copied ? <Check /> : <Copy />}
           </Button>
@@ -119,7 +119,7 @@ const ShareFunctions = () => {
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
         <p className="w-40">Support this project</p>
         <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-          <Button variant="outline" aria-label="Support me on Buy Me a Coffee" className="border-[var(--foreground)]">
+          <Button variant="outline" aria-label="Support me on Buy Me a Coffee" className="border-(--foreground)">
             <Coffee />
             Buy me a coffee
           </Button>

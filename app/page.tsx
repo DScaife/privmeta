@@ -224,7 +224,7 @@ export default function Home() {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
+      <div className="w-full flex flex-col gap-(--space-2xl) h-full items-center py-(--space-2xl)">
         <Dropzone
           loading={loading}
           processing={processing}
@@ -235,12 +235,12 @@ export default function Home() {
           onError={(type: ErrorType) => showErrorToast(type)}
         />
         {loading ? (
-          <div className="w-full flex justify-end gap-[var(--space-md)]">
+          <div className="w-full flex justify-end gap-(--space-md)">
             <Skeleton className="h-10 w-40" />
             <Skeleton className="h-10 w-24" />
           </div>
         ) : (
-          <div className="w-full flex justify-end gap-[var(--space-md)]">
+          <div className="w-full flex justify-end gap-(--space-md)">
             <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
             <Button disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
               {processing && <Loader2 className="animate-spin mr-2" />}
