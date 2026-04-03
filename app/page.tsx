@@ -224,29 +224,31 @@ export default function Home() {
 
   return (
     <div className="w-full flex flex-col gap-(--space-3xl) h-full items-center py-(--space-3xl)">
-      <Dropzone
-        loading={loading}
-        processing={processing}
-        fileStore={fileStore}
-        fileStatuses={fileStatuses}
-        onFilesAccepted={handleFilesAccepted}
-        onFileRemove={handleFileRemoved}
-        onError={(type: ErrorType) => showErrorToast(type)}
-      />
-      {loading ? (
-        <div className="w-full flex justify-end gap-(--space-md)">
-          <Skeleton className="h-10 w-40" />
-          <Skeleton className="h-10 w-24" />
-        </div>
-      ) : (
-        <div className="w-full flex justify-end gap-(--space-md)">
-          <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
-          <Button size="lg" className="text-lg" disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
-            {processing && <Loader2 className="animate-spin mr-2" />}
-            Remove metadata
-          </Button>
-        </div>
-      )}
+      <div className="w-full flex flex-col gap-(--space-2xl)">
+        <Dropzone
+          loading={loading}
+          processing={processing}
+          fileStore={fileStore}
+          fileStatuses={fileStatuses}
+          onFilesAccepted={handleFilesAccepted}
+          onFileRemove={handleFileRemoved}
+          onError={(type: ErrorType) => showErrorToast(type)}
+        />
+        {loading ? (
+          <div className="w-full flex justify-end gap-(--space-md)">
+            <Skeleton className="h-10 w-40" />
+            <Skeleton className="h-10 w-24" />
+          </div>
+        ) : (
+          <div className="w-full flex justify-end gap-(--space-md)">
+            <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
+            <Button size="lg" className="text-lg" disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
+              {processing && <Loader2 className="animate-spin mr-2" />}
+              Remove metadata
+            </Button>
+          </div>
+        )}
+      </div>
       <div className="h-0.75 w-full bg-foreground" />
       <ShareFunctions />
     </div>
