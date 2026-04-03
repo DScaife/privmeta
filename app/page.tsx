@@ -16,7 +16,6 @@ import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import JSZip from "jszip";
-import Head from "next/head";
 import Hero from "@/components/Hero";
 import ClearAllButton from "@/components/ClearAllButton";
 import DisableInternet from "@/components/DisableInternet";
@@ -221,40 +220,14 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    document.title = processing
+      ? "PrivMeta | Cleaning metadata..."
+      : "PrivMeta — Remove Metadata from Files Privately";
+  }, [processing]);
+
   return (
-    <>
-      <Head>
-        <title>{processing ? "PrivMeta | Cleaning metadata..." : "PrivMeta | Clean metadata from images, PDFs & Word docs"}</title>
-        <meta
-          name="description"
-          content={
-            processing
-              ? "Cleaning metadata from your files securely in your browser. Please wait..."
-              : "Remove metadata from your files securely in your browser. No uploads, no tracking. Open source and works offline."
-          }
-        />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="PrivMeta | Clean metadata from images, PDFs & Word docs" />
-        <meta
-          property="og:description"
-          content="Remove metadata from your files securely in your browser. No uploads, no tracking. Open source and works offline."
-        />
-        <meta property="og:image" content="/og-image.png" /> <meta property="og:url" content="https://www.privmeta.com/" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="PrivMeta | Clean metadata from images, PDFs & Word docs" />
-        <meta
-          name="twitter:description"
-          content="Remove metadata from your files securely in your browser. No uploads, no tracking. Open source and works offline."
-        />
-        <meta name="twitter:image" content="/og-image.png" /> <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#ffffff" />
-      </Head>
-      <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center">
         <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
           <Hero />
           <Dropzone
@@ -284,6 +257,5 @@ export default function Home() {
           <ShareFunctions />
         </div>
       </div>
-    </>
   );
 }

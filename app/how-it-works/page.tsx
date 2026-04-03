@@ -1,4 +1,4 @@
-"use client";
+import type { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -6,15 +6,85 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Lock, Shield, Server, FileText, FileImage, Film, File, HelpCircle, Paintbrush, ArrowRight } from "lucide-react";
 
+export const metadata: Metadata = {
+  title: "How PrivMeta Works — Private, Client-Side Metadata Removal",
+  description:
+    "Learn how PrivMeta removes metadata from photos, PDFs, videos, and documents entirely in your browser. No uploads, no servers — complete privacy guaranteed.",
+  alternates: { canonical: "https://www.privmeta.com/how-it-works" },
+  openGraph: {
+    title: "How PrivMeta Works — Private, Client-Side Metadata Removal",
+    description:
+      "Learn how PrivMeta removes metadata from photos, PDFs, videos, and documents entirely in your browser. No uploads, no servers — complete privacy guaranteed.",
+    url: "https://www.privmeta.com/how-it-works",
+    siteName: "PrivMeta",
+    type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 628, alt: "How PrivMeta Works" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "How PrivMeta Works — Private, Client-Side Metadata Removal",
+    description: "No uploads, no servers. PrivMeta strips metadata from your files entirely in your browser.",
+    images: ["/og-image.png"],
+  },
+};
+
 const SeparatorSection = () => (
   <div className="w-full">
     <Separator />
   </div>
 );
 
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How does client-side metadata removal work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "All file processing happens directly in your web browser using JavaScript. When you add files, they're read by the browser and processed locally using specialized metadata stripping algorithms. No part of your file is ever sent to a server.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is PrivMeta completely private?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, PrivMeta was designed with privacy as the core principle. Since all processing happens in your browser, there are no server interactions with your files. You can even use it offline after the initial page load.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What types of metadata does PrivMeta remove?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "We remove EXIF data from images (location, camera settings), document metadata (author, revision history), PDF properties, and video/audio metadata. Our algorithms target metadata while preserving essential file contents.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How can I remove metadata from photos privately?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "PrivMeta lets you remove EXIF data from JPG, PNG, GIF, and WEBP images directly in your browser. Simply add your photos, and we'll strip all metadata while keeping your images 100% private.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is there a truly private way to clean document metadata?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes! PrivMeta removes metadata from PDFs and DOCX files entirely client-side. Unlike cloud-based tools, we never upload your sensitive documents to external servers.",
+      },
+    },
+  ],
+};
+
 export default function HowItWorks() {
   return (
     <div className="w-full flex justify-center">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-md)] flex flex-col gap-[var(--space-2xl)] py-[var(--space-2xl)]">
         <div className="flex flex-col gap-[var(--space-md)]">
           <h1 className="text-3xl font-bold mb-4">How PrivMeta removes metadata and protects your privacy</h1>
@@ -113,16 +183,16 @@ export default function HowItWorks() {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-center gap-2">
-                <FileImage /> Images: JPG, PNG, WEBP
+                <FileImage /> Images: JPG, PNG, WEBP, GIF
               </div>
               <div className="flex items-center gap-2">
                 <FileText /> Documents: PDF, DOCX
               </div>
               <div className="flex items-center gap-2">
-                <Film /> Videos: MP4, MOV
+                <Film /> Videos: MP4, MOV, MKV, AVI, WEBM
               </div>
               <div className="flex items-center gap-2">
-                <File /> More formats coming soon
+                <File /> Audio: MP3, WAV, FLAC, AAC, OGG, M4A
               </div>
             </div>
           </CardContent>
