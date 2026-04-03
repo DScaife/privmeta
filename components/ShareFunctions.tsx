@@ -98,8 +98,12 @@ const ShareFunctions = () => {
       {/* Bookmark */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
         <p className="w-40">Come back!</p>
-        <Button variant="outline" className="border-foreground" onClick={handleBookmark}>
-          <Bookmark />
+        <Button
+          size="lg"
+          className="bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
+          onClick={handleBookmark}
+        >
+          <Bookmark className="size-5" />
           Bookmark page
         </Button>
       </div>
@@ -119,8 +123,12 @@ const ShareFunctions = () => {
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
         <p className="w-40">Support this project</p>
         <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-          <Button variant="outline" aria-label="Support me on Buy Me a Coffee" className="border-foreground">
-            <Coffee />
+          <Button
+            size="lg"
+            className="bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
+            aria-label="Support me on Buy Me a Coffee"
+          >
+            <Coffee className="size-5" />
             Buy me a coffee
           </Button>
         </Link>
