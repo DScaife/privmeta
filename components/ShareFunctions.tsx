@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "./ui/separator";
 import { Bookmark, Copy, Check, Coffee } from "lucide-react";
 import Link from "next/link";
 
@@ -26,10 +25,10 @@ const ShareFunctions = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-[var(--space-lg)] py-[var(--space-lg)] px-[var(--space-xl)]">
+    <div className="w-full flex flex-col gap-[var(--space-2xl)] py-[var(--space-lg)] text-lg">
       {/* Social sharing */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Sharing is caring</p>
+      <div className="flex  flex-col sm:flex-row sm:items-center gap-6">
+        <p className="w-40">Sharing is caring</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Button
             variant="outline"
@@ -96,22 +95,18 @@ const ShareFunctions = () => {
         </div>
       </div>
 
-      <Separator />
-
       {/* Bookmark */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Come back!</p>
+        <p className="w-40">Come back!</p>
         <Button variant="outline" className="border-[var(--foreground)]" onClick={handleBookmark}>
           <Bookmark />
           Bookmark page
         </Button>
       </div>
 
-      <Separator />
-
       {/* Link */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Link to this tool</p>
+        <p className="w-40">Link to this tool</p>
         <div className="relative w-full sm:max-w-sm">
           <Input readOnly value={SHARE_URL} className="border-[var(--foreground)]" />
           <Button onClick={handleCopy} className="absolute right-0 rounded-l-none">
@@ -120,11 +115,9 @@ const ShareFunctions = () => {
         </div>
       </div>
 
-      <Separator />
-
       {/* BMC */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Support this project</p>
+        <p className="w-40">Support this project</p>
         <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
           <Button variant="outline" aria-label="Support me on Buy Me a Coffee" className="border-[var(--foreground)]">
             <Coffee />
