@@ -28,11 +28,11 @@ const ShareFunctions = () => {
     <div className="w-full flex flex-col gap-(--space-2xl) text-lg">
       {/* Social sharing */}
       <div className="flex  flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-40">Sharing is caring</p>
+        <p className="w-(--share-width)">Sharing is caring</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Button
-            variant="outline"
-            className="border-foreground"
+            size="lg"
+            className="bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
             onClick={() => openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -48,8 +48,8 @@ const ShareFunctions = () => {
             Facebook
           </Button>
           <Button
-            variant="outline"
-            className="border-foreground"
+            size="lg"
+            className="bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
             onClick={() => openShare(`https://twitter.com/intent/tweet?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -65,8 +65,8 @@ const ShareFunctions = () => {
             Twitter
           </Button>
           <Button
-            variant="outline"
-            className="border-foreground"
+            size="lg"
+            className="bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
             onClick={() => openShare(`https://www.reddit.com/submit?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-reddit" viewBox="0 0 16 16">
@@ -76,8 +76,8 @@ const ShareFunctions = () => {
             Reddit
           </Button>
           <Button
-            variant="outline"
-            className="border-foreground"
+            size="lg"
+            className="bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
             onClick={() => openShare(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -97,7 +97,7 @@ const ShareFunctions = () => {
 
       {/* Bookmark */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-40">Come back!</p>
+        <p className="w-(--share-width)">Come back!</p>
         <Button
           size="lg"
           className="bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
@@ -110,10 +110,14 @@ const ShareFunctions = () => {
 
       {/* Link */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-40">Link to this tool</p>
+        <p className="w-(--share-width)">Link to this tool</p>
         <div className="relative w-full sm:max-w-sm">
-          <Input readOnly value={SHARE_URL} className="border-foreground" />
-          <Button onClick={handleCopy} className="absolute right-0 rounded-l-none">
+          <Input readOnly value={SHARE_URL} className="h-10 text-base border-2 border-foreground" />
+          <Button
+            size="lg"
+            onClick={handleCopy}
+            className="absolute right-0 rounded-l-none bg-background hover:bg-muted/50 text-foreground border-foreground border-2 text-base"
+          >
             {copied ? <Check /> : <Copy />}
           </Button>
         </div>
@@ -121,7 +125,7 @@ const ShareFunctions = () => {
 
       {/* BMC */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-40">Support this project</p>
+        <p className="w-(--share-width)">Support this project</p>
         <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
           <Button
             size="lg"

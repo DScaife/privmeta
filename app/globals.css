@@ -101,6 +101,7 @@ buglet-widget::part(trigger) {
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --max-content-width: 1080px;
+  --share-width: calc(var(--spacing) * 44);
   --space-xs: 2px;
   --space-sm: 4px;
   --space-md: 8px;
