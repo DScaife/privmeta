@@ -8,20 +8,15 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
 
 type BlogPost = {
   slug: string;
   title: string;
+  description: string;
   date: string;
   contentHtml: string;
 };
-
-export async function generateMetadata() {
-  return {
-    title: `Blog | Buglet`,
-    description: `Insights and best practices about user feedback and bug reporting`,
-  };
-}
 
 async function getPostData(slug: string): Promise<BlogPost> {
   const fullPath = path.join(process.cwd(), "content/blog", `${slug}.md`);
@@ -34,16 +29,68 @@ async function getPostData(slug: string): Promise<BlogPost> {
   return {
     slug,
     contentHtml,
-    ...matterResult.data,
-  } as BlogPost;
+    title: matterResult.data.title || "",
+    description: matterResult.data.description || "",
+    date: matterResult.data.date || "",
+  };
+}
+
+export async function generateStaticParams() {
+  const postsDirectory = path.join(process.cwd(), "content/blog");
+  const filenames = fs.readdirSync(postsDirectory);
+  return filenames.map((filename) => ({ slug: filename.replace(/\.md$/, "") }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPostData(slug);
+  const url = `https://www.privmeta.com/blog/${slug}`;
+
+  return {
+    title: `${post.title} | PrivMeta Blog`,
+    description: post.description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url,
+      siteName: "PrivMeta",
+      type: "article",
+      publishedTime: post.date,
+      authors: ["PrivMeta"],
+      images: [{ url: "/og-image.png", width: 1200, height: 628, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: ["/og-image.png"],
+    },
+  };
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPostData(slug);
+  const url = `https://www.privmeta.com/blog/${slug}`;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    url,
+    author: { "@type": "Organization", name: "PrivMeta", url: "https://www.privmeta.com/" },
+    publisher: { "@type": "Organization", name: "PrivMeta", url: "https://www.privmeta.com/" },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  };
 
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+
       <div className="mb-8">
         <Button asChild variant="outline">
           <Link href="/blog" className="flex items-center">

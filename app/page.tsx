@@ -16,7 +16,6 @@ import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import JSZip from "jszip";
-import Head from "next/head";
 import Hero from "@/components/Hero";
 import ClearAllButton from "@/components/ClearAllButton";
 import DisableInternet from "@/components/DisableInternet";
@@ -69,8 +68,11 @@ const showErrorToast = (type: ErrorType) => {
   });
 };
 
+type FileStatus = "idle" | "processing" | "done" | "failed";
+
 export default function Home() {
   const [fileStore, setFileStore] = useState<File[]>([]);
+  const [fileStatuses, setFileStatuses] = useState<Record<number, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -125,23 +127,37 @@ export default function Home() {
 
   const handleFileRemoved = (index: number) => {
     setFileStore((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setFileStatuses((prev) => {
+      const next: Record<number, FileStatus> = {};
+      Object.entries(prev).forEach(([k, v]) => {
+        const ki = Number(k);
+        if (ki < index) next[ki] = v;
+        else if (ki > index) next[ki - 1] = v;
+      });
+      return next;
+    });
   };
 
   const handleMetadataRemoval = async () => {
     setProcessing(true);
+    setFileStatuses({});
 
     await new Promise((res) => setTimeout(res, 1000));
 
     try {
       const cleanedFiles: File[] = [];
+      let failedCount = 0;
 
-      for (const file of fileStore) {
+      for (let i = 0; i < fileStore.length; i++) {
+        const file = fileStore[i];
+        setFileStatuses((prev) => ({ ...prev, [i]: "processing" }));
+
         let cleaned: File | null = null;
 
         if (file.type === "image/jpeg" || file.type === "image/jpg") {
           cleaned = await stripJpegMetadata(file);
         } else if (file.type.startsWith("image/")) {
-          cleaned = await stripImageMetadata(file); // PNG, WebP, etc.
+          cleaned = await stripImageMetadata(file);
         } else if (file.type === "application/pdf") {
           cleaned = await stripPdfMetadata(file);
         } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
@@ -152,6 +168,8 @@ export default function Home() {
           cleaned = await stripAudioMetadata(file);
         } else {
           showErrorToast("unsupported_format");
+          setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
+          failedCount++;
           continue;
         }
 
@@ -160,6 +178,10 @@ export default function Home() {
             type: cleaned.type,
           });
           cleanedFiles.push(renamed);
+          setFileStatuses((prev) => ({ ...prev, [i]: "done" }));
+        } else {
+          setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
+          failedCount++;
         }
       }
 
@@ -183,7 +205,13 @@ export default function Home() {
         URL.revokeObjectURL(url);
       }
 
-      toast.success("Download ready ✨");
+      if (failedCount === 0) {
+        toast.success("Download ready ✨");
+      } else if (cleanedFiles.length > 0) {
+        toast.warning(`Download ready — ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
+      } else {
+        showErrorToast("general");
+      }
     } catch (error) {
       console.error("Error during metadata removal:", error);
       showErrorToast("general");
@@ -192,46 +220,21 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    document.title = processing
+      ? "PrivMeta | Cleaning metadata..."
+      : "PrivMeta — Remove Metadata from Files Privately";
+  }, [processing]);
+
   return (
-    <>
-      <Head>
-        <title>{processing ? "PrivMeta | Cleaning metadata..." : "PrivMeta | Clean metadata from images, PDFs & Word docs"}</title>
-        <meta
-          name="description"
-          content={
-            processing
-              ? "Cleaning metadata from your files securely in your browser. Please wait..."
-              : "Remove metadata from your files securely in your browser. No uploads, no tracking. Open source and works offline."
-          }
-        />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="PrivMeta | Clean metadata from images, PDFs & Word docs" />
-        <meta
-          property="og:description"
-          content="Remove metadata from your files securely in your browser. No uploads, no tracking. Open source and works offline."
-        />
-        <meta property="og:image" content="/og-image.png" /> <meta property="og:url" content="https://www.privmeta.com/" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="PrivMeta | Clean metadata from images, PDFs & Word docs" />
-        <meta
-          name="twitter:description"
-          content="Remove metadata from your files securely in your browser. No uploads, no tracking. Open source and works offline."
-        />
-        <meta name="twitter:image" content="/og-image.png" /> <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#ffffff" />
-      </Head>
-      <div className="w-full flex justify-center">
+    <div className="w-full flex justify-center">
         <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
           <Hero />
           <Dropzone
             loading={loading}
             processing={processing}
             fileStore={fileStore}
+            fileStatuses={fileStatuses}
             onFilesAccepted={handleFilesAccepted}
             onFileRemove={handleFileRemoved}
             onError={(type: ErrorType) => showErrorToast(type)}
@@ -254,6 +257,5 @@ export default function Home() {
           <ShareFunctions />
         </div>
       </div>
-    </>
   );
 }

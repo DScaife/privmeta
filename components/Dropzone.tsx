@@ -1,14 +1,17 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
-import { File, X } from "lucide-react";
+import { File, X, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { MAX_FILE_SIZE_BYTES, MAX_FILE_COUNT, ACCEPTED_FILE_TYPES } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { Skeleton } from "./ui/skeleton";
 
+type FileStatus = "idle" | "processing" | "done" | "failed";
+
 type DropzoneProps = {
   fileStore: File[];
+  fileStatuses: Record<number, FileStatus>;
   onFilesAccepted: (files: File[]) => void;
   onFileRemove: (index: number) => void;
   onError: (type: "unsupported_format" | "file_too_large" | "dropzone_error") => void;
@@ -18,7 +21,7 @@ type DropzoneProps = {
 
 const acceptedMimeTypes = Object.keys(ACCEPTED_FILE_TYPES);
 
-export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onError, loading, processing }: DropzoneProps) {
+export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onFileRemove, onError, loading, processing }: DropzoneProps) {
   const [highlight, setHighlight] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -60,7 +63,7 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
         onError("dropzone_error");
       }
     },
-    [onError, onFilesAccepted]
+    [onError, onFilesAccepted],
   );
 
   const handleDrop = useCallback(
@@ -77,7 +80,7 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
         onError("dropzone_error");
       }
     },
-    [onError, handleFiles]
+    [onError, handleFiles],
   );
 
   const handleChange = useCallback(
@@ -89,7 +92,7 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
         onError("dropzone_error");
       }
     },
-    [onError, handleFiles]
+    [onError, handleFiles],
   );
 
   return (
@@ -107,7 +110,7 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
           </div>
         </div>
       ) : (
-        <div className="w-full" araria-label="File dropzone">
+        <div className="w-full" aria-label="File dropzone">
           <div
             className={`relative flex flex-col items-center justify-center w-full min-h-96 gap-[var(--space-lg)] border-3 border-dashed p-[var(--space-2xl)] rounded-xl transition-colors bg-muted/50 ${
               highlight ? "border-[var(--accent-primary)] bg-[var(--accent-secondary)]" : "border-muted-foreground/70"
@@ -148,22 +151,29 @@ export default function Dropzone({ fileStore, onFilesAccepted, onFileRemove, onE
             <p className="text-sm text-muted-foreground text-center max-w-md">(Supported file types: {getFileExtensions()})</p>
             {fileStore.length > 0 && (
               <ul className="text-left text-sm font-bold text-muted-foreground">
-                {fileStore.map((file, index) => (
-                  <li key={index} className="truncate flex items-center gap-[var(--space-sm)]">
-                    <File className="mr-[var(--space-sm)]" size={20} strokeWidth={2} />
-                    <p className="truncate">{file.name}</p>
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onFileRemove(index);
-                      }}
-                      variant="ghost"
-                      size="icon"
-                    >
-                      <X />
-                    </Button>
-                  </li>
-                ))}
+                {fileStore.map((file, index) => {
+                  const status = fileStatuses[index] ?? "idle";
+                  return (
+                    <li key={index} className="truncate flex items-center gap-[var(--space-sm)]">
+                      <File className="mr-[var(--space-sm)] shrink-0" size={20} strokeWidth={2} />
+                      <p className="truncate pr-[var(--space-md)]">{file.name}</p>
+                      {status === "processing" && <Loader2 className="shrink-0 animate-spin text-muted-foreground" size={16} />}
+                      {status === "done" && <CheckCircle2 className="shrink-0 text-green-500" size={16} />}
+                      {status === "failed" && <XCircle className="shrink-0 text-red-500" size={16} />}
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onFileRemove(index);
+                        }}
+                        variant="ghost"
+                        size="icon"
+                        disabled={processing}
+                      >
+                        <X />
+                      </Button>
+                    </li>
+                  );
+                })}
               </ul>
             )}
             <p className="absolute text-sm text-muted-foreground right-[var(--space-xl)] bottom-[var(--space-md)]">

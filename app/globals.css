@@ -179,6 +179,14 @@ buglet-widget::part(trigger) {
   @apply mt-2 text-foreground;
 }
 
-.prose code {
-  @apply text-background;
+.prose :not(pre) > code {
+  @apply bg-foreground text-background px-1.5 py-0.5 rounded;
+}
+
+.prose pre {
+  @apply bg-foreground text-background p-4 rounded-lg overflow-x-auto;
+}
+
+.prose pre code {
+  @apply bg-transparent text-inherit p-0;
 }
