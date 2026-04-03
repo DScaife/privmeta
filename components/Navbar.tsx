@@ -9,7 +9,22 @@ const Navbar = () => {
   return (
     <header className="relative z-50">
       <nav className="h-40 flex flex-col sm:flex-row gap-(--space-lg) justify-center sm:justify-between items-start sm:items-center">
-        <h1 className="text-5xl font-semibold">PrivMeta</h1>
+        <div className="flex justify-between items-center w-full">
+          <h1 className="text-5xl font-semibold">PrivMeta</h1>
+          <div className="flex gap-(--space-md) sm:hidden">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon-lg" aria-label="View source on GitHub" asChild>
+                  <a href="https://github.com/DScaife/privmeta/tree/master" target="_blank" rel="noopener noreferrer">
+                    <Code className="size-5" />
+                  </a>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">View source code on GitHub</TooltipContent>
+            </Tooltip>
+            <ThemeToggle />
+          </div>
+        </div>
 
         <div>
           <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
@@ -23,13 +38,13 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="absolute bottom-0 right-0">
+        <div className="absolute bottom-0 right-0 hidden sm:inline">
           <div className="flex gap-(--space-md)">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon-lg" aria-label="View source on GitHub" asChild>
                   <a href="https://github.com/DScaife/privmeta/tree/master" target="_blank" rel="noopener noreferrer">
-                    <Code />
+                    <Code className="size-5" />
                   </a>
                 </Button>
               </TooltipTrigger>
