@@ -19,6 +19,7 @@ import JSZip from "jszip";
 import ClearAllButton from "@/components/ClearAllButton";
 import ShareFunctions from "@/components/ShareFunctions";
 import Hero from "@/components/Hero";
+import DisableInternet from "@/components/DisableInternet";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
 
@@ -251,6 +252,7 @@ export default function Home() {
           </div>
         )}
       </div>
+      <DisableInternet />
       <div className="h-0.75 w-full bg-foreground" />
       <ShareFunctions />
     </div>
