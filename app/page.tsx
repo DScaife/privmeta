@@ -18,6 +18,7 @@ import { Loader2 } from "lucide-react";
 import JSZip from "jszip";
 import ClearAllButton from "@/components/ClearAllButton";
 import ShareFunctions from "@/components/ShareFunctions";
+import Hero from "@/components/Hero";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
 
@@ -224,6 +225,7 @@ export default function Home() {
 
   return (
     <div className="w-full flex flex-col gap-(--space-3xl) h-full items-center py-(--space-3xl)">
+      <Hero />
       <div className="w-full flex flex-col gap-(--space-2xl)">
         <Dropzone
           loading={loading}
