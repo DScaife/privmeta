@@ -15,27 +15,26 @@ async function getFFmpeg(): Promise<FFmpeg> {
 
 export async function stripJpegMetadata(file: File): Promise<File | null> {
   try {
-    const arrayBuffer = await file.arrayBuffer();
-    const bytes = new Uint8Array(arrayBuffer);
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          resolve(reader.result);
+        } else {
+          reject(new Error("Failed to read JPEG data as Data URL"));
+        }
+      };
+      reader.onerror = () => reject(reader.error ?? new Error("Failed to read JPEG file"));
+      reader.readAsDataURL(file);
+    });
 
-    let binary = "";
-    for (let i = 0; i < bytes.length; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
+    const cleanedDataUrl = piexif.remove(dataUrl);
+    const cleanedBlob = await (await fetch(cleanedDataUrl)).blob();
 
-    const cleanedBinary = piexif.remove(binary);
-
-    const cleanedBytes = new Uint8Array(cleanedBinary.length);
-    for (let i = 0; i < cleanedBinary.length; i++) {
-      cleanedBytes[i] = cleanedBinary.charCodeAt(i);
-    }
-
-    const blob = new Blob([cleanedBytes], { type: "image/jpeg" });
-
-    return new File([blob], file.name, { type: "image/jpeg" });
+    return new File([cleanedBlob], file.name, { type: "image/jpeg" });
   } catch (err) {
-    console.error("JPEG metadata stripping failed:", err);
-    return null;
+    console.error("JPEG metadata stripping failed, falling back to canvas re-encode:", err);
+    return stripImageMetadata(file);
   }
 }
 
