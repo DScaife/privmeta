@@ -28,7 +28,7 @@ const ShareFunctions = () => {
   return (
     <div className="w-full flex flex-col gap-(--space-2xl) text-lg">
       {/* Social sharing */}
-      <div className="flex  flex-col sm:flex-row sm:items-center gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md) sm:gap-(--space-xl) md:gap-(--space-xl)">
         <Typography variant="label" className="w-(--share-width)">
           Sharing is caring
         </Typography>
@@ -99,7 +99,7 @@ const ShareFunctions = () => {
       </div>
 
       {/* Bookmark */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md) sm:gap-(--space-xl) md:gap-(--space-xl)">
         <Typography variant="label" className="w-(--share-width)">
           Come back!
         </Typography>
@@ -114,7 +114,7 @@ const ShareFunctions = () => {
       </div>
 
       {/* Link */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md) sm:gap-(--space-xl) md:gap-(--space-xl)">
         <Typography variant="label" className="w-(--share-width)">
           Link to this tool
         </Typography>
@@ -136,7 +136,7 @@ const ShareFunctions = () => {
       </div>
 
       {/* BMC */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md) sm:gap-(--space-xl) md:gap-(--space-xl)">
         <Typography variant="label" className="w-(--share-width)">
           Support this project
         </Typography>
