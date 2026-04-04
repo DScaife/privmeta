@@ -9,9 +9,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
       className="toaster group"
       toastOptions={{
         classNames: {
-          toast: "group toast border-2 shadow-none rounded-[var(--corner-radius)] px-(--space-lg) py-(--space-md)",
-          title: "type-fluid type-sonner-title -ml-6",
-          description: "type-fluid type-sonner-body -ml-6",
+          toast: "group toast select-none border-2 shadow-none rounded-[var(--corner-radius)] px-(--space-lg) py-(--space-md)",
+          title: "type-fluid type-sonner-title -ml-6 select-none",
+          description: "type-fluid type-sonner-body -ml-6 select-none",
           icon: "invisible",
           actionButton:
             "rounded-[var(--corner-radius)] border-2 border-forground bg-transparent hover:opacity-70 px-(--space-md) h-8",
