@@ -183,10 +183,6 @@ buglet-widget::part(trigger) {
   }
 }
 
-.article {
-  @apply max-w-3xl mx-auto px-4 flex flex-col text-[1.05rem] leading-relaxed tracking-normal;
-}
-
 .prose table {
   @apply w-full border-collapse my-6;
 }
