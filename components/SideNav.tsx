@@ -26,7 +26,7 @@ const SideNav = () => {
           variant="outline"
           onClick={handleClick}
           aria-label="Scroll to top"
-          className="border-foreground/30 hover:bg-muted/60"
+          className="rounded-(--corner-radius) border-2 border-foreground"
         >
           <ArrowUp className="size-5" />
         </Button>
