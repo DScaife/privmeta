@@ -71,6 +71,7 @@ buglet-widget::part(trigger) {
   --fluid-screen-min: 42.8;
   --fluid-screen-max: 128;
   --radius: 0.625rem;
+  --corner-radius: 4px;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

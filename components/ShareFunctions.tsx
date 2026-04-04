@@ -121,7 +121,7 @@ const ShareFunctions = () => {
         <button
           type="button"
           onClick={handleCopy}
-          className="group sm:w-1/2 sm:max-w-sm flex items-stretch rounded-md border-2 border-foreground overflow-hidden bg-background text-left cursor-pointer"
+          className="group sm:w-1/2 sm:max-w-sm flex items-stretch rounded-(--corner-radius) border-2 border-foreground overflow-hidden bg-background text-left cursor-pointer"
           aria-label="Copy link to this tool"
         >
           <Input
