@@ -4,7 +4,7 @@ const DisableInternet = () => {
   return (
     <section className="w-full">
       <Typography variant="body">
-        You can safely disable your internet — all files are processed in-browser and never touch a server.
+        You can safely disable your internet. all files are processed in-browser and never touch a server.
       </Typography>
     </section>
   );

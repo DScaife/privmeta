@@ -225,9 +225,9 @@ export default function Home() {
   }, [processing]);
 
   return (
-    <div className="w-full flex flex-col gap-(--space-3xl) h-full items-center py-(--space-3xl)">
+    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-xl) sm:py-(--space-2xl) md:py-(--space-3xl)">
       <Hero />
-      <div className="w-full flex flex-col gap-(--space-2xl)">
+      <div className="w-full flex flex-col gap-(--space-lg) sm:gap-(--space-xl) md:gap-(--space-2xl)">
         <Dropzone
           loading={loading}
           processing={processing}
