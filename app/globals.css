@@ -263,6 +263,13 @@ buglet-widget::part(trigger) {
   --line-height: 1.35;
 }
 
+.type-footer {
+  --min: 10;
+  --max: 12;
+  --weight: 500;
+  --line-height: 1.35;
+}
+
 .type-button {
   --min: 10;
   --max: 12;
