@@ -4,11 +4,10 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import html from "remark-html";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
+import Typography from "@/components/Typography";
 
 type BlogPost = {
   slug: string;
@@ -16,7 +15,13 @@ type BlogPost = {
   description: string;
   date: string;
   contentHtml: string;
+  readingTime: number;
 };
+
+function estimateReadingTime(content: string): number {
+  const wordCount = content.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+}
 
 async function getPostData(slug: string): Promise<BlogPost> {
   const fullPath = path.join(process.cwd(), "content/blog", `${slug}.md`);
@@ -32,6 +37,7 @@ async function getPostData(slug: string): Promise<BlogPost> {
     title: matterResult.data.title || "",
     description: matterResult.data.description || "",
     date: matterResult.data.date || "",
+    readingTime: estimateReadingTime(matterResult.content),
   };
 }
 
@@ -88,33 +94,39 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
+    <div className="w-full bg-amber-800 flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
-      <div className="mb-8">
-        <Button asChild variant="outline">
-          <Link href="/blog" className="flex items-center">
-            <ArrowLeft size={16} className="mr-2" /> Back to Blog
-          </Link>
-        </Button>
+      {/* Back navigation */}
+      <Link
+        href="/blog"
+        className="type-fluid type-label text-muted-foreground hover:text-foreground transition-colors flex items-center gap-(--space-sm) w-fit"
+      >
+        <ArrowLeft size={14} />
+        Blog
+      </Link>
+
+      {/* Post header */}
+      <div className="flex flex-col gap-(--space-md)">
+        <Typography variant="label" muted>
+          {post.date
+            ? new Date(post.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : ""}{" "}
+          · {post.readingTime} min read
+        </Typography>
+        <Typography as="h1" variant="h1">
+          {post.title}
+        </Typography>
       </div>
 
-      <Card className="border-none shadow-none">
-        <CardHeader className="text-center">
-          <h1 className="text-3xl md:text-4xl font-bold">{post.title}</h1>
-          <p className="text-muted-foreground">
-            {new Date(post.date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        </CardHeader>
+      <div className="h-0.75 w-full bg-foreground" />
 
-        <CardContent className="max-w-none">
-          <article className="article prose prose-lg" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
-        </CardContent>
-      </Card>
+      {/* Article content */}
+      <article className="bg-teal-800 w-full prose prose-lg" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
     </div>
   );
 }

@@ -1,11 +1,10 @@
+import React from "react";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Clock } from "lucide-react";
 import matter from "gray-matter";
 import fs from "fs";
 import path from "path";
 import type { Metadata } from "next";
+import Typography from "@/components/Typography";
 
 export const metadata: Metadata = {
   title: "Privacy Blog — Metadata Guides & Tips | PrivMeta",
@@ -42,6 +41,8 @@ function estimateReadingTime(content: string): number {
   return Math.max(1, Math.ceil(wordCount / 200));
 }
 
+const Divider = () => <div className="h-0.75 w-full bg-foreground" />;
+
 export default function BlogPage() {
   const postsDirectory = path.join(process.cwd(), "content/blog");
   const filenames = fs.readdirSync(postsDirectory);
@@ -63,45 +64,41 @@ export default function BlogPage() {
   const sortedPosts = [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold">PrivMeta Blog</h1>
-        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-          Insights, tips, and best practices for maximising digital privacy.
-        </p>
-      </div>
+    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
+      <section className="w-full">
+        <Typography as="h1" variant="hero">
+          Guides on metadata, privacy, and digital hygiene.
+        </Typography>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {sortedPosts.map((post) => (
-          <Card key={post.slug} className="hover:shadow-lg transition-shadow flex flex-col">
-            <CardHeader>
-              <h2 className="text-xl font-bold leading-snug">{post.title}</h2>
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <span>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
-                <span>·</span>
-                <span className="flex items-center gap-1">
-                  <Clock size={13} />
-                  {post.readingTime} min read
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent className="flex-1">
-              <p className="text-muted-foreground">{post.description}</p>
-            </CardContent>
-            <CardFooter>
-              <Button asChild className="w-full">
-                <Link href={`/blog/${post.slug}`}>
-                  Read More <ArrowRight size={16} className="ml-2" />
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
+      <Divider />
+
+      <div className="flex flex-col">
+        {sortedPosts.map((post, index) => (
+          <React.Fragment key={post.slug}>
+            {index > 0 && <Divider />}
+            <Link
+              href={`/blog/${post.slug}`}
+              className="group flex flex-col gap-(--space-sm) py-(--space-xl) sm:py-(--space-2xl)"
+            >
+              <Typography variant="label" muted>
+                {post.date
+                  ? new Date(post.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : ""}{" "}
+                · {post.readingTime} min read
+              </Typography>
+              <Typography as="h2" variant="bodyLg" weight={600} className="group-hover:underline underline-offset-4">
+                {post.title}
+              </Typography>
+              <Typography variant="body" muted>
+                {post.description}
+              </Typography>
+            </Link>
+          </React.Fragment>
         ))}
       </div>
     </div>
