@@ -121,7 +121,7 @@ const ShareFunctions = () => {
         <button
           type="button"
           onClick={handleCopy}
-          className="w-full sm:max-w-sm flex items-stretch rounded-md border-2 border-foreground overflow-hidden bg-background text-left cursor-pointer"
+          className="group w-full sm:max-w-sm flex items-stretch rounded-md border-2 border-foreground overflow-hidden bg-background text-left cursor-pointer"
           aria-label="Copy link to this tool"
         >
           <Input
@@ -129,7 +129,7 @@ const ShareFunctions = () => {
             value={SHARE_URL}
             className="h-10 flex-1 type-fluid type-button border-0 rounded-none pointer-events-none focus-visible:ring-0 focus-visible:border-0"
           />
-          <span className="type-fluid type-button h-10 inline-flex items-center justify-center px-(--space-lg) border-l-2 border-foreground bg-background hover:bg-muted/50 text-foreground">
+          <span className="type-fluid type-button h-10 inline-flex items-center justify-center px-(--space-lg) border-l-2 border-foreground bg-background group-hover:bg-muted/50 transition-colors text-foreground">
             {copied ? <Check className="size-5" /> : <Copy className="size-5" />}
           </span>
         </button>
