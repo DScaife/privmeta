@@ -64,7 +64,7 @@ buglet-widget::part(trigger) {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-roboto: var(--font-roboto);
+  --font-avenir: var(--font-avenir);
 }
 
 :root {

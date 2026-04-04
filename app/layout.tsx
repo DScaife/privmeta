@@ -9,19 +9,34 @@ import { Analytics } from "@vercel/analytics/react";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const roboto = localFont({
-  variable: "--font-roboto",
+const avenirNext = localFont({
+  variable: "--font-avenir",
   display: "swap",
   src: [
     {
-      path: "../public/fonts/Roboto-Regular.woff2",
+      path: "../public/fonts/avenir-next-ultralight.woff2",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/avenir-next-regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../public/fonts/Roboto-Bold.woff2",
+      path: "../public/fonts/avenir-next-medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/avenir-next-demibold.woff2",
       weight: "600",
-      style: "bold",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/avenir-next-bold.woff2",
+      weight: "700",
+      style: "normal",
     },
   ],
 });
@@ -150,7 +165,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#ffffff" />
       </head>
 
-      <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${roboto.variable} font-roboto`}>
+      <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${avenirNext.variable} font-avenir`}>
         <Analytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider>
