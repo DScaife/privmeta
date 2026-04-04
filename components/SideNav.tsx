@@ -23,10 +23,9 @@ const SideNav = () => {
       <div className="pointer-events-auto w-fit flex flex-col items-start gap-(--space-lg)">
         <Button
           size="icon"
-          variant="outline"
           onClick={handleClick}
           aria-label="Scroll to top"
-          className="rounded-(--corner-radius) border-2 border-foreground"
+          className="rounded-(--corner-radius) border-2 border-foreground bg-background text-foreground hover:bg-foreground/10"
         >
           <ArrowUp className="size-5" />
         </Button>

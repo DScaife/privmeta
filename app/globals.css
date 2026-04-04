@@ -321,3 +321,18 @@ buglet-widget::part(trigger) {
   --line-height: 1.05;
   --tracking: -0.012em;
 }
+
+.type-sonner-title {
+  --min: 10;
+  --max: 12;
+  --weight: 600;
+  --line-height: 1.15;
+  --tracking: -0.005em;
+}
+
+.type-sonner-body {
+  --min: 8;
+  --max: 10;
+  --weight: 400;
+  --line-height: 1.35;
+}
