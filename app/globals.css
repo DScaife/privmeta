@@ -132,7 +132,7 @@ buglet-widget::part(trigger) {
   --toast-text: oklch(0.145 0 0);
   --toast-border: oklch(0.145 0 0);
   --toast-neutral: #ffffff;
-  --toast-info: #93c5fd;
+  --toast-info: #ffffff;
   --toast-success: #86efac;
   --toast-warning: #fcd34d;
   --toast-error: #fca5a5;

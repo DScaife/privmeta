@@ -14,7 +14,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           description: "type-fluid type-sonner-body -ml-6",
           icon: "invisible",
           actionButton:
-            "rounded-[var(--corner-radius)] border-2 border-[var(--toast-border)] bg-transparent hover:opacity-70 px-(--space-md) h-8",
+            "rounded-[var(--corner-radius)] border-2 border-forground bg-transparent hover:opacity-70 px-(--space-md) h-8",
           cancelButton:
             "rounded-[var(--corner-radius)] border-2 border-[var(--toast-border)] bg-transparent hover:opacity-70 px-(--space-md) h-8",
           closeButton: "rounded-[var(--corner-radius)] border-2 border-[var(--toast-border)] bg-transparent hover:opacity-70",

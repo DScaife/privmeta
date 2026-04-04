@@ -43,7 +43,7 @@ const showErrorToast = (type: ErrorType) => {
   const messages = {
     file_count: {
       title: "Too many files",
-      description: `You can only upload up to ${MAX_FILE_COUNT} files`,
+      description: `You can only upload up to ${MAX_FILE_COUNT} files.`,
     },
     unsupported_format: {
       title: "Unsupported file format",
@@ -51,15 +51,15 @@ const showErrorToast = (type: ErrorType) => {
     },
     file_too_large: {
       title: "File too large",
-      description: `Each file must be under ${MAX_FILE_SIZE_MB}MB`,
+      description: `Each file must be under ${MAX_FILE_SIZE_MB}MB.`,
     },
     general: {
       title: "Something went wrong",
-      description: "An error occurred while processing your files",
+      description: "An error occurred while processing your files.",
     },
     dropzone_error: {
       title: "Something went wrong",
-      description: "An error occurred while queuing your files",
+      description: "An error occurred while queuing your files.",
     },
   };
 
@@ -84,11 +84,13 @@ export default function Home() {
   const isLoadingUI = loading;
 
   useEffect(() => {
+    const devTimeouts: number[] = [];
+
     const infoTimeout = setTimeout(() => {
       toast.info("You can disable your internet", {
         id: "offline-mode",
         duration: 10000,
-        description: "Runs in your browser only. Files never leave your device",
+        description: "Runs in your browser only. Files never leave your device.",
         action: {
           label: "Got it",
           onClick: () => {},
@@ -97,9 +99,9 @@ export default function Home() {
     }, 2000);
 
     const bmcTimeout = setTimeout(() => {
-      toast("Like the app?", {
+      toast.info("Like the app?", {
         id: "support-bmc",
-        description: "Support this project on Buy Me a Coffee ☕",
+        description: "Support this project on Buy Me a Coffee.",
         duration: 10000,
         action: {
           label: "Support",
@@ -107,7 +109,6 @@ export default function Home() {
             window.open("https://buymeacoffee.com/privco", "_blank");
           },
         },
-        className: "bg-red-200",
       });
     }, 60000);
 
@@ -117,6 +118,7 @@ export default function Home() {
       clearTimeout(infoTimeout);
       clearTimeout(bmcTimeout);
       clearTimeout(loadingTimeout);
+      devTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
     };
   }, []);
 
