@@ -3,6 +3,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import { File, X, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import Typography from "./Typography";
 import { MAX_FILE_SIZE_BYTES, MAX_FILE_COUNT, ACCEPTED_FILE_TYPES } from "@/utils/constants";
 
 type FileStatus = "idle" | "processing" | "done" | "failed";
@@ -117,12 +118,17 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
         }}
       >
         <input ref={fileInputRef} type="file" multiple accept={acceptedMimeTypes.join(",")} onChange={handleChange} className="hidden" />
-        <div className="flex flex-col items-center gap-6 text-lg text-foreground">
+        <div className="flex flex-col items-center gap-6 text-foreground">
           <div className="flex flex-col items-center text-center leading-tight">
-            <p className="text-xl">Drag & drop files</p>
-            <p className="text-xl">
-              or <span className="text-2xl font-semibold hover:underline text-(--accent-primary)">click to browse</span>
-            </p>
+            <Typography as="p" variant="label" className="leading-tight">
+              Drag & drop files
+            </Typography>
+            <Typography as="p" variant="label" className="leading-tight">
+              or{" "}
+              <Typography as="span" variant="label" weight={600} className="hover:underline text-(--accent-primary)">
+                click to browse
+              </Typography>
+            </Typography>
           </div>
         </div>
         {fileStore.length > 0 && (
@@ -132,7 +138,9 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
               return (
                 <li key={index} className="truncate flex items-center gap-(--space-lg)">
                   <File className=" shrink-0" size={20} strokeWidth={2} />
-                  <p className="truncate flex-1">{file.name}</p>
+                  <Typography as="p" variant="bodySm" weight={500} muted className="truncate flex-1">
+                    {file.name}
+                  </Typography>
                   {status === "processing" && <Loader2 className="shrink-0 animate-spin text-muted-foreground" size={16} />}
                   {status === "done" && <CheckCircle2 className="shrink-0 text-green-500" size={16} />}
                   {status === "failed" && <XCircle className="shrink-0 text-red-500" size={16} />}
@@ -152,9 +160,9 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
             })}
           </ul>
         )}
-        <p className="absolute text-base text-muted-foreground right-(--space-xl) bottom-(--space-md)">
+        <Typography as="p" variant="bodySm" weight={500} muted className="absolute right-(--space-xl) bottom-(--space-md)">
           {`${fileStore.length}/${MAX_FILE_COUNT}`}
-        </p>
+        </Typography>
       </div>
     </div>
   );

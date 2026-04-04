@@ -277,6 +277,13 @@ buglet-widget::part(trigger) {
   --line-height: 1.5;
 }
 
+.type-body-sm {
+  --min: 10;
+  --max: 12;
+  --weight: 400;
+  --line-height: 1.5;
+}
+
 .type-label {
   --min: 12;
   --max: 14;
