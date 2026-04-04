@@ -94,7 +94,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   };
 
   return (
-    <div className="w-full bg-amber-800 flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
+    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
       {/* Back navigation */}
@@ -126,7 +126,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <div className="h-0.75 w-full bg-foreground" />
 
       {/* Article content */}
-      <article className="bg-teal-800 w-full prose prose-lg" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
+      <article className="w-full max-w-none prose prose-lg" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
     </div>
   );
 }
