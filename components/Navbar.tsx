@@ -30,9 +30,11 @@ const Navbar = () => {
     <header className="relative z-50">
       <nav className="h-40 flex flex-col sm:flex-row gap-(--space-lg) justify-center sm:justify-between items-start sm:items-center">
         <div className="flex justify-between items-center w-full">
-          <Typography as="h1" variant="h1" className="leading-none">
-            PrivMeta
-          </Typography>
+          <Link href="/" aria-label="Go to PrivMeta homepage">
+            <Typography as="h1" variant="h1" className="leading-none">
+              PrivMeta
+            </Typography>
+          </Link>
           <div className="flex gap-(--space-md) sm:hidden">
             <Tooltip>
               <TooltipTrigger asChild>
