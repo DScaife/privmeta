@@ -1,5 +1,6 @@
 import type { Viewport, Metadata } from "next";
 import Navbar from "@/components/Navbar";
+import SideNav from "@/components/SideNav";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -155,6 +156,7 @@ export default function RootLayout({
           <TooltipProvider>
             <div className="flex flex-col flex-1 items-center">
               <div className="max-w-(--max-content-width) flex flex-col flex-1 w-full h-full px-(--space-xl)">
+                <SideNav />
                 <Navbar />
                 <main className="flex-1">{children}</main>
                 <Toaster richColors />
