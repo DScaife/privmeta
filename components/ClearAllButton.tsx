@@ -1,14 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import Typography from "./Typography";
 
@@ -56,8 +49,11 @@ const ClearAllButton = ({ fileStore, setFileStore, processing }: ClearAllButtonP
             </Button>
             <Button
               variant="destructive"
-              className="type-fluid type-button border-2 border-foreground text-foreground"
-              onClick={() => { setFileStore([]); setOpen(false); }}
+              className="type-fluid type-button border-2 border-foreground text-white"
+              onClick={() => {
+                setFileStore([]);
+                setOpen(false);
+              }}
             >
               Clear all
             </Button>
