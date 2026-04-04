@@ -2,8 +2,8 @@ import Typography from "./Typography";
 
 const Footer = () => {
   return (
-    <footer className="flex items-center py-(--space-3xl)">
-      <div className="w-full flex flex-col gap-(--space-xl) sm:flex-row sm:justify-between sm:items-end">
+    <footer className="flex items-center xl:py-(--space-3xl) pt-(--space-3xl) pb-(--space-lg)">
+      <div className="w-full flex flex-col gap-(--space-lg) sm:flex-row sm:justify-between sm:items-end">
         <Typography variant="footer" muted>
           Built for everyday digital hygiene.
         </Typography>

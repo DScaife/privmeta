@@ -19,21 +19,51 @@ const SideNav = () => {
   };
 
   return (
-    <aside className="fixed flex flex-col items-start bottom-(--space-3xl) ml-(--max-content-width)">
-      <div className="pointer-events-auto w-fit flex flex-col items-start gap-(--space-lg)">
-        <Button
-          size="icon"
-          onClick={handleClick}
-          aria-label="Scroll to top"
-          className="rounded-(--corner-radius) border-2 border-foreground bg-background text-foreground hover:bg-foreground/10"
-        >
-          <ArrowUp className="size-5" />
-        </Button>
+    <>
+      <aside className="fixed flex-col items-start bottom-(--space-3xl) ml-(--max-content-width) hidden xl:flex">
+        <div className="pointer-events-auto w-fit flex flex-col items-start gap-(--space-lg)">
+          <Button
+            size="icon"
+            onClick={handleClick}
+            aria-label="Scroll to top"
+            className="rounded-(--corner-radius) border-2 border-foreground bg-background text-foreground hover:bg-foreground/10"
+          >
+            <ArrowUp className="size-5" />
+          </Button>
 
-        <nav className="flex flex-col items-start gap-(--space-md)">
-          <Typography as="span" variant="label">
-            PrivMeta
+          <nav className="flex flex-col items-start gap-(--space-md)">
+            <Typography as="span" variant="label">
+              PrivMeta
+            </Typography>
+            {sideNavLinks.map((link) => (
+              <Link key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground">
+                <Typography as="span" variant="sidenav">
+                  {link.label}
+                </Typography>
+              </Link>
+            ))}
+            <div className="flex gap-(--space-sm) items-baseline select-none cursor-default">
+              <Typography as="span" variant="legal" muted>
+                &copy; {new Date().getFullYear()}
+              </Typography>
+              <Typography as="span" variant="legal" muted>
+                All rights reserved
+              </Typography>
+            </div>
+          </nav>
+        </div>
+      </aside>
+
+      <div className="flex flex-col sm:flex-row gap-(--space-md) items-start sm:items-center justify-between xl:hidden pb-(--space-3xl)">
+        <div className="flex gap-(--space-sm) items-baseline select-none cursor-default">
+          <Typography as="span" variant="legal" muted>
+            &copy;{new Date().getFullYear()}
           </Typography>
+          <Typography as="span" variant="legal" muted>
+            All rights reserved
+          </Typography>
+        </div>
+        <div className="flex items-start gap-(--space-lg)">
           {sideNavLinks.map((link) => (
             <Link key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground">
               <Typography as="span" variant="sidenav">
@@ -41,17 +71,9 @@ const SideNav = () => {
               </Typography>
             </Link>
           ))}
-          <div className="flex gap-(--space-sm) items-baseline select-none cursor-default">
-            <Typography as="span" variant="legal" muted>
-              &copy; {new Date().getFullYear()}
-            </Typography>
-            <Typography as="span" variant="legal" muted>
-              All rights reserved
-            </Typography>
-          </div>
-        </nav>
+        </div>
       </div>
-    </aside>
+    </>
   );
 };
 

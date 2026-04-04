@@ -156,11 +156,11 @@ export default function RootLayout({
           <TooltipProvider>
             <div className="flex flex-col flex-1 items-center">
               <div className="max-w-(--max-content-width) flex flex-col flex-1 w-full h-full px-(--space-xl)">
-                <SideNav />
                 <Navbar />
                 <main className="flex-1">{children}</main>
                 <Toaster richColors />
                 <Footer />
+                <SideNav />
               </div>
             </div>
           </TooltipProvider>
