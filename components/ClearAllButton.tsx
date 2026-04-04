@@ -17,8 +17,7 @@ const ClearAllButton = ({ fileStore, setFileStore, processing }: ClearAllButtonP
   return (
     <>
       <Button
-        size="lg"
-        className="type-fluid type-button"
+        className="type-fluid type-button p-(--space-md) sm:p-(--space-lg) md:p-(--space-xl)"
         disabled={fileStore.length <= 0 || processing}
         variant="link"
         onClick={() => setOpen(true)}
@@ -27,7 +26,10 @@ const ClearAllButton = ({ fileStore, setFileStore, processing }: ClearAllButtonP
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent showCloseButton={false} className="border-2 border-foreground rounded-(--corner-radius) bg-background shadow-none p-(--space-xl) gap-(--space-lg)">
+        <DialogContent
+          showCloseButton={false}
+          className="border-2 border-foreground rounded-(--corner-radius) bg-background shadow-none p-(--space-xl) gap-(--space-lg)"
+        >
           <DialogHeader className="items-start text-left gap-(--space-sm)">
             <DialogTitle className="leading-none">
               <Typography as="span" variant="label" weight={600}>

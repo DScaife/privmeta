@@ -227,7 +227,7 @@ export default function Home() {
   }, [processing]);
 
   return (
-    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
+    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-md) sm:py-(--space-xl) md:py-(--space-2xl)">
       {isLoadingUI ? <HeroSkeleton /> : <Hero />}
       <div className="w-full flex flex-col gap-(--space-md) sm:gap-(--space-lg) md:gap-(--space-xl)">
         {isLoadingUI ? (
@@ -248,8 +248,7 @@ export default function Home() {
             <div className="w-full flex justify-end gap-(--space-md)">
               <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
               <Button
-                size="lg"
-                className="type-fluid type-button-lg"
+                className="type-fluid type-button-lg p-(--space-md) sm:p-(--space-lg) md:p-(--space-xl)"
                 disabled={fileStore.length <= 0 || processing}
                 onClick={handleMetadataRemoval}
               >
