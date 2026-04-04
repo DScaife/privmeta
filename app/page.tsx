@@ -1,25 +1,16 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import Dropzone from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import {
-  stripImageMetadata,
-  stripPdfMetadata,
-  stripDocxMetadata,
-  stripVideoMetadata,
-  stripAudioMetadata,
-  stripJpegMetadata,
-} from "@/utils/stripMetadata";
 import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import JSZip from "jszip";
-import Hero from "@/components/Hero";
 import ClearAllButton from "@/components/ClearAllButton";
-import DisableInternet from "@/components/DisableInternet";
 import ShareFunctions from "@/components/ShareFunctions";
+import Hero from "@/components/Hero";
+import DisableInternet from "@/components/DisableInternet";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
 
@@ -32,34 +23,37 @@ const renameWithSuffix = (file: File, suffix = "_cleaned"): string => {
 };
 
 const showErrorToast = (type: ErrorType) => {
-  const warnings: ErrorType[] = ["file_count", "unsupported_format", "file_too_large", "general", "dropzone_error"];
-
-  const messages = {
+  const messages: Record<ErrorType, { title: string; description: string; severity: "warning" | "error" }> = {
     file_count: {
       title: "Too many files",
-      description: `You can only upload up to ${MAX_FILE_COUNT} files`,
+      description: `You can only upload up to ${MAX_FILE_COUNT} files.`,
+      severity: "warning",
     },
     unsupported_format: {
       title: "Unsupported file format",
       description: `Supported file types: ${getFileExtensions()}`,
+      severity: "warning",
     },
     file_too_large: {
       title: "File too large",
-      description: `Each file must be under ${MAX_FILE_SIZE_MB}MB`,
+      description: `Each file must be under ${MAX_FILE_SIZE_MB}MB.`,
+      severity: "warning",
     },
     general: {
       title: "Something went wrong",
-      description: "An error occurred while processing your files",
+      description: "An error occurred while processing your files.",
+      severity: "error",
     },
     dropzone_error: {
-      title: "Something went wrong",
-      description: "An error occurred while queuing your files",
+      title: "Couldn't queue files",
+      description: "An error occurred while queuing your files.",
+      severity: "error",
     },
   };
 
-  const { title, description } = messages[type];
+  const { title, description, severity } = messages[type];
 
-  const show = warnings.includes(type) ? toast.warning : toast.error;
+  const show = severity === "warning" ? toast.warning : toast.error;
 
   show(title, {
     description,
@@ -74,14 +68,13 @@ export default function Home() {
   const [fileStore, setFileStore] = useState<File[]>([]);
   const [fileStatuses, setFileStatuses] = useState<Record<number, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const infoTimeout = setTimeout(() => {
-      toast.info("You can safely disable your internet", {
+      toast.info("You can disable your internet", {
         id: "offline-mode",
         duration: 10000,
-        description: "This app runs entirely in your browser and never uploads your files",
+        description: "Runs in your browser only. Files never leave your device.",
         action: {
           label: "Got it",
           onClick: () => {},
@@ -90,9 +83,9 @@ export default function Home() {
     }, 2000);
 
     const bmcTimeout = setTimeout(() => {
-      toast("Like the app?", {
+      toast.info("Like the app?", {
         id: "support-bmc",
-        description: "Support this project on Buy Me a Coffee ☕",
+        description: "Support this project on Buy Me a Coffee.",
         duration: 10000,
         action: {
           label: "Support",
@@ -103,12 +96,9 @@ export default function Home() {
       });
     }, 60000);
 
-    const loadingTimeout = setTimeout(() => setLoading(false), 1000);
-
     return () => {
       clearTimeout(infoTimeout);
       clearTimeout(bmcTimeout);
-      clearTimeout(loadingTimeout);
     };
   }, []);
 
@@ -143,6 +133,9 @@ export default function Home() {
     setFileStatuses({});
 
     await new Promise((res) => setTimeout(res, 1000));
+
+    const { stripImageMetadata, stripPdfMetadata, stripDocxMetadata, stripVideoMetadata, stripAudioMetadata, stripJpegMetadata } =
+      await import("@/utils/stripMetadata");
 
     try {
       const cleanedFiles: File[] = [];
@@ -221,41 +214,36 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = processing
-      ? "PrivMeta | Cleaning metadata..."
-      : "PrivMeta — Remove Metadata from Files Privately";
+    document.title = processing ? "PrivMeta | Cleaning metadata..." : "PrivMeta — Remove Metadata from Files Privately";
   }, [processing]);
 
   return (
-    <div className="w-full flex justify-center">
-        <div className="w-full max-w-[var(--max-content-width)] px-[var(--space-lg)] sm:px-[var(--space-xl)] flex flex-col gap-[var(--space-2xl)] h-full items-center py-[var(--space-2xl)]">
-          <Hero />
-          <Dropzone
-            loading={loading}
-            processing={processing}
-            fileStore={fileStore}
-            fileStatuses={fileStatuses}
-            onFilesAccepted={handleFilesAccepted}
-            onFileRemove={handleFileRemoved}
-            onError={(type: ErrorType) => showErrorToast(type)}
-          />
-          {loading ? (
-            <div className="w-full flex justify-end gap-[var(--space-md)]">
-              <Skeleton className="h-10 w-40" />
-              <Skeleton className="h-10 w-24" />
-            </div>
-          ) : (
-            <div className="w-full flex justify-end gap-[var(--space-md)]">
-              <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
-              <Button disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
-                {processing && <Loader2 className="animate-spin mr-2" />}
-                Remove metadata
-              </Button>
-            </div>
-          )}
-          <DisableInternet loading={loading} />
-          <ShareFunctions />
+    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-md) sm:py-(--space-xl) md:py-(--space-2xl)">
+      <Hero />
+      <div className="w-full flex flex-col gap-(--space-md) sm:gap-(--space-lg) md:gap-(--space-xl)">
+        <Dropzone
+          processing={processing}
+          fileStore={fileStore}
+          fileStatuses={fileStatuses}
+          onFilesAccepted={handleFilesAccepted}
+          onFileRemove={handleFileRemoved}
+          onError={(type: ErrorType) => showErrorToast(type)}
+        />
+        <div className="w-full flex justify-end gap-(--space-md)">
+          <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
+          <Button
+            className="type-fluid type-button-lg p-(--space-md) sm:p-(--space-lg) md:p-(--space-xl)"
+            disabled={fileStore.length <= 0 || processing}
+            onClick={handleMetadataRemoval}
+          >
+            {processing && <Loader2 className="animate-spin mr-2" />}
+            Remove metadata
+          </Button>
         </div>
       </div>
+      <DisableInternet />
+      <div className="h-0.75 w-full bg-foreground" />
+      <ShareFunctions />
+    </div>
   );
 }

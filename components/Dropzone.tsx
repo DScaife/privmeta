@@ -3,9 +3,8 @@
 import React, { useCallback, useRef, useState } from "react";
 import { File, X, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import Typography from "./Typography";
 import { MAX_FILE_SIZE_BYTES, MAX_FILE_COUNT, ACCEPTED_FILE_TYPES } from "@/utils/constants";
-import { getFileExtensions } from "@/utils/utils";
-import { Skeleton } from "./ui/skeleton";
 
 type FileStatus = "idle" | "processing" | "done" | "failed";
 
@@ -15,13 +14,12 @@ type DropzoneProps = {
   onFilesAccepted: (files: File[]) => void;
   onFileRemove: (index: number) => void;
   onError: (type: "unsupported_format" | "file_too_large" | "dropzone_error") => void;
-  loading: boolean;
   processing: boolean;
 };
 
 const acceptedMimeTypes = Object.keys(ACCEPTED_FILE_TYPES);
 
-export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onFileRemove, onError, loading, processing }: DropzoneProps) {
+export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onFileRemove, onError, processing }: DropzoneProps) {
   const [highlight, setHighlight] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -76,7 +74,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
           e.dataTransfer.clearData();
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         onError("dropzone_error");
       }
     },
@@ -88,7 +86,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
       try {
         if (e.target.files) handleFiles(e.target.files);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         onError("dropzone_error");
       }
     },
@@ -96,92 +94,76 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
   );
 
   return (
-    <>
-      {loading ? (
-        <div className="w-full">
-          <div className="relative flex flex-col items-center justify-center w-full min-h-96 gap-[var(--space-md)] border-3 border-dashed p-[var(--space-2xl)] rounded-xl border-muted-foreground/50">
-            <Skeleton className="h-16 w-16 rounded-md" />
-            <Skeleton className="h-5 w-1/4" />
-            <Skeleton className="h-4 w-1/6" />
-            <Skeleton className="h-4 w-1/2" />
-            <div className="absolute text-sm right-[var(--space-xl)] bottom-[var(--space-md)]">
-              <Skeleton className="h-4 w-10" />
-            </div>
+    <div className="w-full" aria-label="File dropzone">
+      <div
+        className={`relative flex flex-col items-center justify-center w-full min-h-72 sm:min-h-84 md:min-h-96 p-(--space-3xl) gap-(--space-lg) border-3 border-dashed rounded-(--corner-radius) transition-colors ${
+          highlight ? "border-(--accent-primary) bg-(--accent-secondary)" : "border-foreground"
+        } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+        onClick={() => {
+          if (!processing && fileInputRef.current) {
+            fileInputRef.current.click();
+          }
+        }}
+        onDragOver={(e) => {
+          if (!processing) {
+            e.preventDefault();
+            setHighlight(true);
+          }
+        }}
+        onDragLeave={() => {
+          if (!processing) setHighlight(false);
+        }}
+        onDrop={(e) => {
+          if (!processing) handleDrop(e);
+        }}
+      >
+        <input ref={fileInputRef} type="file" multiple accept={acceptedMimeTypes.join(",")} onChange={handleChange} className="hidden" />
+        <div className="flex flex-col items-center gap-6 text-foreground">
+          <div className="flex flex-col items-center text-center leading-tight">
+            <Typography as="p" variant="label" className="leading-tight">
+              Drag & drop files
+            </Typography>
+            <Typography as="p" variant="label" className="leading-tight">
+              or{" "}
+              <Typography as="span" variant="label" weight={600} className="hover:underline text-(--accent-primary)">
+                click to browse
+              </Typography>
+            </Typography>
           </div>
         </div>
-      ) : (
-        <div className="w-full" aria-label="File dropzone">
-          <div
-            className={`relative flex flex-col items-center justify-center w-full min-h-96 gap-[var(--space-lg)] border-3 border-dashed p-[var(--space-2xl)] rounded-xl transition-colors bg-muted/50 ${
-              highlight ? "border-[var(--accent-primary)] bg-[var(--accent-secondary)]" : "border-muted-foreground/70"
-            } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-            onClick={() => {
-              if (!processing && fileInputRef.current) {
-                fileInputRef.current.click();
-              }
-            }}
-            onDragOver={(e) => {
-              if (!processing) {
-                e.preventDefault();
-                setHighlight(true);
-              }
-            }}
-            onDragLeave={() => {
-              if (!processing) setHighlight(false);
-            }}
-            onDrop={(e) => {
-              if (!processing) handleDrop(e);
-            }}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept={acceptedMimeTypes.join(",")}
-              onChange={handleChange}
-              className="hidden"
-            />
-            <File size={64} strokeWidth={2} />
-            <div className="flex flex-col items-center text-lg">
-              <p>Drag & drop files</p>
-              <p>
-                or <span className="text-[var(--accent-primary)] font-bold hover:underline">click to browse</span>
-              </p>
-            </div>
-            <p className="text-sm text-muted-foreground text-center max-w-md">(Supported file types: {getFileExtensions()})</p>
-            {fileStore.length > 0 && (
-              <ul className="text-left text-sm font-bold text-muted-foreground">
-                {fileStore.map((file, index) => {
-                  const status = fileStatuses[index] ?? "idle";
-                  return (
-                    <li key={index} className="truncate flex items-center gap-[var(--space-sm)]">
-                      <File className="mr-[var(--space-sm)] shrink-0" size={20} strokeWidth={2} />
-                      <p className="truncate pr-[var(--space-md)]">{file.name}</p>
-                      {status === "processing" && <Loader2 className="shrink-0 animate-spin text-muted-foreground" size={16} />}
-                      {status === "done" && <CheckCircle2 className="shrink-0 text-green-500" size={16} />}
-                      {status === "failed" && <XCircle className="shrink-0 text-red-500" size={16} />}
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onFileRemove(index);
-                        }}
-                        variant="ghost"
-                        size="icon"
-                        disabled={processing}
-                      >
-                        <X />
-                      </Button>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-            <p className="absolute text-sm text-muted-foreground right-[var(--space-xl)] bottom-[var(--space-md)]">
-              {`${fileStore.length}/${MAX_FILE_COUNT}`}
-            </p>
-          </div>
-        </div>
-      )}
-    </>
+        {fileStore.length > 0 && (
+          <ul className="w-full max-w-lg flex flex-col gap-(--space-sm) text-left text-sm font-bold text-muted-foreground">
+            {fileStore.map((file, index) => {
+              const status = fileStatuses[index] ?? "idle";
+              return (
+                <li key={index} className="truncate flex items-center gap-(--space-lg)">
+                  <File className=" shrink-0" size={20} strokeWidth={2} />
+                  <Typography as="p" variant="bodySm" weight={500} muted className="truncate flex-1">
+                    {file.name}
+                  </Typography>
+                  {status === "processing" && <Loader2 className="shrink-0 size-5 animate-spin text-muted-foreground" />}
+                  {status === "done" && <CheckCircle2 className="shrink-0 size-5 text-green-500" />}
+                  {status === "failed" && <XCircle className="shrink-0 size-5 text-red-500" />}
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onFileRemove(index);
+                    }}
+                    variant="ghost"
+                    size="icon"
+                    disabled={processing}
+                  >
+                    <X />
+                  </Button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        <Typography as="p" variant="bodySm" weight={500} muted className="absolute right-(--space-xl) bottom-(--space-md)">
+          {`${fileStore.length}/${MAX_FILE_COUNT}`}
+        </Typography>
+      </div>
+    </div>
   );
 }

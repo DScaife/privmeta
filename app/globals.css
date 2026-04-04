@@ -64,11 +64,14 @@ buglet-widget::part(trigger) {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-roboto: var(--font-roboto);
+  --font-avenir: var(--font-avenir);
 }
 
 :root {
+  --fluid-screen-min: 42.8;
+  --fluid-screen-max: 128;
   --radius: 0.625rem;
+  --corner-radius: 4px;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -100,7 +103,21 @@ buglet-widget::part(trigger) {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --max-content-width: 1080px;
+  --max-content-min: 860;
+  --max-content-max: 1080;
+  --max-content-delta: calc(var(--max-content-max) - var(--max-content-min));
+  --max-content-width: clamp(
+    calc(var(--max-content-min) * 1px),
+    calc(
+      (var(--max-content-min) * 1px) +
+        (
+          (var(--max-content-delta) * 1px) *
+            ((100vw - (var(--fluid-screen-min) * 1rem)) / ((var(--fluid-screen-max) - var(--fluid-screen-min)) * 1rem))
+        )
+    ),
+    calc(var(--max-content-max) * 1px)
+  );
+  --share-width: calc(var(--spacing) * 52);
   --space-xs: 2px;
   --space-sm: 4px;
   --space-md: 8px;
@@ -108,9 +125,17 @@ buglet-widget::part(trigger) {
   --space-xl: 24px;
   --space-2xl: 32px;
   --space-3xl: 48px;
+  --space-4xl: 96px;
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
   --red: #e52828;
+  --toast-text: oklch(0.145 0 0);
+  --toast-border: oklch(0.145 0 0);
+  --toast-neutral: #ffffff;
+  --toast-info: #ffffff;
+  --toast-success: #86efac;
+  --toast-warning: #fcd34d;
+  --toast-error: #fca5a5;
 }
 
 .dark {
@@ -158,10 +183,6 @@ buglet-widget::part(trigger) {
   }
 }
 
-.article {
-  @apply max-w-3xl mx-auto px-4 flex flex-col text-[1.05rem] leading-relaxed tracking-normal;
-}
-
 .prose table {
   @apply w-full border-collapse my-6;
 }
@@ -189,4 +210,139 @@ buglet-widget::part(trigger) {
 
 .prose pre code {
   @apply bg-transparent text-inherit p-0;
+}
+
+.type-fluid {
+  --f-min-rem: calc(var(--min) * 0.1rem);
+  --f-max-rem: calc(var(--max) * 0.1rem);
+  --f-min: calc(var(--min) * 0.1);
+  --f-max: calc(var(--max) * 0.1);
+  --slope: calc((var(--f-max) - var(--f-min)) / (var(--fluid-screen-max) - var(--fluid-screen-min)));
+  --y-axis-intersection: calc((var(--fluid-screen-min) * -1) * var(--slope) + var(--f-min));
+  --preferred-value: calc((var(--y-axis-intersection) * 1rem) + (var(--slope) * 100vw));
+
+  font-size: clamp(var(--f-min-rem), var(--preferred-value), var(--f-max-rem));
+  font-variation-settings: "wght" var(--weight, 400);
+  font-weight: var(--weight, 400);
+  line-height: var(--line-height, 1.2);
+  letter-spacing: var(--tracking, 0);
+}
+
+.type-display {
+  --min: 32;
+  --max: 56;
+  --weight: 600;
+  --line-height: 1.05;
+  --tracking: -0.02em;
+}
+
+.type-hero {
+  --min: 12;
+  --max: 26;
+  --weight: 500;
+  --line-height: 1.15;
+  --tracking: -0.01em;
+}
+
+.type-h1 {
+  --min: 28;
+  --max: 44;
+  --weight: 600;
+  --line-height: 1.1;
+  --tracking: -0.015em;
+}
+
+.type-h2 {
+  --min: 22;
+  --max: 32;
+  --weight: 500;
+  --line-height: 1.15;
+}
+
+.type-body-lg {
+  --min: 18;
+  --max: 22;
+  --weight: 400;
+  --line-height: 1.45;
+}
+
+.type-body {
+  --min: 10;
+  --max: 16;
+  --weight: 400;
+  --line-height: 1.5;
+}
+
+.type-body-sm {
+  --min: 10;
+  --max: 12;
+  --weight: 400;
+  --line-height: 1.5;
+}
+
+.type-label {
+  --min: 10;
+  --max: 14;
+  --weight: 500;
+  --line-height: 1.35;
+}
+
+.type-footer {
+  --min: 10;
+  --max: 12;
+  --weight: 500;
+  --line-height: 1.35;
+}
+
+.type-sidenav {
+  --min: 8;
+  --max: 10;
+  --weight: 500;
+  --line-height: 1.35;
+}
+
+.type-legal {
+  --min: 6;
+  --max: 8;
+  --weight: 500;
+  --line-height: 1.35;
+}
+
+.type-button {
+  --min: 10;
+  --max: 12;
+  --weight: 500;
+  --line-height: 1.15;
+  --tracking: -0.005em;
+}
+
+.type-button-lg {
+  --min: 12;
+  --max: 14;
+  --weight: 550;
+  --line-height: 1.1;
+  --tracking: -0.01em;
+}
+
+.type-button-feature {
+  --min: 12;
+  --max: 16;
+  --weight: 600;
+  --line-height: 1.05;
+  --tracking: -0.012em;
+}
+
+.type-sonner-title {
+  --min: 10;
+  --max: 12;
+  --weight: 600;
+  --line-height: 1.15;
+  --tracking: -0.005em;
+}
+
+.type-sonner-body {
+  --min: 8;
+  --max: 10;
+  --weight: 400;
+  --line-height: 1.35;
 }

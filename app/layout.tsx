@@ -1,25 +1,42 @@
 import type { Viewport, Metadata } from "next";
 import Navbar from "@/components/Navbar";
+import SideNav from "@/components/SideNav";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const roboto = localFont({
-  variable: "--font-roboto",
+const avenirNext = localFont({
+  variable: "--font-avenir",
   display: "swap",
   src: [
     {
-      path: "../public/fonts/Roboto-Regular.woff2",
+      path: "../public/fonts/avenir-next-ultralight.woff2",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/avenir-next-regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../public/fonts/Roboto-Bold.woff2",
+      path: "../public/fonts/avenir-next-medium.woff2",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/avenir-next-demibold.woff2",
       weight: "600",
-      style: "bold",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/avenir-next-bold.woff2",
+      weight: "700",
+      style: "normal",
     },
   ],
 });
@@ -36,16 +53,20 @@ export const metadata: Metadata = {
     "PrivMeta is a free, privacy-first tool for removing metadata from images, PDFs, and documents. No uploads — everything happens locally in your browser.",
   keywords: [
     "remove metadata from image",
-    "remove metadata from video",
+    "remove metadata from photo",
     "remove metadata from pdf",
+    "remove metadata from video",
     "remove metadata from png",
-    "remove metadata from JPG",
-    "metadata remover",
+    "remove metadata from jpg",
     "remove EXIF data",
-    "remove image metadata",
+    "strip metadata online",
+    "metadata remover free",
+    "private metadata removal",
+    "remove metadata without uploading",
+    "what is metadata",
     "metadata login",
     "metadata account",
-    "what is metadata",
+    "AI metadata",
   ],
   robots: {
     index: true,
@@ -95,19 +116,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://www.privmeta.com/" />
-        <script
-          src="https://buglet.vercel.app/buglet.js"
-          data-position="left"
-          data-size="medium"
-          data-primary-color="#E52828"
-          data-secondary-color="#E52828"
-          data-arrow-color="white"
-          data-border-color=""
-          data-allowed-paths="/, /how-it-works"
-          data-config-id="eixyyn1xgjyKsuZti7J1"
-          defer
-        ></script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -122,7 +130,7 @@ export default function RootLayout({
               },
               image: "https://www.privmeta.com/og-image.png",
               description: "Remove metadata from files with PrivMeta, a secure, offline-first tool for privacy-conscious users.",
-              foundingDate: "2025",
+              foundingDate: "2025-01-01",
               applicationCategory: "WebApplication",
               operatingSystem: "All",
               creator: {
@@ -147,15 +155,21 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
       </head>
-      <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${roboto.variable} font-roboto`}>
+
+      <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${avenirNext.variable} font-avenir`}>
         <Analytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="flex flex-col flex-1">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Toaster richColors />
-            <Footer />
-          </div>
+          <TooltipProvider>
+            <div className="flex flex-col flex-1 items-center">
+              <div className="max-w-(--max-content-width) flex flex-col flex-1 w-full h-full px-(--space-xl)">
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Toaster richColors />
+                <Footer />
+                <SideNav />
+              </div>
+            </div>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

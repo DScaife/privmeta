@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "./ui/separator";
 import { Bookmark, Copy, Check, Coffee } from "lucide-react";
+import Typography from "./Typography";
 import Link from "next/link";
 
 const ShareFunctions = () => {
@@ -26,14 +26,16 @@ const ShareFunctions = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-[var(--space-lg)] py-[var(--space-lg)] px-[var(--space-xl)]">
+    <div className="w-full flex flex-col gap-(--space-2xl) text-lg">
       {/* Social sharing */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Sharing is caring</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="flex  flex-col sm:flex-row sm:items-center gap-6">
+        <Typography variant="label" className="w-(--share-width)">
+          Sharing is caring
+        </Typography>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-(--space-md)">
           <Button
-            variant="outline"
-            className="border-[var(--foreground)]"
+            size="lg"
+            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
             onClick={() => openShare(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -49,8 +51,8 @@ const ShareFunctions = () => {
             Facebook
           </Button>
           <Button
-            variant="outline"
-            className="border-[var(--foreground)]"
+            size="lg"
+            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
             onClick={() => openShare(`https://twitter.com/intent/tweet?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -66,8 +68,8 @@ const ShareFunctions = () => {
             Twitter
           </Button>
           <Button
-            variant="outline"
-            className="border-[var(--foreground)]"
+            size="lg"
+            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
             onClick={() => openShare(`https://www.reddit.com/submit?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-reddit" viewBox="0 0 16 16">
@@ -77,8 +79,8 @@ const ShareFunctions = () => {
             Reddit
           </Button>
           <Button
-            variant="outline"
-            className="border-[var(--foreground)]"
+            size="lg"
+            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
             onClick={() => openShare(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SHARE_URL)}`)}
           >
             <svg
@@ -96,38 +98,55 @@ const ShareFunctions = () => {
         </div>
       </div>
 
-      <Separator />
-
       {/* Bookmark */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Come back!</p>
-        <Button variant="outline" className="border-[var(--foreground)]" onClick={handleBookmark}>
-          <Bookmark />
+        <Typography variant="label" className="w-(--share-width)">
+          Come back!
+        </Typography>
+        <Button
+          size="lg"
+          className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
+          onClick={handleBookmark}
+        >
+          <Bookmark className="size-5" />
           Bookmark page
         </Button>
       </div>
 
-      <Separator />
-
       {/* Link */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Link to this tool</p>
-        <div className="relative w-full sm:max-w-sm">
-          <Input readOnly value={SHARE_URL} className="border-[var(--foreground)]" />
-          <Button onClick={handleCopy} className="absolute right-0 rounded-l-none">
-            {copied ? <Check /> : <Copy />}
-          </Button>
-        </div>
+        <Typography variant="label" className="w-(--share-width)">
+          Link to this tool
+        </Typography>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="group sm:w-1/2 sm:max-w-sm flex items-stretch rounded-(--corner-radius) border-2 border-foreground overflow-hidden bg-background text-left cursor-pointer"
+          aria-label="Copy link to this tool"
+        >
+          <Input
+            readOnly
+            value={SHARE_URL}
+            className="h-10 type-fluid type-button border-0 rounded-none pointer-events-none focus-visible:ring-0 focus-visible:border-0"
+          />
+          <span className="type-fluid type-button h-10 inline-flex items-center justify-center px-(--space-lg) border-l-2 border-foreground bg-background group-hover:bg-muted/50 transition-colors text-foreground">
+            {copied ? <Check className="size-5" /> : <Copy className="size-5" />}
+          </span>
+        </button>
       </div>
-
-      <Separator />
 
       {/* BMC */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <p className="w-36">Support this project</p>
+        <Typography variant="label" className="w-(--share-width)">
+          Support this project
+        </Typography>
         <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-          <Button variant="outline" aria-label="Support me on Buy Me a Coffee" className="border-[var(--foreground)]">
-            <Coffee />
+          <Button
+            size="lg"
+            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
+            aria-label="Support me on Buy Me a Coffee"
+          >
+            <Coffee className="size-5" />
             Buy me a coffee
           </Button>
         </Link>
