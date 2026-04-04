@@ -20,7 +20,7 @@ const SideNav = () => {
 
   return (
     <aside className="fixed flex flex-col items-start bottom-(--space-3xl) ml-(--max-content-width)">
-      <div className="pointer-events-auto w-fit flex flex-col items-start gap-(--space-md)">
+      <div className="pointer-events-auto w-fit flex flex-col items-start gap-(--space-lg)">
         <Button
           size="icon"
           variant="outline"
