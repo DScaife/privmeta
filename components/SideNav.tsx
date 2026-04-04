@@ -4,13 +4,27 @@ import { Button } from "./ui/button";
 import { ArrowUp } from "lucide-react";
 import Typography from "./Typography";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const sideNavLinks = [
+  { href: "/", label: "Home" },
   { href: "/how-it-works", label: "How it works" },
   { href: "/blog", label: "Blog" },
 ];
 
 const SideNav = () => {
+  const pathname = usePathname();
+
+  const getVisibleLinks = () => {
+    return sideNavLinks.filter((link) => {
+      if (link.href === "/") return pathname !== "/";
+      if (link.href === "/blog") return !pathname.startsWith("/blog");
+      return pathname !== link.href;
+    });
+  };
+
+  const visibleLinks = getVisibleLinks();
+
   const handleClick = () => {
     window.scrollTo({
       top: 0,
@@ -32,10 +46,7 @@ const SideNav = () => {
           </Button>
 
           <nav className="flex flex-col items-start gap-(--space-md)">
-            <Typography as="span" variant="label">
-              PrivMeta
-            </Typography>
-            {sideNavLinks.map((link) => (
+            {visibleLinks.map((link) => (
               <Link key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground">
                 <Typography as="span" variant="sidenav">
                   {link.label}
@@ -64,7 +75,7 @@ const SideNav = () => {
           </Typography>
         </div>
         <div className="flex items-start gap-(--space-lg)">
-          {sideNavLinks.map((link) => (
+          {visibleLinks.map((link) => (
             <Link key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground">
               <Typography as="span" variant="sidenav">
                 {link.label}
