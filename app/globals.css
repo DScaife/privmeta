@@ -241,8 +241,8 @@ buglet-widget::part(trigger) {
 }
 
 .type-hero {
-  --min: 18;
-  --max: 28;
+  --min: 16;
+  --max: 26;
   --weight: 500;
   --line-height: 1.15;
   --tracking: -0.01em;
@@ -259,7 +259,7 @@ buglet-widget::part(trigger) {
 .type-h2 {
   --min: 22;
   --max: 32;
-  --weight: 550;
+  --weight: 500;
   --line-height: 1.15;
 }
 

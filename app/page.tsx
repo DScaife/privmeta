@@ -237,7 +237,7 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
       {isLoadingUI ? <HeroSkeleton /> : <Hero />}
-      <div className="w-full flex flex-col gap-(--space-lg) sm:gap-(--space-xl) md:gap-(--space-2xl)">
+      <div className="w-full flex flex-col gap-(--space-md) sm:gap-(--space-lg) md:gap-(--space-xl)">
         {isLoadingUI ? (
           <>
             <DropzoneSkeleton />

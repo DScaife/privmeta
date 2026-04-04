@@ -118,7 +118,6 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
       >
         <input ref={fileInputRef} type="file" multiple accept={acceptedMimeTypes.join(",")} onChange={handleChange} className="hidden" />
         <div className="flex flex-col items-center gap-6 text-lg text-foreground">
-          <File className="size-12" strokeWidth={2} />
           <div className="flex flex-col items-center text-center leading-tight">
             <p className="text-xl">Drag & drop files</p>
             <p className="text-xl">
@@ -127,7 +126,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
           </div>
         </div>
         {fileStore.length > 0 && (
-          <ul className="w-full max-w-lg flex flex-col gap-(--space-md) text-left text-sm font-bold text-muted-foreground">
+          <ul className="w-full max-w-lg flex flex-col gap-(--space-sm) text-left text-sm font-bold text-muted-foreground">
             {fileStore.map((file, index) => {
               const status = fileStatuses[index] ?? "idle";
               return (

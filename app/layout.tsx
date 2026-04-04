@@ -114,18 +114,6 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href="https://www.privmeta.com/" />
         <script
-          src="https://buglet.vercel.app/buglet.js"
-          data-position="left"
-          data-size="medium"
-          data-primary-color="#E52828"
-          data-secondary-color="#E52828"
-          data-arrow-color="white"
-          data-border-color=""
-          data-allowed-paths="/, /how-it-works"
-          data-config-id="eixyyn1xgjyKsuZti7J1"
-          defer
-        ></script>
-        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
