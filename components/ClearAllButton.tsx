@@ -20,7 +20,7 @@ type ClearAllButtonProps = {
 const ClearAllButton = ({ fileStore, setFileStore, processing }: ClearAllButtonProps) => (
   <AlertDialog>
     <AlertDialogTrigger asChild>
-      <Button size="lg" className="text-lg" disabled={fileStore.length <= 0 || processing} variant="link">
+      <Button size="lg" className="type-fluid type-button-lg" disabled={fileStore.length <= 0 || processing} variant="link">
         Clear all
       </Button>
     </AlertDialogTrigger>

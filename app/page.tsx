@@ -225,7 +225,7 @@ export default function Home() {
   }, [processing]);
 
   return (
-    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-xl) sm:py-(--space-2xl) md:py-(--space-3xl)">
+    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
       <Hero />
       <div className="w-full flex flex-col gap-(--space-lg) sm:gap-(--space-xl) md:gap-(--space-2xl)">
         <Dropzone
@@ -245,7 +245,12 @@ export default function Home() {
         ) : (
           <div className="w-full flex justify-end gap-(--space-md)">
             <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
-            <Button size="lg" className="text-lg" disabled={fileStore.length <= 0 || processing} onClick={handleMetadataRemoval}>
+            <Button
+              size="lg"
+              className="type-fluid type-button-lg"
+              disabled={fileStore.length <= 0 || processing}
+              onClick={handleMetadataRemoval}
+            >
               {processing && <Loader2 className="animate-spin mr-2" />}
               Remove metadata
             </Button>

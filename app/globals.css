@@ -103,7 +103,7 @@ buglet-widget::part(trigger) {
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
   --max-content-width: 1080px;
-  --share-width: calc(var(--spacing) * 44);
+  --share-width: calc(var(--spacing) * 52);
   --space-xs: 2px;
   --space-sm: 4px;
   --space-md: 8px;
@@ -257,8 +257,32 @@ buglet-widget::part(trigger) {
 }
 
 .type-label {
-  --min: 14;
-  --max: 16;
+  --min: 12;
+  --max: 14;
   --weight: 500;
   --line-height: 1.35;
+}
+
+.type-button {
+  --min: 10;
+  --max: 12;
+  --weight: 500;
+  --line-height: 1.15;
+  --tracking: -0.005em;
+}
+
+.type-button-lg {
+  --min: 12;
+  --max: 14;
+  --weight: 550;
+  --line-height: 1.1;
+  --tracking: -0.01em;
+}
+
+.type-button-feature {
+  --min: 12;
+  --max: 16;
+  --weight: 600;
+  --line-height: 1.05;
+  --tracking: -0.012em;
 }
