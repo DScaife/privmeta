@@ -270,6 +270,20 @@ buglet-widget::part(trigger) {
   --line-height: 1.35;
 }
 
+.type-sidenav {
+  --min: 8;
+  --max: 10;
+  --weight: 500;
+  --line-height: 1.35;
+}
+
+.type-legal {
+  --min: 6;
+  --max: 8;
+  --weight: 500;
+  --line-height: 1.35;
+}
+
 .type-button {
   --min: 10;
   --max: 12;

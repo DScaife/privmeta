@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-type TypographyVariant = "display" | "hero" | "h1" | "h2" | "bodyLg" | "body" | "label" | "footer";
+type TypographyVariant = "display" | "hero" | "h1" | "h2" | "bodyLg" | "body" | "label" | "footer" | "sidenav" | "legal";
 
 type TypographyProps = {
   as?: React.ElementType;
@@ -21,6 +21,8 @@ const variantClasses: Record<TypographyVariant, string> = {
   body: "type-fluid type-body",
   label: "type-fluid type-label",
   footer: "type-fluid type-footer",
+  sidenav: "type-fluid type-sidenav",
+  legal: "type-fluid type-legal",
 };
 
 const Typography = ({ as: Comp = "p", variant = "body", className, children, weight, muted = false }: TypographyProps) => {

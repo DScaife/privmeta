@@ -2,6 +2,13 @@
 
 import { Button } from "./ui/button";
 import { ArrowUp } from "lucide-react";
+import Typography from "./Typography";
+import Link from "next/link";
+
+const sideNavLinks = [
+  { href: "/how-it-works", label: "How it works" },
+  { href: "/blog", label: "Blog" },
+];
 
 const SideNav = () => {
   const handleClick = () => {
@@ -10,49 +17,42 @@ const SideNav = () => {
       behavior: "smooth", // or "auto" for instant
     });
   };
-  return (
-    <div className="fixed flex flex-col items-start bottom-(--space-lg) ml-(--max-content-width)">
-      <Button size="icon" variant="outline" onClick={handleClick}>
-        <ArrowUp />
-      </Button>
-      <div className="-ml-4 flex flex-col items-start">
-        <Button
-          onClick={() => {}}
-          variant="link"
-          className="text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"
-        >
-          How it works
-        </Button>
-        <Button
-          onClick={() => {}}
-          variant="link"
-          className="text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"
-        >
-          Blog
-        </Button>
-        <div className="">
-          <Button
-            onClick={() => {}}
-            variant="link"
-            className="text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Terms of Service
-          </Button>
-          <Button
-            onClick={() => {}}
-            variant="link"
-            className="text-xs font-normal text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Privacy Policy
-          </Button>
-        </div>
-      </div>
 
-      <span className="flex gap-(--space-md) items-baseline pt-2 select-none cursor-default text-xs">
-        <p>&copy; {new Date().getFullYear()}</p>
-        <p>All rights reserved</p>
-      </span>
-    </div>
+  return (
+    <aside className="fixed flex flex-col items-start bottom-(--space-3xl) ml-(--max-content-width)">
+      <div className="pointer-events-auto w-fit flex flex-col items-start gap-(--space-md)">
+        <Button
+          size="icon"
+          variant="outline"
+          onClick={handleClick}
+          aria-label="Scroll to top"
+          className="border-foreground/30 hover:bg-muted/60"
+        >
+          <ArrowUp className="size-5" />
+        </Button>
+
+        <nav className="flex flex-col items-start gap-(--space-md)">
+          <Typography as="span" variant="label">
+            PrivMeta
+          </Typography>
+          {sideNavLinks.map((link) => (
+            <Link key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground">
+              <Typography as="span" variant="sidenav">
+                {link.label}
+              </Typography>
+            </Link>
+          ))}
+          <div className="flex gap-(--space-sm) items-baseline select-none cursor-default">
+            <Typography as="span" variant="legal" muted>
+              &copy; {new Date().getFullYear()}
+            </Typography>
+            <Typography as="span" variant="legal" muted>
+              All rights reserved
+            </Typography>
+          </div>
+        </nav>
+      </div>
+    </aside>
   );
 };
 
