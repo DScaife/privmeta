@@ -141,9 +141,9 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
                   <Typography as="p" variant="bodySm" weight={500} muted className="truncate flex-1">
                     {file.name}
                   </Typography>
-                  {status === "processing" && <Loader2 className="shrink-0 animate-spin text-muted-foreground" size={16} />}
-                  {status === "done" && <CheckCircle2 className="shrink-0 text-green-500" size={16} />}
-                  {status === "failed" && <XCircle className="shrink-0 text-red-500" size={16} />}
+                  {status === "processing" && <Loader2 className="shrink-0 size-5 animate-spin text-muted-foreground" />}
+                  {status === "done" && <CheckCircle2 className="shrink-0 size-5 text-green-500" />}
+                  {status === "failed" && <XCircle className="shrink-0 size-5 text-red-500" />}
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();

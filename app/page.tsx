@@ -2,14 +2,6 @@
 import { Button } from "@/components/ui/button";
 import Dropzone from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import {
-  stripImageMetadata,
-  stripPdfMetadata,
-  stripDocxMetadata,
-  stripVideoMetadata,
-  stripAudioMetadata,
-  stripJpegMetadata,
-} from "@/utils/stripMetadata";
 import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
@@ -150,6 +142,9 @@ export default function Home() {
     setFileStatuses({});
 
     await new Promise((res) => setTimeout(res, 1000));
+
+    const { stripImageMetadata, stripPdfMetadata, stripDocxMetadata, stripVideoMetadata, stripAudioMetadata, stripJpegMetadata } =
+      await import("@/utils/stripMetadata");
 
     try {
       const cleanedFiles: File[] = [];
