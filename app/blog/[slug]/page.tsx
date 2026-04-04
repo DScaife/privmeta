@@ -5,9 +5,16 @@ import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import html from "remark-html";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Typography from "@/components/Typography";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 type BlogPost = {
   slug: string;
@@ -93,18 +100,41 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.privmeta.com/" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.privmeta.com/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: url },
+    ],
+  };
+
   return (
     <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      {/* Back navigation */}
-      <Link
-        href="/blog"
-        className="type-fluid type-label text-muted-foreground hover:text-foreground transition-colors flex items-center gap-(--space-sm) w-fit"
-      >
-        <ArrowLeft size={14} />
-        Blog
-      </Link>
+      {/* Breadcrumb navigation */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/blog">Blog</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{post.title}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       {/* Post header */}
       <div className="flex flex-col gap-(--space-md)">

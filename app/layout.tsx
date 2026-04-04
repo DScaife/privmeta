@@ -53,16 +53,20 @@ export const metadata: Metadata = {
     "PrivMeta is a free, privacy-first tool for removing metadata from images, PDFs, and documents. No uploads — everything happens locally in your browser.",
   keywords: [
     "remove metadata from image",
-    "remove metadata from video",
+    "remove metadata from photo",
     "remove metadata from pdf",
+    "remove metadata from video",
     "remove metadata from png",
-    "remove metadata from JPG",
-    "metadata remover",
+    "remove metadata from jpg",
     "remove EXIF data",
-    "remove image metadata",
+    "strip metadata online",
+    "metadata remover free",
+    "private metadata removal",
+    "remove metadata without uploading",
+    "what is metadata",
     "metadata login",
     "metadata account",
-    "what is metadata",
+    "AI metadata",
   ],
   robots: {
     index: true,
@@ -112,7 +116,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="canonical" href="https://www.privmeta.com/" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -127,7 +130,7 @@ export default function RootLayout({
               },
               image: "https://www.privmeta.com/og-image.png",
               description: "Remove metadata from files with PrivMeta, a secure, offline-first tool for privacy-conscious users.",
-              foundingDate: "2025",
+              foundingDate: "2025-01-01",
               applicationCategory: "WebApplication",
               operatingSystem: "All",
               creator: {

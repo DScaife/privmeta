@@ -83,7 +83,7 @@ export default function Home() {
   const [fileStore, setFileStore] = useState<File[]>([]);
   const [fileStatuses, setFileStatuses] = useState<Record<number, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading] = useState<boolean>(false);
   const isLoadingUI = loading;
 
   useEffect(() => {
@@ -113,12 +113,9 @@ export default function Home() {
       });
     }, 60000);
 
-    const loadingTimeout = setTimeout(() => setLoading(false), 1000);
-
     return () => {
       clearTimeout(infoTimeout);
       clearTimeout(bmcTimeout);
-      clearTimeout(loadingTimeout);
     };
   }, []);
 
