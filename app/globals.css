@@ -102,7 +102,20 @@ buglet-widget::part(trigger) {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --max-content-width: 1080px;
+  --max-content-min: 860;
+  --max-content-max: 1080;
+  --max-content-delta: calc(var(--max-content-max) - var(--max-content-min));
+  --max-content-width: clamp(
+    calc(var(--max-content-min) * 1px),
+    calc(
+      (var(--max-content-min) * 1px) +
+        (
+          (var(--max-content-delta) * 1px) *
+            ((100vw - (var(--fluid-screen-min) * 1rem)) / ((var(--fluid-screen-max) - var(--fluid-screen-min)) * 1rem))
+        )
+    ),
+    calc(var(--max-content-max) * 1px)
+  );
   --share-width: calc(var(--spacing) * 52);
   --space-xs: 2px;
   --space-sm: 4px;
