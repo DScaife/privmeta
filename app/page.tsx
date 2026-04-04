@@ -11,13 +11,6 @@ import ClearAllButton from "@/components/ClearAllButton";
 import ShareFunctions from "@/components/ShareFunctions";
 import Hero from "@/components/Hero";
 import DisableInternet from "@/components/DisableInternet";
-import {
-  HeroSkeleton,
-  DropzoneSkeleton,
-  InlineActionsSkeleton,
-  DisableInternetSkeleton,
-  ShareFunctionsSkeleton,
-} from "@/components/loading/UnifiedSkeletons";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
 
@@ -75,8 +68,6 @@ export default function Home() {
   const [fileStore, setFileStore] = useState<File[]>([]);
   const [fileStatuses, setFileStatuses] = useState<Record<number, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
-  const [loading] = useState<boolean>(false);
-  const isLoadingUI = loading;
 
   useEffect(() => {
     const infoTimeout = setTimeout(() => {
@@ -228,40 +219,31 @@ export default function Home() {
 
   return (
     <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-md) sm:py-(--space-xl) md:py-(--space-2xl)">
-      {isLoadingUI ? <HeroSkeleton /> : <Hero />}
+      <Hero />
       <div className="w-full flex flex-col gap-(--space-md) sm:gap-(--space-lg) md:gap-(--space-xl)">
-        {isLoadingUI ? (
-          <>
-            <DropzoneSkeleton />
-            <InlineActionsSkeleton />
-          </>
-        ) : (
-          <>
-            <Dropzone
-              processing={processing}
-              fileStore={fileStore}
-              fileStatuses={fileStatuses}
-              onFilesAccepted={handleFilesAccepted}
-              onFileRemove={handleFileRemoved}
-              onError={(type: ErrorType) => showErrorToast(type)}
-            />
-            <div className="w-full flex justify-end gap-(--space-md)">
-              <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
-              <Button
-                className="type-fluid type-button-lg p-(--space-md) sm:p-(--space-lg) md:p-(--space-xl)"
-                disabled={fileStore.length <= 0 || processing}
-                onClick={handleMetadataRemoval}
-              >
-                {processing && <Loader2 className="animate-spin mr-2" />}
-                Remove metadata
-              </Button>
-            </div>
-          </>
-        )}
+        <Dropzone
+          processing={processing}
+          fileStore={fileStore}
+          fileStatuses={fileStatuses}
+          onFilesAccepted={handleFilesAccepted}
+          onFileRemove={handleFileRemoved}
+          onError={(type: ErrorType) => showErrorToast(type)}
+        />
+        <div className="w-full flex justify-end gap-(--space-md)">
+          <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
+          <Button
+            className="type-fluid type-button-lg p-(--space-md) sm:p-(--space-lg) md:p-(--space-xl)"
+            disabled={fileStore.length <= 0 || processing}
+            onClick={handleMetadataRemoval}
+          >
+            {processing && <Loader2 className="animate-spin mr-2" />}
+            Remove metadata
+          </Button>
+        </div>
       </div>
-      {isLoadingUI ? <DisableInternetSkeleton /> : <DisableInternet />}
+      <DisableInternet />
       <div className="h-0.75 w-full bg-foreground" />
-      {isLoadingUI ? <ShareFunctionsSkeleton /> : <ShareFunctions />}
+      <ShareFunctions />
     </div>
   );
 }

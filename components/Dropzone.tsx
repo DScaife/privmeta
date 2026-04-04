@@ -74,7 +74,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
           e.dataTransfer.clearData();
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         onError("dropzone_error");
       }
     },
@@ -86,7 +86,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
       try {
         if (e.target.files) handleFiles(e.target.files);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         onError("dropzone_error");
       }
     },
