@@ -129,6 +129,13 @@ buglet-widget::part(trigger) {
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
   --red: #e52828;
+  --toast-text: oklch(0.145 0 0);
+  --toast-border: oklch(0.145 0 0);
+  --toast-neutral: #ffffff;
+  --toast-info: #93c5fd;
+  --toast-success: #86efac;
+  --toast-warning: #fcd34d;
+  --toast-error: #fca5a5;
 }
 
 .dark {

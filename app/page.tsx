@@ -85,10 +85,10 @@ export default function Home() {
 
   useEffect(() => {
     const infoTimeout = setTimeout(() => {
-      toast.info("You can safely disable your internet", {
+      toast.info("You can disable your internet", {
         id: "offline-mode",
         duration: 10000,
-        description: "This app runs entirely in your browser and never uploads your files",
+        description: "Runs in your browser only. Files never leave your device",
         action: {
           label: "Got it",
           onClick: () => {},
@@ -107,6 +107,7 @@ export default function Home() {
             window.open("https://buymeacoffee.com/privco", "_blank");
           },
         },
+        className: "bg-red-200",
       });
     }, 60000);
 
