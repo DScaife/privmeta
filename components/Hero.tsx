@@ -1,10 +1,12 @@
+import Typography from "./Typography";
+
 const Hero = () => {
   return (
     <section className="w-full">
-      <p className="text-3xl leading-tight tracking-tight">
+      <Typography variant="hero">
         This app removes hidden metadata directly in your browser, so your files stay on your device and you can practice good digital
         hygiene.
-      </p>
+      </Typography>
     </section>
   );
 };

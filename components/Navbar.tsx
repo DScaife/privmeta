@@ -4,13 +4,16 @@ import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Code, Heart } from "lucide-react";
 import Link from "next/link";
+import Typography from "./Typography";
 
 const Navbar = () => {
   return (
     <header className="relative z-50">
       <nav className="h-40 flex flex-col sm:flex-row gap-(--space-lg) justify-center sm:justify-between items-start sm:items-center">
         <div className="flex justify-between items-center w-full">
-          <h1 className="text-5xl font-semibold">PrivMeta</h1>
+          <Typography as="h1" variant="h1" className="leading-none">
+            PrivMeta
+          </Typography>
           <div className="flex gap-(--space-md) sm:hidden">
             <Tooltip>
               <TooltipTrigger asChild>

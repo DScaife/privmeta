@@ -68,6 +68,8 @@ buglet-widget::part(trigger) {
 }
 
 :root {
+  --fluid-screen-min: 42.8;
+  --fluid-screen-max: 128;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -191,4 +193,72 @@ buglet-widget::part(trigger) {
 
 .prose pre code {
   @apply bg-transparent text-inherit p-0;
+}
+
+.type-fluid {
+  --f-min-rem: calc(var(--min) * 0.1rem);
+  --f-max-rem: calc(var(--max) * 0.1rem);
+  --f-min: calc(var(--min) * 0.1);
+  --f-max: calc(var(--max) * 0.1);
+  --slope: calc((var(--f-max) - var(--f-min)) / (var(--fluid-screen-max) - var(--fluid-screen-min)));
+  --y-axis-intersection: calc((var(--fluid-screen-min) * -1) * var(--slope) + var(--f-min));
+  --preferred-value: calc((var(--y-axis-intersection) * 1rem) + (var(--slope) * 100vw));
+
+  font-size: clamp(var(--f-min-rem), var(--preferred-value), var(--f-max-rem));
+  font-variation-settings: "wght" var(--weight, 400);
+  font-weight: var(--weight, 400);
+  line-height: var(--line-height, 1.2);
+  letter-spacing: var(--tracking, 0);
+}
+
+.type-display {
+  --min: 32;
+  --max: 56;
+  --weight: 600;
+  --line-height: 1.05;
+  --tracking: -0.02em;
+}
+
+.type-hero {
+  --min: 20;
+  --max: 32;
+  --weight: 500;
+  --line-height: 1.15;
+  --tracking: -0.01em;
+}
+
+.type-h1 {
+  --min: 28;
+  --max: 44;
+  --weight: 600;
+  --line-height: 1.1;
+  --tracking: -0.015em;
+}
+
+.type-h2 {
+  --min: 22;
+  --max: 32;
+  --weight: 550;
+  --line-height: 1.15;
+}
+
+.type-body-lg {
+  --min: 18;
+  --max: 22;
+  --weight: 400;
+  --line-height: 1.45;
+}
+
+.type-body {
+  --min: 16;
+  --max: 18;
+  --weight: 400;
+  --line-height: 1.5;
+}
+
+.type-label {
+  --min: 14;
+  --max: 16;
+  --weight: 500;
+  --line-height: 1.35;
 }
