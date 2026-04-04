@@ -94,76 +94,69 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
 
   return (
     <div className="w-full" aria-label="File dropzone">
-          <div
-            className={`relative flex flex-col items-center justify-center w-full min-h-96 p-(--space-3xl) gap-(--space-lg) border-3 border-dashed rounded-md transition-colors ${
-              highlight ? "border-(--accent-primary) bg-(--accent-secondary)" : "border-foreground"
-            } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-            onClick={() => {
-              if (!processing && fileInputRef.current) {
-                fileInputRef.current.click();
-              }
-            }}
-            onDragOver={(e) => {
-              if (!processing) {
-                e.preventDefault();
-                setHighlight(true);
-              }
-            }}
-            onDragLeave={() => {
-              if (!processing) setHighlight(false);
-            }}
-            onDrop={(e) => {
-              if (!processing) handleDrop(e);
-            }}
-          >
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              accept={acceptedMimeTypes.join(",")}
-              onChange={handleChange}
-              className="hidden"
-            />
-            <div className="flex flex-col items-center gap-6 text-lg text-foreground">
-              <File className="size-12" strokeWidth={2} />
-              <div className="flex flex-col items-center text-center leading-tight">
-                <p className="text-xl">Drag & drop files</p>
-                <p className="text-xl">
-                  or <span className="text-2xl font-semibold hover:underline text-(--accent-primary)">click to browse</span>
-                </p>
-              </div>
-            </div>
-            {fileStore.length > 0 && (
-              <ul className="w-full max-w-lg flex flex-col gap-(--space-md) text-left text-sm font-bold text-muted-foreground">
-                {fileStore.map((file, index) => {
-                  const status = fileStatuses[index] ?? "idle";
-                  return (
-                    <li key={index} className="truncate flex items-center gap-(--space-lg)">
-                      <File className=" shrink-0" size={20} strokeWidth={2} />
-                      <p className="truncate flex-1">{file.name}</p>
-                      {status === "processing" && <Loader2 className="shrink-0 animate-spin text-muted-foreground" size={16} />}
-                      {status === "done" && <CheckCircle2 className="shrink-0 text-green-500" size={16} />}
-                      {status === "failed" && <XCircle className="shrink-0 text-red-500" size={16} />}
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onFileRemove(index);
-                        }}
-                        variant="ghost"
-                        size="icon"
-                        disabled={processing}
-                      >
-                        <X />
-                      </Button>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-            <p className="absolute text-base text-muted-foreground right-(--space-xl) bottom-(--space-md)">
-              {`${fileStore.length}/${MAX_FILE_COUNT}`}
+      <div
+        className={`relative flex flex-col items-center justify-center w-full min-h-96 p-(--space-3xl) gap-(--space-lg) border-3 border-dashed rounded-md transition-colors ${
+          highlight ? "border-(--accent-primary) bg-(--accent-secondary)" : "border-foreground"
+        } ${processing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+        onClick={() => {
+          if (!processing && fileInputRef.current) {
+            fileInputRef.current.click();
+          }
+        }}
+        onDragOver={(e) => {
+          if (!processing) {
+            e.preventDefault();
+            setHighlight(true);
+          }
+        }}
+        onDragLeave={() => {
+          if (!processing) setHighlight(false);
+        }}
+        onDrop={(e) => {
+          if (!processing) handleDrop(e);
+        }}
+      >
+        <input ref={fileInputRef} type="file" multiple accept={acceptedMimeTypes.join(",")} onChange={handleChange} className="hidden" />
+        <div className="flex flex-col items-center gap-6 text-lg text-foreground">
+          <File className="size-12" strokeWidth={2} />
+          <div className="flex flex-col items-center text-center leading-tight">
+            <p className="text-xl">Drag & drop files</p>
+            <p className="text-xl">
+              or <span className="text-2xl font-semibold hover:underline text-(--accent-primary)">click to browse</span>
             </p>
           </div>
+        </div>
+        {fileStore.length > 0 && (
+          <ul className="w-full max-w-lg flex flex-col gap-(--space-md) text-left text-sm font-bold text-muted-foreground">
+            {fileStore.map((file, index) => {
+              const status = fileStatuses[index] ?? "idle";
+              return (
+                <li key={index} className="truncate flex items-center gap-(--space-lg)">
+                  <File className=" shrink-0" size={20} strokeWidth={2} />
+                  <p className="truncate flex-1">{file.name}</p>
+                  {status === "processing" && <Loader2 className="shrink-0 animate-spin text-muted-foreground" size={16} />}
+                  {status === "done" && <CheckCircle2 className="shrink-0 text-green-500" size={16} />}
+                  {status === "failed" && <XCircle className="shrink-0 text-red-500" size={16} />}
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onFileRemove(index);
+                    }}
+                    variant="ghost"
+                    size="icon"
+                    disabled={processing}
+                  >
+                    <X />
+                  </Button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        <p className="absolute text-base text-muted-foreground right-(--space-xl) bottom-(--space-md)">
+          {`${fileStore.length}/${MAX_FILE_COUNT}`}
+        </p>
+      </div>
     </div>
   );
 }
