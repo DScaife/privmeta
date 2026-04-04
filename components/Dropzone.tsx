@@ -4,7 +4,6 @@ import React, { useCallback, useRef, useState } from "react";
 import { File, X, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { MAX_FILE_SIZE_BYTES, MAX_FILE_COUNT, ACCEPTED_FILE_TYPES } from "@/utils/constants";
-import { Skeleton } from "./ui/skeleton";
 
 type FileStatus = "idle" | "processing" | "done" | "failed";
 
@@ -14,13 +13,12 @@ type DropzoneProps = {
   onFilesAccepted: (files: File[]) => void;
   onFileRemove: (index: number) => void;
   onError: (type: "unsupported_format" | "file_too_large" | "dropzone_error") => void;
-  loading: boolean;
   processing: boolean;
 };
 
 const acceptedMimeTypes = Object.keys(ACCEPTED_FILE_TYPES);
 
-export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onFileRemove, onError, loading, processing }: DropzoneProps) {
+export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onFileRemove, onError, processing }: DropzoneProps) {
   const [highlight, setHighlight] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -95,21 +93,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
   );
 
   return (
-    <>
-      {loading ? (
-        <div className="w-full">
-          <div className="relative flex flex-col items-center justify-center w-full min-h-96 gap-(--space-md) border-3 border-dashed p-(--space-2xl) rounded-xl border-muted-foreground/50">
-            <Skeleton className="h-16 w-16 rounded-md" />
-            <Skeleton className="h-5 w-1/4" />
-            <Skeleton className="h-4 w-1/6" />
-            <Skeleton className="h-4 w-1/2" />
-            <div className="absolute text-sm right-(--space-xl) bottom-(--space-md)">
-              <Skeleton className="h-4 w-10" />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="w-full" aria-label="File dropzone">
+    <div className="w-full" aria-label="File dropzone">
           <div
             className={`relative flex flex-col items-center justify-center w-full min-h-96 p-(--space-3xl) gap-(--space-lg) border-3 border-dashed rounded-md transition-colors ${
               highlight ? "border-(--accent-primary) bg-(--accent-secondary)" : "border-foreground"
@@ -180,8 +164,6 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
               {`${fileStore.length}/${MAX_FILE_COUNT}`}
             </p>
           </div>
-        </div>
-      )}
-    </>
+    </div>
   );
 }
