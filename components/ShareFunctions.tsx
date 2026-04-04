@@ -28,8 +28,8 @@ const ShareFunctions = () => {
   return (
     <div className="w-full flex flex-col gap-(--space-2xl) text-lg">
       {/* Social sharing */}
-      <div className="flex  flex-col sm:flex-row sm:items-center gap-6">
-        <Typography variant="label" className="w-(--share-width)">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md)">
+        <Typography variant="label" className="w-44 lg:w-(--share-width)">
           Sharing is caring
         </Typography>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-(--space-md)">
@@ -99,8 +99,8 @@ const ShareFunctions = () => {
       </div>
 
       {/* Bookmark */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <Typography variant="label" className="w-(--share-width)">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md)">
+        <Typography variant="label" className="w-44 lg:w-(--share-width)">
           Come back!
         </Typography>
         <Button
@@ -114,8 +114,8 @@ const ShareFunctions = () => {
       </div>
 
       {/* Link */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <Typography variant="label" className="w-(--share-width)">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md)">
+        <Typography variant="label" className="w-44 lg:w-(--share-width)">
           Link to this tool
         </Typography>
         <button
@@ -136,8 +136,8 @@ const ShareFunctions = () => {
       </div>
 
       {/* BMC */}
-      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-        <Typography variant="label" className="w-(--share-width)">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md)">
+        <Typography variant="label" className="w-44 lg:w-(--share-width)">
           Support this project
         </Typography>
         <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">

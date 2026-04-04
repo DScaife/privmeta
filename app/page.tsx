@@ -220,7 +220,7 @@ export default function Home() {
   return (
     <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-md) sm:py-(--space-xl) md:py-(--space-2xl)">
       <Hero />
-      <div className="w-full flex flex-col gap-(--space-md) sm:gap-(--space-lg) md:gap-(--space-xl)">
+      <div className="w-full flex flex-col gap-(--space-lg) sm:gap-(--space-xl) md:gap-(--space-xl)">
         <Dropzone
           processing={processing}
           fileStore={fileStore}

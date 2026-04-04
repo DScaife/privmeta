@@ -200,6 +200,10 @@ buglet-widget::part(trigger) {
   @apply mt-2 text-foreground;
 }
 
+.prose h2 {
+  @apply mt-16;
+}
+
 .prose :not(pre) > code {
   @apply bg-foreground text-background px-1.5 py-0.5 rounded;
 }
