@@ -119,7 +119,7 @@ const ShareFunctions = () => {
           Link to this tool
         </Typography>
         <div className="relative w-full sm:max-w-sm">
-          <Input readOnly value={SHARE_URL} className="h-10 text-base border-2 border-foreground" />
+          <Input readOnly value={SHARE_URL} className="h-10 type-fluid type-button border-2 border-foreground" />
           <Button
             size="lg"
             onClick={handleCopy}
