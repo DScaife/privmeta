@@ -118,16 +118,21 @@ const ShareFunctions = () => {
         <Typography variant="label" className="w-(--share-width)">
           Link to this tool
         </Typography>
-        <div className="relative w-full sm:max-w-sm">
-          <Input readOnly value={SHARE_URL} className="h-10 type-fluid type-button border-2 border-foreground" />
-          <Button
-            size="lg"
-            onClick={handleCopy}
-            className="type-fluid type-button absolute right-0 rounded-l-none bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
-          >
-            {copied ? <Check /> : <Copy />}
-          </Button>
-        </div>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="w-full sm:max-w-sm flex items-stretch rounded-md border-2 border-foreground overflow-hidden bg-background text-left cursor-pointer"
+          aria-label="Copy link to this tool"
+        >
+          <Input
+            readOnly
+            value={SHARE_URL}
+            className="h-10 flex-1 type-fluid type-button border-0 rounded-none pointer-events-none focus-visible:ring-0 focus-visible:border-0"
+          />
+          <span className="type-fluid type-button h-10 inline-flex items-center justify-center px-(--space-lg) border-l-2 border-foreground bg-background hover:bg-muted/50 text-foreground">
+            {copied ? <Check className="size-5" /> : <Copy className="size-5" />}
+          </span>
+        </button>
       </div>
 
       {/* BMC */}
