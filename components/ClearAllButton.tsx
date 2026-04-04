@@ -27,7 +27,7 @@ const ClearAllButton = ({ fileStore, setFileStore, processing }: ClearAllButtonP
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="border-2 border-foreground rounded-(--corner-radius) bg-background shadow-none p-(--space-xl) gap-(--space-lg)">
+        <DialogContent showCloseButton={false} className="border-2 border-foreground rounded-(--corner-radius) bg-background shadow-none p-(--space-xl) gap-(--space-lg)">
           <DialogHeader className="items-start text-left gap-(--space-sm)">
             <DialogTitle className="leading-none">
               <Typography as="span" variant="label" weight={600}>
