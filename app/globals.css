@@ -233,8 +233,8 @@ buglet-widget::part(trigger) {
 }
 
 .type-hero {
-  --min: 20;
-  --max: 32;
+  --min: 18;
+  --max: 28;
   --weight: 500;
   --line-height: 1.15;
   --tracking: -0.01em;
@@ -263,8 +263,8 @@ buglet-widget::part(trigger) {
 }
 
 .type-body {
-  --min: 16;
-  --max: 18;
+  --min: 14;
+  --max: 16;
   --weight: 400;
   --line-height: 1.5;
 }
