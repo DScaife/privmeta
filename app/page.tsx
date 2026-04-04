@@ -38,34 +38,37 @@ const renameWithSuffix = (file: File, suffix = "_cleaned"): string => {
 };
 
 const showErrorToast = (type: ErrorType) => {
-  const warnings: ErrorType[] = ["file_count", "unsupported_format", "file_too_large", "general", "dropzone_error"];
-
-  const messages = {
+  const messages: Record<ErrorType, { title: string; description: string; severity: "warning" | "error" }> = {
     file_count: {
       title: "Too many files",
       description: `You can only upload up to ${MAX_FILE_COUNT} files.`,
+      severity: "warning",
     },
     unsupported_format: {
       title: "Unsupported file format",
       description: `Supported file types: ${getFileExtensions()}`,
+      severity: "warning",
     },
     file_too_large: {
       title: "File too large",
       description: `Each file must be under ${MAX_FILE_SIZE_MB}MB.`,
+      severity: "warning",
     },
     general: {
       title: "Something went wrong",
       description: "An error occurred while processing your files.",
+      severity: "error",
     },
     dropzone_error: {
-      title: "Something went wrong",
+      title: "Couldn't queue files",
       description: "An error occurred while queuing your files.",
+      severity: "error",
     },
   };
 
-  const { title, description } = messages[type];
+  const { title, description, severity } = messages[type];
 
-  const show = warnings.includes(type) ? toast.warning : toast.error;
+  const show = severity === "warning" ? toast.warning : toast.error;
 
   show(title, {
     description,
@@ -84,8 +87,6 @@ export default function Home() {
   const isLoadingUI = loading;
 
   useEffect(() => {
-    const devTimeouts: number[] = [];
-
     const infoTimeout = setTimeout(() => {
       toast.info("You can disable your internet", {
         id: "offline-mode",
@@ -118,7 +119,6 @@ export default function Home() {
       clearTimeout(infoTimeout);
       clearTimeout(bmcTimeout);
       clearTimeout(loadingTimeout);
-      devTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
     };
   }, []);
 
