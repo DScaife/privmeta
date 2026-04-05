@@ -126,7 +126,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
             <Typography as="p" variant="label" className="leading-tight">
               or{" "}
               <Typography as="span" variant="label" weight={600} className="hover:underline text-(--accent-primary)">
-                click to browse
+                click to add
               </Typography>
             </Typography>
           </div>
