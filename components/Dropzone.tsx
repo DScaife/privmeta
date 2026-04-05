@@ -18,6 +18,9 @@ type DropzoneProps = {
 };
 
 const acceptedMimeTypes = Object.keys(ACCEPTED_FILE_TYPES);
+const acceptedExtensionsLabel = Array.from(new Set(Object.values(ACCEPTED_FILE_TYPES).flat()))
+  .map((ext) => ext.replace(/^\./, "").toUpperCase())
+  .join(" · ");
 
 export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onFileRemove, onError, processing }: DropzoneProps) {
   const [highlight, setHighlight] = useState(false);
@@ -94,7 +97,10 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
   );
 
   return (
-    <div className="w-full" aria-label="File dropzone">
+    <div className="w-full flex flex-col gap-(--space-md)" aria-label="File dropzone">
+      <Typography variant="legal" muted className="hidden sm:inline">
+        {acceptedExtensionsLabel}
+      </Typography>
       <div
         className={`relative flex flex-col items-center justify-center w-full min-h-72 sm:min-h-84 md:min-h-96 p-(--space-3xl) gap-(--space-lg) border-3 border-dashed rounded-sm transition-colors ${
           highlight ? "border-(--accent-primary) bg-(--accent-secondary)" : "border-foreground"
