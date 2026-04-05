@@ -143,7 +143,7 @@ const ShareFunctions = () => {
         <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
           <Button
             size="lg"
-            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
+            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2 w-full"
             aria-label="Support me on Buy Me a Coffee"
           >
             <Coffee className="size-5" />

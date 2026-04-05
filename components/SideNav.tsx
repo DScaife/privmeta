@@ -57,7 +57,7 @@ const SideNav = () => {
               <Typography as="span" variant="legal" muted>
                 &copy; {new Date().getFullYear()}
               </Typography>
-              <Typography as="span" variant="legal" muted>
+              <Typography as="span" variant="legal" muted className="pt-(--space-sm)">
                 All rights reserved
               </Typography>
             </div>
@@ -65,7 +65,7 @@ const SideNav = () => {
         </div>
       </aside>
 
-      <div className="flex flex-col sm:flex-row gap-(--space-md) items-start sm:items-center justify-between xl:hidden pb-(--space-2xl)">
+      <div className="flex flex-col-reverse sm:flex-row gap-(--space-lg) items-start sm:items-center justify-between xl:hidden pb-(--space-2xl)">
         <div className="flex gap-(--space-sm) items-baseline select-none cursor-default">
           <Typography as="span" variant="legal" muted>
             &copy;{new Date().getFullYear()}
