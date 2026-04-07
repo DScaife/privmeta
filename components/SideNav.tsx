@@ -47,7 +47,7 @@ const SideNav = () => {
 
           <nav className="flex flex-col items-start gap-(--space-md)">
             {visibleLinks.map((link) => (
-              <Link key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground">
+              <Link key={link.label} href={link.href} prefetch={false} className="text-muted-foreground hover:text-foreground">
                 <Typography as="span" variant="sidenav">
                   {link.label}
                 </Typography>
@@ -76,7 +76,7 @@ const SideNav = () => {
         </div>
         <div className="flex items-start gap-(--space-lg)">
           {visibleLinks.map((link) => (
-            <Link key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground">
+            <Link key={link.label} href={link.href} prefetch={false} className="text-muted-foreground hover:text-foreground">
               <Typography as="span" variant="sidenav">
                 {link.label}
               </Typography>
