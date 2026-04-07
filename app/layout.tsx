@@ -14,11 +14,6 @@ const avenirNext = localFont({
   display: "swap",
   src: [
     {
-      path: "../public/fonts/avenir-next-ultralight.woff2",
-      weight: "200",
-      style: "normal",
-    },
-    {
       path: "../public/fonts/avenir-next-regular.woff2",
       weight: "400",
       style: "normal",
@@ -31,11 +26,6 @@ const avenirNext = localFont({
     {
       path: "../public/fonts/avenir-next-demibold.woff2",
       weight: "600",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/avenir-next-bold.woff2",
-      weight: "700",
       style: "normal",
     },
   ],
