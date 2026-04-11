@@ -64,7 +64,7 @@ export default function BlogPage() {
   const sortedPosts = [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
+    <div className="w-full flex flex-col gap-(--fluid-xl-3xl) py-(--fluid-lg-3xl)">
       <section className="w-full">
         <Typography as="h1" variant="hero">
           Guides on metadata, privacy, and digital hygiene.
@@ -75,7 +75,7 @@ export default function BlogPage() {
         {sortedPosts.map((post, index) => (
           <React.Fragment key={post.slug}>
             {index > 0 && <Divider />}
-            <Link href={`/blog/${post.slug}`} className="group flex flex-col gap-(--space-lg) py-(--space-xl) sm:py-(--space-2xl)">
+            <Link href={`/blog/${post.slug}`} className="group flex flex-col gap-(--space-lg) py-(--fluid-xl-2xl)">
               <Typography variant="label" muted>
                 {post.date
                   ? new Date(post.date).toLocaleDateString("en-US", {
