@@ -77,7 +77,7 @@ const Divider = () => <div className="h-0.75 w-full bg-foreground" />;
 
 export default function HowItWorks() {
   return (
-    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) py-(--space-lg) sm:py-(--space-3xl) md:py-(--space-2xl)">
+    <div className="w-full flex flex-col gap-(--fluid-xl-3xl) py-(--fluid-lg-3xl)">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       {/* Hero */}
@@ -92,7 +92,7 @@ export default function HowItWorks() {
         <Typography as="h2" variant="label" muted>
           How it works
         </Typography>
-        <div className="flex flex-col gap-(--space-2xl) sm:gap-(--space-3xl)">
+        <div className="flex flex-col gap-(--fluid-2xl-3xl)">
           <div className="flex gap-(--space-xl)">
             <Typography variant="label" muted className="shrink-0 w-8">
               01

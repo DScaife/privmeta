@@ -17,7 +17,7 @@ const ClearAllButton = ({ fileStore, setFileStore, processing }: ClearAllButtonP
   return (
     <>
       <Button
-        className="type-fluid type-button p-(--space-md) sm:p-(--space-lg) md:p-(--space-xl)"
+        className="type-fluid type-button p-(--fluid-md-xl)"
         disabled={fileStore.length <= 0 || processing}
         variant="link"
         onClick={() => setOpen(true)}

@@ -218,9 +218,9 @@ export default function Home() {
   }, [processing]);
 
   return (
-    <div className="w-full flex flex-col gap-(--space-xl) sm:gap-(--space-2xl) md:gap-(--space-3xl) h-full items-center py-(--space-md) sm:py-(--space-xl) md:py-(--space-2xl)">
+    <div className="w-full flex flex-col gap-(--fluid-xl-3xl) h-full items-center py-(--fluid-md-2xl)">
       <Hero />
-      <div className="w-full flex flex-col gap-(--space-lg) sm:gap-(--space-xl) md:gap-(--space-xl)">
+      <div className="w-full flex flex-col gap-(--fluid-lg-xl)">
         <Dropzone
           processing={processing}
           fileStore={fileStore}
@@ -232,7 +232,7 @@ export default function Home() {
         <div className="w-full flex justify-end gap-(--space-md)">
           <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
           <Button
-            className="type-fluid type-button-lg p-(--space-md) sm:p-(--space-lg) md:p-(--space-xl)"
+            className="type-fluid type-button-lg p-(--fluid-md-xl)"
             disabled={fileStore.length <= 0 || processing}
             onClick={handleMetadataRemoval}
           >
