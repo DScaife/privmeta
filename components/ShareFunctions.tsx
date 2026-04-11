@@ -26,7 +26,7 @@ const ShareFunctions = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-(--space-2xl) text-lg">
+    <div className="w-full flex flex-col gap-(--fluid-lg-2xl) text-lg">
       {/* Social sharing */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md)">
         <Typography variant="label" className="w-44 lg:w-(--share-width)">
