@@ -125,15 +125,19 @@ buglet-widget::part(trigger) {
   --space-3xl: 48px;
   --space-4xl: 96px;
 
-  /* Fluid spacing tokens */
-  --space-fluid-xs: clamp(0.25rem, 0.15rem + 0.35vw, 0.5rem); /* 4px → 8px */
-  --space-fluid-sm: clamp(0.5rem, 0.4rem + 0.35vw, 0.75rem); /* 8px → 12px */
-  --space-fluid-md: clamp(0.75rem, 0.65rem + 0.35vw, 1rem); /* 12px → 16px */
-  --space-fluid-lg: clamp(1rem, 0.8rem + 0.7vw, 1.5rem); /* 16px → 24px */
-  --space-fluid-xl: clamp(1.5rem, 1.25rem + 0.9vw, 2rem); /* 24px → 32px */
-  --space-fluid-2xl: clamp(2rem, 1.65rem + 1.2vw, 2.75rem); /* 32px → 44px */
-  --space-fluid-3xl: clamp(2.5rem, 2rem + 1.6vw, 3.5rem); /* 40px → 56px */
-  --space-fluid-4xl: clamp(3rem, 2.2rem + 2.6vw, 4.5rem); /* 48px → 72px */
+  /*
+    Fluid spacing tokens tuned to existing responsive patterns in the app.
+    These intentionally span wider ranges so one token can replace common
+    triplets like md->lg->xl or xl->2xl->3xl.
+  */
+  --space-fluid-xs: clamp(var(--space-xs), calc(var(--space-xs) + 0.55vw), var(--space-md));
+  --space-fluid-sm: clamp(var(--space-sm), calc(var(--space-sm) + 0.75vw), var(--space-lg));
+  --space-fluid-md: clamp(var(--space-md), calc(var(--space-md) + 1vw), var(--space-xl));
+  --space-fluid-lg: clamp(var(--space-lg), calc(var(--space-lg) + 1.35vw), var(--space-2xl));
+  --space-fluid-xl: clamp(var(--space-xl), calc(var(--space-xl) + 1.85vw), var(--space-3xl));
+  --space-fluid-2xl: clamp(var(--space-2xl), calc(var(--space-2xl) + 2.35vw), var(--space-4xl));
+  --space-fluid-3xl: clamp(var(--space-3xl), calc(var(--space-3xl) + 1.75vw), var(--space-4xl));
+  --space-fluid-4xl: clamp(var(--space-4xl), calc(var(--space-4xl) + 0.5vw), var(--space-4xl));
 
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
