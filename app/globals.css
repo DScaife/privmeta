@@ -125,19 +125,43 @@ buglet-widget::part(trigger) {
   --space-3xl: 48px;
   --space-4xl: 96px;
 
-  /*
-    Fluid spacing tokens tuned to existing responsive patterns in the app.
-    These intentionally span wider ranges so one token can replace common
-    triplets like md->lg->xl or xl->2xl->3xl.
-  */
-  --space-fluid-xs: clamp(var(--space-xs), calc(var(--space-xs) + 0.55vw), var(--space-md));
-  --space-fluid-sm: clamp(var(--space-sm), calc(var(--space-sm) + 0.75vw), var(--space-lg));
-  --space-fluid-md: clamp(var(--space-md), calc(var(--space-md) + 1vw), var(--space-xl));
-  --space-fluid-lg: clamp(var(--space-lg), calc(var(--space-lg) + 1.35vw), var(--space-2xl));
-  --space-fluid-xl: clamp(var(--space-xl), calc(var(--space-xl) + 1.85vw), var(--space-3xl));
-  --space-fluid-2xl: clamp(var(--space-2xl), calc(var(--space-2xl) + 2.35vw), var(--space-4xl));
-  --space-fluid-3xl: clamp(var(--space-3xl), calc(var(--space-3xl) + 1.75vw), var(--space-4xl));
-  --space-fluid-4xl: clamp(var(--space-4xl), calc(var(--space-4xl) + 0.5vw), var(--space-4xl));
+  /* Fluid spacing tokens — all 28 combinations of the 8 space tokens.
+     Linearly interpolates from min to max across 684.8px → 2048px viewport range.
+     Usage: gap-(--fluid-xl-3xl)  py-(--fluid-md-2xl)  m-(--fluid-lg-4xl) etc. */
+  --fluid-xs-sm:   clamp(var(--space-xs),  calc(var(--space-xs)  + (var(--space-sm)  - var(--space-xs))  * ((100vw - 684.8px) / 1363.2px)), var(--space-sm));
+  --fluid-xs-md:   clamp(var(--space-xs),  calc(var(--space-xs)  + (var(--space-md)  - var(--space-xs))  * ((100vw - 684.8px) / 1363.2px)), var(--space-md));
+  --fluid-xs-lg:   clamp(var(--space-xs),  calc(var(--space-xs)  + (var(--space-lg)  - var(--space-xs))  * ((100vw - 684.8px) / 1363.2px)), var(--space-lg));
+  --fluid-xs-xl:   clamp(var(--space-xs),  calc(var(--space-xs)  + (var(--space-xl)  - var(--space-xs))  * ((100vw - 684.8px) / 1363.2px)), var(--space-xl));
+  --fluid-xs-2xl:  clamp(var(--space-xs),  calc(var(--space-xs)  + (var(--space-2xl) - var(--space-xs))  * ((100vw - 684.8px) / 1363.2px)), var(--space-2xl));
+  --fluid-xs-3xl:  clamp(var(--space-xs),  calc(var(--space-xs)  + (var(--space-3xl) - var(--space-xs))  * ((100vw - 684.8px) / 1363.2px)), var(--space-3xl));
+  --fluid-xs-4xl:  clamp(var(--space-xs),  calc(var(--space-xs)  + (var(--space-4xl) - var(--space-xs))  * ((100vw - 684.8px) / 1363.2px)), var(--space-4xl));
+
+  --fluid-sm-md:   clamp(var(--space-sm),  calc(var(--space-sm)  + (var(--space-md)  - var(--space-sm))  * ((100vw - 684.8px) / 1363.2px)), var(--space-md));
+  --fluid-sm-lg:   clamp(var(--space-sm),  calc(var(--space-sm)  + (var(--space-lg)  - var(--space-sm))  * ((100vw - 684.8px) / 1363.2px)), var(--space-lg));
+  --fluid-sm-xl:   clamp(var(--space-sm),  calc(var(--space-sm)  + (var(--space-xl)  - var(--space-sm))  * ((100vw - 684.8px) / 1363.2px)), var(--space-xl));
+  --fluid-sm-2xl:  clamp(var(--space-sm),  calc(var(--space-sm)  + (var(--space-2xl) - var(--space-sm))  * ((100vw - 684.8px) / 1363.2px)), var(--space-2xl));
+  --fluid-sm-3xl:  clamp(var(--space-sm),  calc(var(--space-sm)  + (var(--space-3xl) - var(--space-sm))  * ((100vw - 684.8px) / 1363.2px)), var(--space-3xl));
+  --fluid-sm-4xl:  clamp(var(--space-sm),  calc(var(--space-sm)  + (var(--space-4xl) - var(--space-sm))  * ((100vw - 684.8px) / 1363.2px)), var(--space-4xl));
+
+  --fluid-md-lg:   clamp(var(--space-md),  calc(var(--space-md)  + (var(--space-lg)  - var(--space-md))  * ((100vw - 684.8px) / 1363.2px)), var(--space-lg));
+  --fluid-md-xl:   clamp(var(--space-md),  calc(var(--space-md)  + (var(--space-xl)  - var(--space-md))  * ((100vw - 684.8px) / 1363.2px)), var(--space-xl));
+  --fluid-md-2xl:  clamp(var(--space-md),  calc(var(--space-md)  + (var(--space-2xl) - var(--space-md))  * ((100vw - 684.8px) / 1363.2px)), var(--space-2xl));
+  --fluid-md-3xl:  clamp(var(--space-md),  calc(var(--space-md)  + (var(--space-3xl) - var(--space-md))  * ((100vw - 684.8px) / 1363.2px)), var(--space-3xl));
+  --fluid-md-4xl:  clamp(var(--space-md),  calc(var(--space-md)  + (var(--space-4xl) - var(--space-md))  * ((100vw - 684.8px) / 1363.2px)), var(--space-4xl));
+
+  --fluid-lg-xl:   clamp(var(--space-lg),  calc(var(--space-lg)  + (var(--space-xl)  - var(--space-lg))  * ((100vw - 684.8px) / 1363.2px)), var(--space-xl));
+  --fluid-lg-2xl:  clamp(var(--space-lg),  calc(var(--space-lg)  + (var(--space-2xl) - var(--space-lg))  * ((100vw - 684.8px) / 1363.2px)), var(--space-2xl));
+  --fluid-lg-3xl:  clamp(var(--space-lg),  calc(var(--space-lg)  + (var(--space-3xl) - var(--space-lg))  * ((100vw - 684.8px) / 1363.2px)), var(--space-3xl));
+  --fluid-lg-4xl:  clamp(var(--space-lg),  calc(var(--space-lg)  + (var(--space-4xl) - var(--space-lg))  * ((100vw - 684.8px) / 1363.2px)), var(--space-4xl));
+
+  --fluid-xl-2xl:  clamp(var(--space-xl),  calc(var(--space-xl)  + (var(--space-2xl) - var(--space-xl))  * ((100vw - 684.8px) / 1363.2px)), var(--space-2xl));
+  --fluid-xl-3xl:  clamp(var(--space-xl),  calc(var(--space-xl)  + (var(--space-3xl) - var(--space-xl))  * ((100vw - 684.8px) / 1363.2px)), var(--space-3xl));
+  --fluid-xl-4xl:  clamp(var(--space-xl),  calc(var(--space-xl)  + (var(--space-4xl) - var(--space-xl))  * ((100vw - 684.8px) / 1363.2px)), var(--space-4xl));
+
+  --fluid-2xl-3xl: clamp(var(--space-2xl), calc(var(--space-2xl) + (var(--space-3xl) - var(--space-2xl)) * ((100vw - 684.8px) / 1363.2px)), var(--space-3xl));
+  --fluid-2xl-4xl: clamp(var(--space-2xl), calc(var(--space-2xl) + (var(--space-4xl) - var(--space-2xl)) * ((100vw - 684.8px) / 1363.2px)), var(--space-4xl));
+
+  --fluid-3xl-4xl: clamp(var(--space-3xl), calc(var(--space-3xl) + (var(--space-4xl) - var(--space-3xl)) * ((100vw - 684.8px) / 1363.2px)), var(--space-4xl));
 
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
