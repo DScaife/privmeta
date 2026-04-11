@@ -124,6 +124,17 @@ buglet-widget::part(trigger) {
   --space-2xl: 32px;
   --space-3xl: 48px;
   --space-4xl: 96px;
+
+  /* Fluid spacing tokens */
+  --space-fluid-xs: clamp(0.25rem, 0.15rem + 0.35vw, 0.5rem); /* 4px → 8px */
+  --space-fluid-sm: clamp(0.5rem, 0.4rem + 0.35vw, 0.75rem); /* 8px → 12px */
+  --space-fluid-md: clamp(0.75rem, 0.65rem + 0.35vw, 1rem); /* 12px → 16px */
+  --space-fluid-lg: clamp(1rem, 0.8rem + 0.7vw, 1.5rem); /* 16px → 24px */
+  --space-fluid-xl: clamp(1.5rem, 1.25rem + 0.9vw, 2rem); /* 24px → 32px */
+  --space-fluid-2xl: clamp(2rem, 1.65rem + 1.2vw, 2.75rem); /* 32px → 44px */
+  --space-fluid-3xl: clamp(2.5rem, 2rem + 1.6vw, 3.5rem); /* 40px → 56px */
+  --space-fluid-4xl: clamp(3rem, 2.2rem + 2.6vw, 4.5rem); /* 48px → 72px */
+
   --accent-primary: #0973dc;
   --accent-secondary: #f0f8ff;
   --red: #e52828;
