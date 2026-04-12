@@ -77,8 +77,8 @@ buglet-widget::part(trigger) {
   --fluid-vp-range: calc(var(--fluid-vp-max) - var(--fluid-vp-min)); /* 1363.2px */
   --radius: 0.625rem;
   --corner-radius: 4px;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.9702 0 0);
+  --foreground: oklch(0.1776 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);

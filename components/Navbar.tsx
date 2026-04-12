@@ -54,7 +54,7 @@ const Navbar = () => {
           <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
             <Button
               aria-label="Support PrivMeta on Buy Me a Coffee"
-              className="w-52 sm:w-56 md:w-64 p-(--space-xl) type-fluid type-button-feature text-foreground bg-background dark:text-background dark:bg-foreground dark:border-background hover:bg-muted dark:hover:bg-foreground/80 border-2 border-foreground"
+              className="w-52 sm:w-56 md:w-64 p-(--space-xl) type-fluid type-button-feature text-foreground bg-white dark:bg-foreground dark:border-background hover:bg-muted dark:hover:bg-foreground/80 border-2 border-foreground"
             >
               <BMC />
             </Button>
