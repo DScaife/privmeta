@@ -1,6 +1,6 @@
 ---
-title: "The Hidden Data You Share Every Time You Upload a File to an AI Tool"
-description: "When you upload photos or documents to AI tools like ChatGPT or Gemini, the metadata travels with them. Here's what gets shared and how to stop it."
+title: "Remove Metadata Before Uploading to AI Tools"
+description: "AI tools like ChatGPT and Gemini receive the hidden metadata embedded in your files. Remove it in your browser before uploading — no sign-up needed. Try it free."
 date: "2026-03-15"
 ---
 
@@ -47,6 +47,8 @@ The metadata in your files adds another layer of information on top of what you'
 The straightforward fix is to remove the metadata from a file before uploading it to any AI service. What the tool needs to do its job is the content — the text, the image, the audio. It doesn't need to know who created the file, when, or where.
 
 This is exactly what PrivMeta is designed for. You drop your files in, the metadata is stripped locally in your browser, and you download a clean version. Nothing is uploaded anywhere — the entire process happens on your device.
+
+PrivMeta supports all the formats you're likely to upload to an AI tool: images ([JPEG, PNG, WEBP](/blog/remove-metadata-from-photo-guide)), [Word documents](/blog/remove-metadata-from-word-document), [PDFs](/blog/remove-metadata-from-pdf-guide), and [audio files](/blog/remove-metadata-from-audio-files).
 
 That clean file is then what you send to the AI tool.
 

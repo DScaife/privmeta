@@ -37,11 +37,11 @@ Open Source Intelligence (OSINT) analysts use publicly available information to 
 
 1. **Regularly clean files** before sharing online:
 
-   - Remove EXIF data from photos
-   - Strip document author information
-   - Clear editing history from PDFs
+   - [Remove EXIF data from photos](/blog/remove-metadata-from-photo-guide) — GPS coordinates, camera model, timestamps
+   - [Strip author information from Word documents](/blog/remove-metadata-from-word-document) — name, edit history, company
+   - [Clear metadata from PDFs](/blog/remove-metadata-from-pdf-guide) — author, creator app, modification dates
 
-   You can clean this metadata using tools like PrivMeta that process files locally without uploading.
+   You can clean all of these using [PrivMeta](/) — processes files locally in your browser, nothing uploaded.
 
 2. **Metadata Auditing**:
    - Monthly reviews of your digital footprint

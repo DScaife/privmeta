@@ -1,10 +1,10 @@
 ---
-title: "Remove Metadata from Photo: How to Delete EXIF Data Safely"
-description: "Metadata hidden inside your photos can reveal more than you expect — from camera details to GPS location. Learning how to remove metadata from photo files is essential if you care about privacy, security, or simply keeping your images clean."
+title: "How to Remove Metadata from Photos — Free & In-Browser"
+description: "Remove EXIF data from JPG, PNG, and WEBP photos in your browser — GPS, timestamps, camera info stripped instantly. No upload. Try it free — no sign-up."
 date: "2025-12-18"
 ---
 
-Metadata hidden inside your photos can reveal more than you expect — from camera details to GPS location. Learning how to **remove metadata from photo** files is essential if you care about privacy, security, or simply keeping your images clean.
+Every photo you share may be broadcasting your location, device, and the exact moment it was taken. This guide shows how to remove that metadata from your photos completely — directly in your browser, with no upload required.
 
 ---
 
@@ -17,7 +17,7 @@ Photo metadata (often called **EXIF data**) includes:
 - GPS coordinates
 - Editing software used
 
-This information is automatically embedded into your images and can be read by anyone who opens the file.
+This information is automatically embedded into your images and can be read by anyone who opens the file. For a deeper look at what EXIF contains, see our [complete guide to EXIF data](/blog/what-is-exif-data).
 
 ---
 
@@ -34,14 +34,14 @@ This information is automatically embedded into your images and can be read by a
 
 To remove metadata from a photo, you need to strip EXIF data without changing the image pixels. This can be done using privacy-focused tools, operating system features, or mobile apps. While operating systems offer basic metadata removal, they often leave some EXIF fields intact. Dedicated metadata removal tools provide the most reliable and complete results, especially for GPS data and device identifiers.
 
-### 1. Use a Private Metadata Remover (Recommended)
+### 1. Use PrivMeta — Free, In-Browser, No Install
 
-Our tool runs entirely **client-side** — meaning your photos never leave your device.  
+[PrivMeta](/) runs entirely **client-side** — your photos never leave your device.  
 Steps:
 
-1. Upload your photo into the tool.
-2. Click “Remove Metadata.”
-3. Download the cleaned image instantly.
+1. Drop your photo into [PrivMeta](/).
+2. Click **Remove Metadata**.
+3. Download the cleaned image instantly — no account or upload needed.
 
 ### 2. Remove Metadata on Windows
 
@@ -58,6 +58,8 @@ Steps:
 
 - On iPhone: Use “Share” → “Options” → Toggle off “Location” and “All Photos Data.”
 - On Android: Use built-in gallery settings or third-party apps.
+
+Unlike the OS tools above, [PrivMeta](/) removes all EXIF fields — including GPS, serial number, and software tags — in a single step, without installing anything.
 
 ---
 

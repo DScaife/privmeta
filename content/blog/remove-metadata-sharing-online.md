@@ -1,6 +1,6 @@
 ---
-title: "Why You Should Remove Metadata Before Sharing Files Online"
-description: "Discover the hidden dangers in file metadata, learn how to protect your privacy, and understand why stripping metadata is essential for digital security."
+title: "Remove Metadata Before Sharing Files Online"
+description: "Every file you share carries hidden metadata — GPS location, author name, edit history. Strip it in your browser before sharing. Try it free — no sign-up needed."
 date: "2025-11-10"
 ---
 
