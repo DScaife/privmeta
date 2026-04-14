@@ -40,7 +40,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "PrivMeta — Free Metadata Remover | No Upload Required",
   description:
-    "Remove metadata from images, videos, audio, PDFs, and documents — free, directly in your browser. No upload, no account. Your files never leave your device.",
+    "Remove metadata from images, videos, audio, PDFs, and documents — free, in your browser. No upload, no account. Your files never leave your device. Try it.",
   keywords: [
     "remove metadata from image",
     "remove metadata from photo",

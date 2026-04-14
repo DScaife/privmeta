@@ -1,5 +1,5 @@
 ---
-title: "How to Remove Metadata from Word Documents — No Software Needed"
+title: "Remove Metadata from Word Docs — No Install"
 description: "Strip hidden author names, edit history, and company data from Word documents — free, in your browser. No install, no upload. Try it free — no sign-up needed."
 date: "2026-01-20"
 ---

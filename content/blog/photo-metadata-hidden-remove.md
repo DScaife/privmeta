@@ -39,7 +39,7 @@ Every photo you take contains a hidden layer of information called metadata. Thi
 
 ### With PrivMeta
 
-1. Visit [privmeta.com](https://privmeta.com)
+1. Visit [PrivMeta](/)
 2. Drag your photo onto the interface
 3. PrivMeta instantly processes the image locally in your browser
 4. Download the clean version - all metadata removed in seconds
@@ -72,8 +72,8 @@ Take control of your digital footprint today by auditing and cleaning your photo
 
 For a full walkthrough of all removal methods — Windows, Mac, mobile, and in-browser — see our [photo metadata removal guide](/blog/remove-metadata-from-photo-guide).
 
-## Try It Yourself
+## Remove Your Photo Metadata Now
 
-Protect your privacy today. Use our **private metadata remover** to clean your photos instantly — no uploads, no tracking, just peace of mind.
+Drop your photos into [PrivMeta](/) and all EXIF, IPTC, and XMP data is stripped in seconds — entirely in your browser. No upload, no account.
 
-[Start Removing Metadata Now](/)
+[Clean Your Photos Now](/)

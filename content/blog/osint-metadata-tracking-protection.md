@@ -74,8 +74,8 @@ As artificial intelligence advances, OSINT capabilities are growing exponentiall
 
 By understanding how OSINT analysts use metadata and implementing proper protection measures, you can maintain control over your digital footprint. Tools like PrivMeta provide an essential layer of defense by allowing you to clean metadata locally before it leaves your device.
 
-## Try It Yourself
+## Clean Your Files Before They Can Be Used Against You
 
-Protect your privacy today. Use our **private metadata remover** to clean your photos instantly — no uploads, no tracking, just peace of mind.
+OSINT investigators need metadata to work. Remove it and you remove their easiest trail. [PrivMeta](/) strips metadata from photos, documents, PDFs, video, and audio — locally in your browser, with no upload.
 
-[Start Removing Metadata Now](/)
+[Remove Metadata Now](/)

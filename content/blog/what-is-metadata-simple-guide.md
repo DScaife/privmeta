@@ -1,6 +1,6 @@
 ---
-title: "What Is Metadata? A Guide to Hidden File Data"
-description: "Metadata is hidden data in every photo, document, and PDF — your location, name, edit history and more. Remove it free in your browser. No sign-up needed. Try it."
+title: "What Is Metadata? Hidden Data Explained"
+description: "Metadata is hidden data in every photo, document, and PDF — your location, name, edit history and more. Remove it free in your browser. No sign-up needed."
 date: "2025-11-20"
 ---
 
@@ -54,8 +54,8 @@ Try PrivMeta today to:
 
 Understanding metadata is the first step to digital privacy. By being aware of these hidden details and using the right tools, you can take control of your personal information.
 
-## Try It Yourself
+## Remove Your File Metadata Now
 
-Protect your privacy today. Use our **private metadata remover** to clean your photos instantly — no uploads, no tracking, just peace of mind.
+Now you know what metadata is and what it can reveal. [PrivMeta](/) lets you strip it from any file — photos, documents, PDFs, video, audio — entirely in your browser. Nothing is uploaded.
 
-[Start Removing Metadata Now](/)
+[Remove Metadata Free](/)

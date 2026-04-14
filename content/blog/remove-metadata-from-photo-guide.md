@@ -1,5 +1,5 @@
 ---
-title: "How to Remove Metadata from Photos — Free & In-Browser"
+title: "Remove Metadata from Photos — In-Browser"
 description: "Remove EXIF data from JPG, PNG, and WEBP photos in your browser — GPS, timestamps, camera info stripped instantly. No upload. Try it free — no sign-up."
 date: "2025-12-18"
 ---
@@ -76,8 +76,8 @@ Yes. Once stripped, the information cannot be recovered unless you kept the orig
 
 ---
 
-## Try It Yourself
+## Remove EXIF Data from Your Photos Now
 
-Protect your privacy today. Use our **private metadata remover** to clean your photos instantly — no uploads, no tracking, just peace of mind.
+[PrivMeta](/) strips GPS coordinates, camera data, and timestamps from JPG, PNG, WEBP, and GIF images — directly in your browser. No upload required.
 
-[Start Removing Metadata Now](/)
+[Clean Your Photos — Free](/)

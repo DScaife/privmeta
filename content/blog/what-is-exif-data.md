@@ -1,6 +1,6 @@
 ---
-title: "What Is EXIF Data? The Privacy Risk in Every Photo"
-description: "EXIF data is hidden inside every photo — GPS coordinates, camera model, exact timestamps. Learn what it reveals, then remove it free in your browser. No sign-up."
+title: "EXIF Data: The Privacy Risk in Every Photo"
+description: "EXIF data is hidden inside every photo — GPS coordinates, camera model, timestamps. Learn what it reveals, then remove it free in your browser. No sign-up."
 date: "2026-02-05"
 ---
 

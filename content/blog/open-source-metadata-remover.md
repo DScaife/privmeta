@@ -50,7 +50,7 @@ Even if PrivMeta's code were open source but processed files on a server, you'd 
 
 This is the core design decision behind PrivMeta: the code is public, and the processing happens where you can see it.
 
-## How to Remove Metadata with PrivMeta
+## How to Use This Open Source Metadata Remover
 
 No account or installation needed:
 

@@ -1,6 +1,6 @@
 ---
 title: "Remove Metadata Before Uploading to AI Tools"
-description: "AI tools like ChatGPT and Gemini receive the hidden metadata embedded in your files. Remove it in your browser before uploading — no sign-up needed. Try it free."
+description: "AI tools like ChatGPT and Gemini receive the hidden metadata embedded in your files. Remove it in your browser before uploading — free, no sign-up needed."
 date: "2026-03-15"
 ---
 

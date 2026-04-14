@@ -7,10 +7,10 @@ import Typography from "@/components/Typography";
 export const metadata: Metadata = {
   title: "How PrivMeta Works — In-Browser Metadata Removal, No Uploads",
   description:
-    "Remove metadata from photos, PDFs, videos, and audio directly in your browser — no upload, no account. Your files never leave your device. Try it free.",
+    "See exactly how PrivMeta removes metadata from photos, PDFs, audio, and video — all processing happens in your browser, nothing uploaded. Try it free.",
   alternates: { canonical: "https://www.privmeta.com/how-it-works" },
   openGraph: {
-    title: "Remove Metadata from Files — Free, In-Browser | PrivMeta",
+    title: "How PrivMeta Works — In-Browser Metadata Removal, No Uploads",
     description:
       "Remove metadata from photos, PDFs, videos, and audio directly in your browser — no upload, no account. Your files never leave your device. Try it free.",
     url: "https://www.privmeta.com/how-it-works",
