@@ -83,6 +83,8 @@ The file content — text, images, layout — is preserved exactly as-is.
 - When sharing research, journalism, or sensitive internal reports
 - Before attaching PDFs to emails on public mailing lists
 
+If you also work with Word documents, see our guide on [removing metadata from DOCX files](/blog/remove-metadata-from-word-document) — the same in-browser approach, no installation needed.
+
 ## Try It Now
 
 Remove PDF metadata privately — no account, no upload, no tracking.

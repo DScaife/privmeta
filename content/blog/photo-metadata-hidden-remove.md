@@ -1,6 +1,6 @@
 ---
-title: "What Metadata Is Hidden Inside Your Photos (and How to Remove It)"
-description: "Discover the hidden EXIF, IPTC, and XMP data in your photos, learn privacy risks, and see how to remove photo metadata instantly with local tools."
+title: "Remove Hidden Metadata from Your Photos"
+description: "Your photos contain hidden EXIF data — GPS location, camera model, timestamps. Remove it instantly in your browser: no upload, no account needed. Try it free."
 date: "2025-10-27"
 ---
 
@@ -8,7 +8,7 @@ Every photo you take contains a hidden layer of information called metadata. Thi
 
 ## The 3 Main Types of Photo Metadata
 
-1. **EXIF Data (Exchangeable Image File Format)**:
+1. **EXIF Data (Exchangeable Image File Format)** — see our [complete EXIF data guide](/blog/what-is-exif-data) for a full breakdown:
 
    - GPS coordinates (exact location where photo was taken)
    - Timestamp (date and precise time)
@@ -39,7 +39,7 @@ Every photo you take contains a hidden layer of information called metadata. Thi
 
 ### With PrivMeta
 
-1. Visit [privmeta.com](https://privmeta.com)
+1. Visit [PrivMeta](/)
 2. Drag your photo onto the interface
 3. PrivMeta instantly processes the image locally in your browser
 4. Download the clean version - all metadata removed in seconds
@@ -70,8 +70,10 @@ Every photo you take contains a hidden layer of information called metadata. Thi
 
 Take control of your digital footprint today by auditing and cleaning your photo metadata. With tools like PrivMeta, privacy protection is just a drag-and-drop away.
 
-## Try It Yourself
+For a full walkthrough of all removal methods — Windows, Mac, mobile, and in-browser — see our [photo metadata removal guide](/blog/remove-metadata-from-photo-guide).
 
-Protect your privacy today. Use our **private metadata remover** to clean your photos instantly — no uploads, no tracking, just peace of mind.
+## Remove Your Photo Metadata Now
 
-[Start Removing Metadata Now](/)
+Drop your photos into [PrivMeta](/) and all EXIF, IPTC, and XMP data is stripped in seconds — entirely in your browser. No upload, no account.
+
+[Clean Your Photos Now](/)

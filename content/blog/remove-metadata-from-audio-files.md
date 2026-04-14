@@ -1,6 +1,6 @@
 ---
-title: "Remove Metadata from Audio Files: Strip Hidden Tags from MP3, FLAC, and More"
-description: "Audio files store hidden metadata tags including recording location, device info, and software details. Learn how to remove metadata from MP3, FLAC, WAV, and other audio formats privately."
+title: "Remove Metadata from Audio Files"
+description: "Strip hidden tags from MP3, FLAC, WAV, and other audio files privately in your browser — no upload, no software to install. Try it free — no sign-up needed."
 date: "2026-02-18"
 ---
 
@@ -108,6 +108,8 @@ If you need to keep artwork but still protect privacy, you can re-attach a clean
 - Before sharing podcast episode files directly (not via a hosting platform)
 - Before submitting audio to clients when encoder/software details are confidential
 - When anonymising audio evidence or testimony recordings
+
+If you also need to strip metadata from video files, see our guide on [removing metadata from video files](/blog/remove-metadata-from-video-guide) — MP4, MOV, AVI, and more, all processed in-browser.
 
 ## Try It Now
 

@@ -1,6 +1,6 @@
 ---
-title: "Why You Should Remove Metadata Before Sharing Files Online"
-description: "Discover the hidden dangers in file metadata, learn how to protect your privacy, and understand why stripping metadata is essential for digital security."
+title: "Remove Metadata Before Sharing Files Online"
+description: "Every file you share carries hidden metadata — GPS location, author name, edit history. Strip it in your browser before sharing. Free. No sign-up needed."
 date: "2025-11-10"
 ---
 
@@ -92,8 +92,8 @@ Cloud-based metadata removal tools create new privacy risks:
 
 PrivMeta solves these problems by keeping everything on your device - no uploads, no storage, no hidden access.
 
-## Try It Yourself
+## Strip Metadata Before You Share
 
-Protect your privacy today. Use our **private metadata remover** to clean your photos instantly — no uploads, no tracking, just peace of mind.
+Every file format covered above is supported by [PrivMeta](/) — photos, documents, PDFs, video, and audio, all processed locally in your browser. Drop your files in, remove the metadata, download the clean version.
 
-[Start Removing Metadata Now](/)
+[Remove Metadata Now](/)
