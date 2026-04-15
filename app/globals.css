@@ -66,12 +66,12 @@ buglet-widget::part(trigger) {
 }
 
 :root {
-  /* Fluid scaling viewport range — shared by both the type and spacing systems.
+  /* Fluid scaling viewport range - shared by both the type and spacing systems.
      Type system uses unitless rem values (--fluid-screen-*).
      Spacing system uses px values (--fluid-vp-*).
      Both represent the same range: 42.8rem = 684.8px → 128rem = 2048px at 16px root. */
-  --fluid-screen-min: 42.8; /* unitless rem — used by .type-fluid slope formula */
-  --fluid-screen-max: 128; /* unitless rem — used by .type-fluid slope formula */
+  --fluid-screen-min: 42.8; /* unitless rem - used by .type-fluid slope formula */
+  --fluid-screen-max: 128; /* unitless rem - used by .type-fluid slope formula */
   --fluid-vp-min: 450px; /* used by --fluid-* spacing tokens */
   --fluid-vp-max: 1680px; /* used by --fluid-* spacing tokens */
   --fluid-vp-range: calc(var(--fluid-vp-max) - var(--fluid-vp-min)); /* 1363.2px */
@@ -132,7 +132,7 @@ buglet-widget::part(trigger) {
   --space-3xl: 48px;
   --space-4xl: 96px;
 
-  /* Fluid spacing tokens — all 28 combinations of the 8 space tokens.
+  /* Fluid spacing tokens - all 28 combinations of the 8 space tokens.
      Linearly interpolates from min to max across --fluid-vp-min → --fluid-vp-max.
      Usage: gap-(--fluid-xl-3xl)  py-(--fluid-md-2xl)  m-(--fluid-lg-4xl) etc. */
   --fluid-xs-sm: clamp(

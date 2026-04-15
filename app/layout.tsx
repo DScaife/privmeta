@@ -38,9 +38,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "PrivMeta — Free Metadata Remover | No Upload Required",
+  title: "PrivMeta - Free Metadata Remover | No Upload Required",
   description:
-    "Remove metadata from images, videos, audio, PDFs, and documents — free, in your browser. No upload, no account. Your files never leave your device. Try it.",
+    "Remove metadata from images, videos, audio, PDFs, and documents - free, in your browser. No upload, no account. Your files never leave your device. Try it.",
   keywords: [
     "remove metadata from image",
     "remove metadata from photo",
@@ -67,9 +67,9 @@ export const metadata: Metadata = {
     googleBot: "index, follow",
   },
   openGraph: {
-    title: "PrivMeta — Free Metadata Remover | No Upload Required",
+    title: "PrivMeta - Free Metadata Remover | No Upload Required",
     description:
-      "Free metadata remover for photos, videos, PDFs, and documents — everything runs in your browser. No upload, no account, no tracking.",
+      "Free metadata remover for photos, videos, PDFs, and documents - everything runs in your browser. No upload, no account, no tracking.",
     url: "https://www.privmeta.com/",
     siteName: "PrivMeta",
     images: [
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 628,
-        alt: "PrivMeta — Remove metadata from files free, in your browser",
+        alt: "PrivMeta - Remove metadata from files free, in your browser",
       },
     ],
 
@@ -86,9 +86,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PrivMeta — Free Metadata Remover | No Upload Required",
+    title: "PrivMeta - Free Metadata Remover | No Upload Required",
     description:
-      "Strip metadata from photos, videos, PDFs, and docs — 100% in your browser. Free, no account, no upload. Your files never leave your device.",
+      "Strip metadata from photos, videos, PDFs, and docs - 100% in your browser. Free, no account, no upload. Your files never leave your device.",
     images: ["/og-image.png"],
     creator: "@privmeta",
   },

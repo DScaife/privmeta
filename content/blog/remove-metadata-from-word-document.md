@@ -1,10 +1,10 @@
 ---
-title: "Remove Metadata from Word Docs — No Install"
-description: "Strip hidden author names, edit history, and company data from Word documents — free, in your browser. No install, no upload. Try it free — no sign-up needed."
+title: "Remove Metadata from Word Docs - No Install"
+description: "Strip hidden author names, edit history, and company data from Word documents - free, in your browser. No install, no upload. Try it free - no sign-up needed."
 date: "2026-01-20"
 ---
 
-You can remove all hidden metadata from a Word document in seconds — no software to install, no file upload required. [PrivMeta](/) processes your `.docx` entirely in your browser, so your document never leaves your device.
+You can remove all hidden metadata from a Word document in seconds - no software to install, no file upload required. [PrivMeta](/) processes your `.docx` entirely in your browser, so your document never leaves your device.
 
 Word files are not as simple as they look. Every document you create quietly accumulates a record of who wrote it, when, on which machine, and sometimes what was written and then deleted along the way.
 
@@ -12,13 +12,13 @@ Word files are not as simple as they look. Every document you create quietly acc
 
 A DOCX file is actually a ZIP archive containing multiple XML files. Among those files, three store metadata specifically:
 
-- **`docProps/core.xml`** — author name, last modified by, creation date, modification date, revision count
-- **`docProps/app.xml`** — application name and version (e.g. "Microsoft Office Word"), company name from your Office licence, total editing time in minutes, word count, page count, template name
-- **`docProps/custom.xml`** — any custom document properties set by you or your organisation
+- **`docProps/core.xml`** - author name, last modified by, creation date, modification date, revision count
+- **`docProps/app.xml`** - application name and version (e.g. "Microsoft Office Word"), company name from your Office licence, total editing time in minutes, word count, page count, template name
+- **`docProps/custom.xml`** - any custom document properties set by you or your organisation
 
 ### The "Last Modified By" Problem
 
-One of the most commonly overlooked fields is **Last Modified By**. Even if a document was originally authored by someone else, this field updates to your name every time you save it — silently logging that the file passed through your hands.
+One of the most commonly overlooked fields is **Last Modified By**. Even if a document was originally authored by someone else, this field updates to your name every time you save it - silently logging that the file passed through your hands.
 
 ### Editing Time
 
@@ -38,9 +38,9 @@ If you installed Microsoft Office with a corporate licence, your company name is
 
 ## How to Remove Metadata from a DOCX File
 
-### Option 1: PrivMeta — Free, In-Browser, No Install
+### Option 1: PrivMeta - Free, In-Browser, No Install
 
-[PrivMeta](/) removes all three metadata XML files from your DOCX entirely in your browser — no account, no installation, nothing uploaded to a server:
+[PrivMeta](/) removes all three metadata XML files from your DOCX entirely in your browser - no account, no installation, nothing uploaded to a server:
 
 1. Visit [PrivMeta](/)
 2. Drop your `.docx` file into the upload area
@@ -67,9 +67,9 @@ Because DOCX is a ZIP format, you can open it with any ZIP utility and delete th
 
 After processing with PrivMeta:
 
-- `docProps/core.xml` is removed — no author, dates, or revision count
-- `docProps/app.xml` is removed — no application name, company, or edit time
-- `docProps/custom.xml` is removed — no custom properties
+- `docProps/core.xml` is removed - no author, dates, or revision count
+- `docProps/app.xml` is removed - no application name, company, or edit time
+- `docProps/custom.xml` is removed - no custom properties
 - The document body, styles, images, and formatting are untouched
 
 ## Who Should Clean DOCX Metadata?
@@ -80,12 +80,12 @@ After processing with PrivMeta:
 - **Businesses** sharing templates or contracts externally
 - **Anyone** submitting documents for academic or public review
 
-If you also need to clean PDF files, see our guide on [removing metadata from PDFs](/blog/remove-metadata-from-pdf-guide) — the same in-browser process, nothing uploaded.
+If you also need to clean PDF files, see our guide on [removing metadata from PDFs](/blog/remove-metadata-from-pdf-guide) - the same in-browser process, nothing uploaded.
 
 ## Try It Now
 
-Unlike Word's built-in inspector or any desktop tool, [PrivMeta](/) requires no installation and nothing is ever uploaded — your documents stay on your device throughout.
+Unlike Word's built-in inspector or any desktop tool, [PrivMeta](/) requires no installation and nothing is ever uploaded - your documents stay on your device throughout.
 
-Strip hidden data from your Word documents — free, private, and completely in your browser.
+Strip hidden data from your Word documents - free, private, and completely in your browser.
 
 [Remove DOCX Metadata Now](/)

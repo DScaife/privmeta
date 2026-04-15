@@ -7,12 +7,12 @@ import type { Metadata } from "next";
 import Typography from "@/components/Typography";
 
 export const metadata: Metadata = {
-  title: "Privacy Blog — Metadata Guides & Tips | PrivMeta",
+  title: "Privacy Blog - Metadata Guides & Tips | PrivMeta",
   description:
     "Learn how to protect your privacy by removing metadata from photos, PDFs, videos, and documents. Practical guides and tips from the PrivMeta team.",
   alternates: { canonical: "https://www.privmeta.com/blog" },
   openGraph: {
-    title: "Privacy Blog — Metadata Guides & Tips | PrivMeta",
+    title: "Privacy Blog - Metadata Guides & Tips | PrivMeta",
     description:
       "Learn how to protect your privacy by removing metadata from photos, PDFs, videos, and documents. Practical guides and tips from the PrivMeta team.",
     url: "https://www.privmeta.com/blog",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Blog — Metadata Guides & Tips | PrivMeta",
+    title: "Privacy Blog - Metadata Guides & Tips | PrivMeta",
     description: "Practical guides on removing metadata and protecting your digital privacy.",
     images: ["/og-image.png"],
   },

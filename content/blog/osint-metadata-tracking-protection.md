@@ -1,5 +1,5 @@
 ---
-title: "How OSINT Analysts Use Metadata to Track People (And How to Protect Yourself)"
+title: "OSINT Metadata Tracking: How to Protect Yourself"
 description: "Learn how investigators use metadata for OSINT tracking, discover privacy risks in your digital footprint, and protect yourself from unwanted surveillance."
 date: "2025-10-20"
 ---
@@ -37,11 +37,11 @@ Open Source Intelligence (OSINT) analysts use publicly available information to 
 
 1. **Regularly clean files** before sharing online:
 
-   - [Remove EXIF data from photos](/blog/remove-metadata-from-photo-guide) — GPS coordinates, camera model, timestamps
-   - [Strip author information from Word documents](/blog/remove-metadata-from-word-document) — name, edit history, company
-   - [Clear metadata from PDFs](/blog/remove-metadata-from-pdf-guide) — author, creator app, modification dates
+   - [Remove EXIF data from photos](/blog/remove-metadata-from-photo-guide) - GPS coordinates, camera model, timestamps
+   - [Strip author information from Word documents](/blog/remove-metadata-from-word-document) - name, edit history, company
+   - [Clear metadata from PDFs](/blog/remove-metadata-from-pdf-guide) - author, creator app, modification dates
 
-   You can clean all of these using [PrivMeta](/) — processes files locally in your browser, nothing uploaded.
+   You can clean all of these using [PrivMeta](/) - processes files locally in your browser, nothing uploaded.
 
 2. **Metadata Auditing**:
    - Monthly reviews of your digital footprint
@@ -76,6 +76,6 @@ By understanding how OSINT analysts use metadata and implementing proper protect
 
 ## Clean Your Files Before They Can Be Used Against You
 
-OSINT investigators need metadata to work. Remove it and you remove their easiest trail. [PrivMeta](/) strips metadata from photos, documents, PDFs, video, and audio — locally in your browser, with no upload.
+OSINT investigators need metadata to work. Remove it and you remove their easiest trail. [PrivMeta](/) strips metadata from photos, documents, PDFs, video, and audio - locally in your browser, with no upload.
 
 [Remove Metadata Now](/)
