@@ -1,10 +1,10 @@
 ---
 title: "Remove Metadata from Audio Files"
-description: "Strip hidden tags from MP3, FLAC, WAV, and other audio files privately in your browser — no upload, no software to install. Try it free — no sign-up needed."
+description: "Strip hidden tags from MP3, FLAC, WAV, and other audio files privately in your browser - no upload, no software to install. Try it free - no sign-up needed."
 date: "2026-02-18"
 ---
 
-Audio files are often overlooked when people think about metadata privacy. Images get most of the attention — EXIF data, GPS coordinates — but your MP3s, FLACs, and podcast recordings carry their own set of hidden tags that can reveal more than you'd expect.
+Audio files are often overlooked when people think about metadata privacy. Images get most of the attention - EXIF data, GPS coordinates - but your MP3s, FLACs, and podcast recordings carry their own set of hidden tags that can reveal more than you'd expect.
 
 ## What Metadata Do Audio Files Contain?
 
@@ -13,27 +13,27 @@ Audio metadata is stored in tags embedded in the file. Different formats use dif
 Common metadata fields across audio formats include:
 
 ### Creative/Publishing Tags
-- **Title** — the track or recording name
-- **Artist and Album Artist** — the named creator(s)
-- **Album** — the release or collection name
+- **Title** - the track or recording name
+- **Artist and Album Artist** - the named creator(s)
+- **Album** - the release or collection name
 - **Track number and disc number**
 - **Genre** and **Year**
 - **Composer**, **Lyricist**, **Publisher**
-- **Comment** — free-text notes field, often used by recording software
+- **Comment** - free-text notes field, often used by recording software
 
 ### Technical Tags
-- **Encoder** — the software used to encode or export the file (e.g. "LAME 3.100", "Logic Pro X", "Audacity 3.4.2")
-- **Encoding settings** — bit rate, compression settings, sample rate used at export
+- **Encoder** - the software used to encode or export the file (e.g. "LAME 3.100", "Logic Pro X", "Audacity 3.4.2")
+- **Encoding settings** - bit rate, compression settings, sample rate used at export
 - **Length** and **BPM**
 
 ### Privacy-Relevant Tags
-- **Recording date/time** — when the audio was captured or encoded
-- **Recording location** — some DAWs and field recorders embed GPS coordinates
-- **Originator reference** — a unique identifier used in broadcast WAV (BWF) files that can tie a recording to a specific device
-- **Replay Gain** — can reveal the mastering chain used
+- **Recording date/time** - when the audio was captured or encoded
+- **Recording location** - some DAWs and field recorders embed GPS coordinates
+- **Originator reference** - a unique identifier used in broadcast WAV (BWF) files that can tie a recording to a specific device
+- **Replay Gain** - can reveal the mastering chain used
 
 ### Embedded Content
-- **Album artwork** — embedded JPEG images (which may themselves contain EXIF data)
+- **Album artwork** - embedded JPEG images (which may themselves contain EXIF data)
 - **Lyrics**
 - **Chapter markers** (common in podcasts)
 
@@ -56,11 +56,11 @@ The **Encoder** tag often reveals the exact version of the software used to crea
 
 ### Broadcast WAV Originator IDs
 
-Professional audio recorders (field recorders, broadcast equipment) write a **BEXT chunk** into WAV files with an **Originator Reference** — a 32-character string that often encodes the device serial number, date, and time. This is specifically designed to be unique per recording and device, making it trivial to link multiple recordings to the same equipment.
+Professional audio recorders (field recorders, broadcast equipment) write a **BEXT chunk** into WAV files with an **Originator Reference** - a 32-character string that often encodes the device serial number, date, and time. This is specifically designed to be unique per recording and device, making it trivial to link multiple recordings to the same equipment.
 
 ### Podcast and Field Recordings
 
-If you record interviews, podcasts, or audio documentaries, your files may contain the recording date, location metadata from your phone's recorder app, and encoder information — all invisible to listeners but readable by anyone who downloads the file.
+If you record interviews, podcasts, or audio documentaries, your files may contain the recording date, location metadata from your phone's recorder app, and encoder information - all invisible to listeners but readable by anyone who downloads the file.
 
 ### Music Distribution
 
@@ -68,7 +68,7 @@ When distributing music through platforms, some metadata fields are publicly vis
 
 ## How to Remove Metadata from Audio Files
 
-### PrivMeta — Private, Client-Side Processing
+### PrivMeta - Private, Client-Side Processing
 
 PrivMeta uses FFmpeg (running locally in your browser via WebAssembly) to strip metadata from audio files without re-encoding them. The audio quality is preserved exactly:
 
@@ -79,7 +79,7 @@ PrivMeta uses FFmpeg (running locally in your browser via WebAssembly) to strip 
 3. Click **Remove metadata**
 4. Download the cleaned files
 
-Because everything runs in your browser, your audio never leaves your device — important if you're working with unreleased music, confidential interviews, or sensitive recordings.
+Because everything runs in your browser, your audio never leaves your device - important if you're working with unreleased music, confidential interviews, or sensitive recordings.
 
 ### Command Line (FFmpeg)
 
@@ -109,10 +109,10 @@ If you need to keep artwork but still protect privacy, you can re-attach a clean
 - Before submitting audio to clients when encoder/software details are confidential
 - When anonymising audio evidence or testimony recordings
 
-If you also need to strip metadata from video files, see our guide on [removing metadata from video files](/blog/remove-metadata-from-video-guide) — MP4, MOV, AVI, and more, all processed in-browser.
+If you also need to strip metadata from video files, see our guide on [removing metadata from video files](/blog/remove-metadata-from-video-guide) - MP4, MOV, AVI, and more, all processed in-browser.
 
 ## Try It Now
 
-Clean your audio files privately — MP3, FLAC, WAV, and more — with no uploads required.
+Clean your audio files privately - MP3, FLAC, WAV, and more - with no uploads required.
 
 [Remove Audio Metadata Now](/)

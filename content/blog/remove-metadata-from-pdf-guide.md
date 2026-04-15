@@ -1,21 +1,21 @@
 ---
-title: "Remove Metadata from PDF: How to Strip Hidden PDF Data Privately"
+title: "Remove Metadata from PDFs - Free & In-Browser"
 description: "PDF files hide author names, software details, creation dates, and tracked changes inside their metadata. Learn how to remove PDF metadata privately without uploading your files to any server."
 date: "2026-01-10"
 ---
 
-PDF files are rarely as clean as they look. Behind the visible text and images, every PDF carries a layer of invisible metadata — and that metadata can reveal far more about you than you intended to share.
+PDF files are rarely as clean as they look. Behind the visible text and images, every PDF carries a layer of invisible metadata - and that metadata can reveal far more about you than you intended to share.
 
 ## What Metadata Is Hidden Inside PDFs?
 
 When you create or save a PDF, your software automatically embeds details including:
 
-- **Author name** — the full name registered to your software license
-- **Creator application** — e.g. "Microsoft Word 16.0", "Adobe Acrobat Pro", "LibreOffice 7.5"
-- **Producer application** — the tool that converted the file to PDF
-- **Creation and modification dates** — exact timestamps down to the second
-- **Document title and subject** — often auto-populated from file properties
-- **Custom properties** — company name, department, or document tags added by your organisation
+- **Author name** - the full name registered to your software license
+- **Creator application** - e.g. "Microsoft Word 16.0", "Adobe Acrobat Pro", "LibreOffice 7.5"
+- **Producer application** - the tool that converted the file to PDF
+- **Creation and modification dates** - exact timestamps down to the second
+- **Document title and subject** - often auto-populated from file properties
+- **Custom properties** - company name, department, or document tags added by your organisation
 
 This information is invisible to anyone reading the PDF normally, but trivially easy to extract using free tools, or simply by opening the file's Document Properties panel.
 
@@ -31,7 +31,7 @@ Documents shared externally often still carry the author's real name, their mana
 
 ### Tracking Timelines
 
-Creation and modification timestamps can prove when a document was drafted — information that may be legally or professionally sensitive.
+Creation and modification timestamps can prove when a document was drafted - information that may be legally or professionally sensitive.
 
 ### Version History Leaks
 
@@ -41,7 +41,7 @@ Some PDF workflows embed hidden revision history, tracked changes from the origi
 
 ### Option 1: PrivMeta (Private, No Upload Required)
 
-PrivMeta strips PDF metadata entirely in your browser — no file ever leaves your device:
+PrivMeta strips PDF metadata entirely in your browser - no file ever leaves your device:
 
 1. Go to [PrivMeta](/)
 2. Drag and drop your PDF into the dropzone
@@ -73,7 +73,7 @@ After running through PrivMeta, your PDF will have:
 - No creation or modification timestamps
 - No XMP metadata stream
 
-The file content — text, images, layout — is preserved exactly as-is.
+The file content - text, images, layout - is preserved exactly as-is.
 
 ## When Should You Always Clean PDF Metadata?
 
@@ -83,10 +83,10 @@ The file content — text, images, layout — is preserved exactly as-is.
 - When sharing research, journalism, or sensitive internal reports
 - Before attaching PDFs to emails on public mailing lists
 
-If you also work with Word documents, see our guide on [removing metadata from DOCX files](/blog/remove-metadata-from-word-document) — the same in-browser approach, no installation needed.
+If you also work with Word documents, see our guide on [removing metadata from DOCX files](/blog/remove-metadata-from-word-document) - the same in-browser approach, no installation needed.
 
 ## Try It Now
 
-Remove PDF metadata privately — no account, no upload, no tracking.
+Remove PDF metadata privately - no account, no upload, no tracking.
 
 [Clean Your PDF Now](/)

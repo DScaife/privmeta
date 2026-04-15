@@ -1,6 +1,6 @@
 ---
 title: "Remove Metadata Before Sharing Files Online"
-description: "Every file you share carries hidden metadata — GPS location, author name, edit history. Strip it in your browser before sharing. Free. No sign-up needed."
+description: "Every file you share carries hidden metadata - GPS location, author name, edit history. Strip it in your browser before sharing. Free. No sign-up needed."
 date: "2025-11-10"
 ---
 
@@ -94,6 +94,6 @@ PrivMeta solves these problems by keeping everything on your device - no uploads
 
 ## Strip Metadata Before You Share
 
-Every file format covered above is supported by [PrivMeta](/) — photos, documents, PDFs, video, and audio, all processed locally in your browser. Drop your files in, remove the metadata, download the clean version.
+Every file format covered above is supported by [PrivMeta](/) - photos, documents, PDFs, video, and audio, all processed locally in your browser. Drop your files in, remove the metadata, download the clean version.
 
 [Remove Metadata Now](/)

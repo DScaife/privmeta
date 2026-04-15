@@ -158,7 +158,7 @@ export async function stripPdfMetadata(file: File): Promise<File | null> {
     pdfDoc.setCreator("");
 
     // --- Remove the Info dict reference from the trailer entirely.
-    //     Do this AFTER the set* calls above — calling set* first rewrites the existing
+    //     Do this AFTER the set* calls above - calling set* first rewrites the existing
     //     Info object's fields in-place, then we remove the trailer pointer so no Info
     //     dict is visible to PDF readers. Dates are intentionally not set to epoch
     //     (D:19700101) as that pattern is an identifiable fingerprint. ---

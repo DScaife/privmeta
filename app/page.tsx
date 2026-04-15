@@ -201,7 +201,7 @@ export default function Home() {
       if (failedCount === 0) {
         toast.success("Download ready ✨");
       } else if (cleanedFiles.length > 0) {
-        toast.warning(`Download ready — ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
+        toast.warning(`Download ready - ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
       } else {
         showErrorToast("general");
       }
@@ -214,7 +214,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = processing ? "PrivMeta | Cleaning metadata..." : "PrivMeta — Free Metadata Remover | No Upload Required";
+    document.title = processing ? "PrivMeta | Cleaning metadata..." : "PrivMeta - Free Metadata Remover | No Upload Required";
   }, [processing]);
 
   return (

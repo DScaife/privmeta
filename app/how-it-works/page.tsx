@@ -5,14 +5,14 @@ import { ArrowRight } from "lucide-react";
 import Typography from "@/components/Typography";
 
 export const metadata: Metadata = {
-  title: "How PrivMeta Works — In-Browser Metadata Removal, No Uploads",
+  title: "How PrivMeta Works - In-Browser Metadata Removal, No Uploads",
   description:
-    "See exactly how PrivMeta removes metadata from photos, PDFs, audio, and video — all processing happens in your browser, nothing uploaded. Try it free.",
+    "See exactly how PrivMeta removes metadata from photos, PDFs, audio, and video - all processing happens in your browser, nothing uploaded. Try it free.",
   alternates: { canonical: "https://www.privmeta.com/how-it-works" },
   openGraph: {
-    title: "How PrivMeta Works — In-Browser Metadata Removal, No Uploads",
+    title: "How PrivMeta Works - In-Browser Metadata Removal, No Uploads",
     description:
-      "Remove metadata from photos, PDFs, videos, and audio directly in your browser — no upload, no account. Your files never leave your device. Try it free.",
+      "Remove metadata from photos, PDFs, videos, and audio directly in your browser - no upload, no account. Your files never leave your device. Try it free.",
     url: "https://www.privmeta.com/how-it-works",
     siteName: "PrivMeta",
     type: "website",
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "How PrivMeta Works — In-Browser Metadata Removal, No Uploads",
+    title: "How PrivMeta Works - In-Browser Metadata Removal, No Uploads",
     description: "Strip metadata from photos, PDFs, videos, and audio entirely in your browser. No uploads. No account. Free.",
     images: ["/og-image.png"],
   },
@@ -102,7 +102,7 @@ export default function HowItWorks() {
                 Drop your files.
               </Typography>
               <Typography variant="body" muted>
-                The app reads them directly in your browser. Nothing is uploaded or sent to a server — ever.
+                The app reads them directly in your browser. Nothing is uploaded or sent to a server - ever.
               </Typography>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default function HowItWorks() {
                 Metadata is stripped.
               </Typography>
               <Typography variant="body" muted>
-                Location, camera details, author info, revision history — removed from the file while the content itself is preserved.
+                Location, camera details, author info, revision history - removed from the file while the content itself is preserved.
               </Typography>
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function HowItWorks() {
               How can I remove metadata from photos privately?
             </Typography>
             <Typography variant="body" muted>
-              Add your JPG, PNG, or WEBP image to the dropzone. PrivMeta strips the EXIF data — including GPS coordinates and device info —
+              Add your JPG, PNG, or WEBP image to the dropzone. PrivMeta strips the EXIF data - including GPS coordinates and device info -
               and returns a clean file, directly in your browser.
             </Typography>
           </div>
