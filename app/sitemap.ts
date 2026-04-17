@@ -5,7 +5,7 @@ import path from "path";
 export const dynamic = "error"; // 👈 Force static generation (no runtime)
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.privmeta.com/";
+  const baseUrl = "https://www.privmeta.com";
 
   // Read blog slugs at build time
   const postsDir = path.join(process.cwd(), "content/blog");
