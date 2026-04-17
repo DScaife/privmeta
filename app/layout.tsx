@@ -98,6 +98,15 @@ export const metadata: Metadata = {
   },
   authors: [{ name: "PrivMeta" }],
   creator: "PrivMeta",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -118,7 +127,7 @@ export default function RootLayout({
               url: "https://www.privmeta.com/",
               logo: {
                 "@type": "ImageObject",
-                url: "https://www.privmeta.com/PrivMetaLogoIconLightMode.png",
+                url: "https://www.privmeta.com/web-app-manifest-192x192.png",
               },
               image: "https://www.privmeta.com/og-image.png",
               description: "Remove metadata from files with PrivMeta, a secure, offline-first tool for privacy-conscious users.",
@@ -129,7 +138,7 @@ export default function RootLayout({
                 "@type": "Organization",
                 name: "PrivMeta",
                 url: "https://www.privmeta.com/",
-                logo: "https://www.privmeta.com/PrivMetaLogoIconLightMode.png",
+                logo: "https://www.privmeta.com/web-app-manifest-192x192.png",
               },
               offers: {
                 "@type": "Offer",
@@ -140,11 +149,6 @@ export default function RootLayout({
           }}
         />
         <meta name="application-name" content="PrivMeta" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#ffffff" />
       </head>
 

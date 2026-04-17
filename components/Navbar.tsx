@@ -4,6 +4,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Code } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import Typography from "./Typography";
 
 const BMC = () => (
@@ -31,9 +32,20 @@ const Navbar = () => {
       <nav className="h-40 flex flex-col sm:flex-row gap-(--space-lg) justify-center sm:justify-between items-start sm:items-center">
         <div className="flex justify-between items-center w-full">
           <Link href="/" prefetch={false} aria-label="Go to PrivMeta homepage">
-            <Typography as="span" variant="h1" className="leading-none">
-              PrivMeta
-            </Typography>
+            <span className="flex items-center gap-(--fluid-sm-lg) type-fluid type-h1">
+              <Image src="/logo-dark.svg" alt="" aria-hidden="true" width={52} height={52} className="block h-[0.9em] w-auto dark:hidden" />
+              <Image
+                src="/logo-light.svg"
+                alt=""
+                aria-hidden="true"
+                width={52}
+                height={52}
+                className="hidden h-[0.9em] w-auto dark:block"
+              />
+              <Typography as="span" variant="h1" className="leading-none">
+                PrivMeta
+              </Typography>
+            </span>
           </Link>
           <div className="flex gap-(--space-md) sm:hidden">
             <Tooltip>
