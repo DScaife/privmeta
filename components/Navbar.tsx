@@ -33,11 +33,10 @@ const Navbar = () => {
         <div className="flex justify-between items-center w-full">
           <Link href="/" prefetch={false} aria-label="Go to PrivMeta homepage">
             <span className="flex items-center gap-(--fluid-sm-lg) type-fluid type-h1">
-              <Image src="/logo-dark.svg" alt="" aria-hidden="true" width={52} height={52} className="block h-[0.9em] w-auto dark:hidden" />
+              <Image src="/logo-dark.svg" alt="PrivMeta logo" width={52} height={52} className="block h-[0.9em] w-auto dark:hidden" />
               <Image
                 src="/logo-light.svg"
-                alt=""
-                aria-hidden="true"
+                alt="PrivMeta logo"
                 width={52}
                 height={52}
                 className="hidden h-[0.9em] w-auto dark:block"
