@@ -214,7 +214,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = processing ? "PrivMeta | Cleaning metadata..." : "PrivMeta - Free Metadata Remover | No Upload Required";
+    document.title = processing ? "Cleaning metadata..." : "PrivMeta";
   }, [processing]);
 
   return (

@@ -38,12 +38,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "PrivMeta - Free Metadata Remover | No Upload Required",
-  description:
-    "Remove metadata from images, videos, audio, PDFs, and documents - free, in your browser. No upload, no account. Your files never leave your device. Try it.",
+  title: "Free & Private Metadata Remover",
+  description: "Remove hidden metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
   keywords: [
     "remove metadata from image",
     "remove metadata from photo",
+    "remove metadata from audio",
     "remove metadata from pdf",
     "remove metadata from video",
     "remove metadata from png",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     googleBot: "index, follow",
   },
   openGraph: {
-    title: "PrivMeta - Free Metadata Remover | No Upload Required",
+    title: "Free & Private Metadata Remover",
     description:
       "Free metadata remover for photos, videos, PDFs, and documents - everything runs in your browser. No upload, no account, no tracking.",
     url: "https://www.privmeta.com/",
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "PrivMeta - Free Metadata Remover | No Upload Required",
+    title: "Free & Private Metadata Remover",
     description:
       "Strip metadata from photos, videos, PDFs, and docs - 100% in your browser. Free, no account, no upload. Your files never leave your device.",
     images: ["/og-image.png"],
