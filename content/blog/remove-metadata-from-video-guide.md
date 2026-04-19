@@ -33,19 +33,19 @@ The `-map_metadata -1` flag removes all metadata streams. The `-c copy` flag cop
 
 Video metadata is stored at the container level, in the file's structure rather than in the image or audio content itself. The exact fields depend on the format, but across all common video formats you will typically find:
 
-**GPS coordinates** — latitude, longitude, and sometimes altitude of the recording location. Smartphones with location services enabled write this automatically to every video they record.
+**GPS coordinates**: latitude, longitude, and sometimes altitude of the recording location. Smartphones with location services enabled write this automatically to every video they record.
 
-**Device make and model** — the phone or camera that captured the footage.
+**Device make and model**: the phone or camera that captured the footage.
 
-**Creation date and time** — when recording started, often precise to the millisecond.
+**Creation date and time**: when recording started, often precise to the millisecond.
 
-**Software and encoder details** — the application or firmware used to record or export the file, including version number.
+**Software and encoder details**: the application or firmware used to record or export the file, including version number.
 
-**Title, comment, and description** — free text fields that editing software often populates automatically.
+**Title, comment, and description**: free text fields that editing software often populates automatically.
 
-**Author and copyright** — named creator fields, sometimes filled in from software account settings.
+**Author and copyright**: named creator fields, sometimes filled in from software account settings.
 
-**Technical details** — duration, frame rate, resolution, codec name, and bit rate. These are less sensitive but still part of the metadata layer that travels with the file.
+**Technical details**: duration, frame rate, resolution, codec name, and bit rate. These are less sensitive but still part of the metadata layer that travels with the file.
 
 GPS is the most significant privacy concern. MP4 and MOV files recorded on iPhones, Android phones, and dedicated cameras routinely include precise coordinates when location services are enabled. This data is readable by any metadata tool, with no specialist knowledge required.
 

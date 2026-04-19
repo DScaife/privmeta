@@ -4,7 +4,7 @@ description: "Learn how investigators use metadata for OSINT tracking, discover 
 date: "2025-10-20"
 ---
 
-Open Source Intelligence (OSINT) analysts use publicly available information to build detailed profiles of individuals. Metadata - the hidden information in your digital files - provides a treasure trove of tracking data. Let's examine how this works and how you can protect yourself.
+Open Source Intelligence (OSINT) analysts use publicly available information to build detailed profiles of individuals. Metadata, the hidden information in your digital files, provides a treasure trove of tracking data. Let's examine how this works and how you can protect yourself.
 
 ## How OSINT Analysts Leverage Metadata
 
@@ -37,11 +37,11 @@ Open Source Intelligence (OSINT) analysts use publicly available information to 
 
 1. **Regularly clean files** before sharing online:
 
-   - [Remove EXIF data from photos](/blog/remove-metadata-from-photo-guide) - GPS coordinates, camera model, timestamps
-   - [Strip author information from Word documents](/blog/remove-metadata-from-word-document) - name, edit history, company
-   - [Clear metadata from PDFs](/blog/remove-metadata-from-pdf-guide) - author, creator app, modification dates
+   - [Remove EXIF data from photos](/blog/remove-metadata-from-photo-guide): GPS coordinates, camera model, timestamps
+   - [Strip author information from Word documents](/blog/remove-metadata-from-word-document): name, edit history, company
+   - [Clear metadata from PDFs](/blog/remove-metadata-from-pdf-guide): author, creator app, modification dates
 
-   You can clean all of these using [PrivMeta](/) - processes files locally in your browser, nothing uploaded.
+   You can clean all of these using [PrivMeta](/), which processes files locally in your browser. Nothing is uploaded.
 
 2. **Metadata Auditing**:
    - Monthly reviews of your digital footprint
@@ -70,12 +70,12 @@ As artificial intelligence advances, OSINT capabilities are growing exponentiall
 - Predictive location modeling from historical metadata
 - Cross-platform identity resolution systems
 
-> "In the digital age, privacy isn't about having nothing to hide - it's about having control over what's revealed."
+> "In the digital age, privacy isn't about having nothing to hide. It's about having control over what's revealed."
 
 By understanding how OSINT analysts use metadata and implementing proper protection measures, you can maintain control over your digital footprint. Tools like PrivMeta provide an essential layer of defense by allowing you to clean metadata locally before it leaves your device.
 
 ## Clean Your Files Before They Can Be Used Against You
 
-OSINT investigators need metadata to work. Remove it and you remove their easiest trail. [PrivMeta](/) strips metadata from photos, documents, PDFs, video, and audio - locally in your browser, with no upload.
+OSINT investigators need metadata to work. Remove it and you remove their easiest trail. [PrivMeta](/) strips metadata from photos, documents, PDFs, video, and audio, locally in your browser, with no upload.
 
 [Remove Metadata Now](/)

@@ -1,14 +1,14 @@
 ---
 title: "Remove Hidden Metadata from Your Photos"
-description: "Your photos contain hidden EXIF data - GPS location, camera model, timestamps. Remove it instantly in your browser: no upload, no account needed. Try it free."
+description: "Your photos contain hidden EXIF data: GPS location, camera model, timestamps. Remove it instantly in your browser. No upload, no account needed. Try it free."
 date: "2025-10-27"
 ---
 
-Every photo you take contains a hidden layer of information called metadata. This digital footprint reveals more than you might expect - from your location to your camera model. Let's explore what's hiding in your images and how to protect your privacy.
+Every photo you take contains a hidden layer of information called metadata. This digital footprint reveals more than you might expect, from your location to your camera model. Let's explore what's hiding in your images and how to protect your privacy.
 
 ## The 3 Main Types of Photo Metadata
 
-1. **EXIF Data (Exchangeable Image File Format)** - see our [complete EXIF data guide](/blog/what-is-exif-data) for a full breakdown:
+1. **EXIF Data (Exchangeable Image File Format)**, see our [complete EXIF data guide](/blog/what-is-exif-data) for a full breakdown:
 
    - GPS coordinates (exact location where photo was taken)
    - Timestamp (date and precise time)
@@ -42,7 +42,7 @@ Every photo you take contains a hidden layer of information called metadata. Thi
 1. Visit [PrivMeta](/)
 2. Drag your photo onto the interface
 3. PrivMeta instantly processes the image locally in your browser
-4. Download the clean version - all metadata removed in seconds
+4. Download the clean version. All metadata removed in seconds
 
 ### Other Methods
 
@@ -66,14 +66,14 @@ Every photo you take contains a hidden layer of information called metadata. Thi
 3. **Use local tools** like PrivMeta instead of online services
 4. **Educate friends and family** about photo metadata risks
 
-> "Privacy isn't about hiding something wrong; it's about controlling what's personal." - Anon
+> "Privacy isn't about hiding something wrong; it's about controlling what's personal." (Anon)
 
 Take control of your digital footprint today by auditing and cleaning your photo metadata. With tools like PrivMeta, privacy protection is just a drag-and-drop away.
 
-For a full walkthrough of all removal methods - Windows, Mac, mobile, and in-browser - see our [photo metadata removal guide](/blog/remove-metadata-from-photo-guide).
+For a full walkthrough of all removal methods, Windows, Mac, mobile, and in-browser, see our [photo metadata removal guide](/blog/remove-metadata-from-photo-guide).
 
 ## Remove Your Photo Metadata Now
 
-Drop your photos into [PrivMeta](/) and all EXIF, IPTC, and XMP data is stripped in seconds - entirely in your browser. No upload, no account.
+Drop your photos into [PrivMeta](/) and all EXIF, IPTC, and XMP data is stripped in seconds, entirely in your browser. No upload, no account.
 
 [Clean Your Photos Now](/)
