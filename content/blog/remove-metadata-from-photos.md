@@ -16,12 +16,12 @@ The metadata embedded in photos is called EXIF data (Exchangeable Image File For
 
 Common EXIF fields include:
 
-- **GPS coordinates** — latitude and longitude, often accurate to within a few metres
-- **Timestamp** — the exact date and time the photo was taken
-- **Device make and model** — for example "Apple iPhone 15 Pro" or "Canon EOS R6"
-- **Lens information** — focal length, aperture, shutter speed, ISO
-- **Software** — the app used to edit or export the image
-- **Orientation** — how the device was held when the photo was taken
+- **GPS coordinates**: latitude and longitude, often accurate to within a few metres
+- **Timestamp**: the exact date and time the photo was taken
+- **Device make and model**: for example "Apple iPhone 15 Pro" or "Canon EOS R6"
+- **Lens information**: focal length, aperture, shutter speed, ISO
+- **Software**: the app used to edit or export the image
+- **Orientation**: how the device was held when the photo was taken
 
 For a full breakdown of EXIF fields and what they mean, see our guide on [what EXIF data is and why it matters](/blog/what-is-exif-data).
 

@@ -1,10 +1,10 @@
 ---
 title: "Remove Metadata Before Uploading to AI Tools"
-description: "AI tools like ChatGPT and Gemini receive the hidden metadata embedded in your files. Remove it in your browser before uploading - free, no sign-up needed."
+description: "AI tools like ChatGPT and Gemini receive the hidden metadata embedded in your files. Remove it in your browser before uploading. Free, no sign-up needed."
 date: "2026-03-15"
 ---
 
-AI tools have made it easier than ever to get things done - summarise a document, edit a photo, translate a contract. But when you upload a file to one of these services, you're not just sharing what you can see. The invisible metadata embedded in that file goes too.
+AI tools have made it easier than ever to get things done. Summarise a document, edit a photo, translate a contract. But when you upload a file to one of these services, you're not just sharing what you can see. The invisible metadata embedded in that file goes too.
 
 For most people, that's not something they've thought about.
 
@@ -28,25 +28,25 @@ None of this is visible in the file itself. But it's all there in the file you'r
 
 ## Why This Matters for AI Tools Specifically
 
-With a standard web upload - attaching a photo to an email, for example - your metadata goes to one recipient. With AI tools, the picture is more complicated.
+With a standard web upload, attaching a photo to an email for example, your metadata goes to one recipient. With AI tools, the picture is more complicated.
 
 Most major AI services have privacy policies that permit using uploaded content to improve their models, at least in some circumstances. Even where that's opted out or restricted, your files pass through external servers, are processed in cloud environments, and are subject to the data practices of companies you may know little about.
 
-The metadata in your files adds another layer of information on top of what you're intentionally sharing. If you upload a photo of a document to ask an AI to transcribe it, the GPS coordinates of where that photo was taken are along for the ride - even though they have nothing to do with your request.
+The metadata in your files adds another layer of information on top of what you're intentionally sharing. If you upload a photo of a document to ask an AI to transcribe it, the GPS coordinates of where that photo was taken are along for the ride, even though they have nothing to do with your request.
 
 ## Real Scenarios Worth Thinking About
 
 **The work document.** You paste a PDF into an AI assistant to get a quick summary. The file's metadata shows it was authored by a named employee at a named company, created on a specific date, and revised seven times. That context wasn't part of what you meant to share.
 
-**The photo for editing.** You upload an image to an AI image tool to remove a background or adjust the lighting. The EXIF data contains the GPS coordinates of where the photo was taken - your home, your office, wherever you were when you took it.
+**The photo for editing.** You upload an image to an AI image tool to remove a background or adjust the lighting. The EXIF data contains the GPS coordinates of where the photo was taken: your home, your office, wherever you were when you took it.
 
-**The AI-generated image.** Some AI image tools embed generation metadata directly into the files they produce - the prompt used, the model version, the platform. If you share that image elsewhere, that information travels with it.
+**The AI-generated image.** Some AI image tools embed generation metadata directly into the files they produce: the prompt used, the model version, the platform. If you share that image elsewhere, that information travels with it.
 
 ## Stripping Metadata Before You Upload
 
-The straightforward fix is to remove the metadata from a file before uploading it to any AI service. What the tool needs to do its job is the content - the text, the image, the audio. It doesn't need to know who created the file, when, or where.
+The straightforward fix is to remove the metadata from a file before uploading it to any AI service. What the tool needs to do its job is the content: the text, the image, the audio. It doesn't need to know who created the file, when, or where.
 
-This is exactly what PrivMeta is designed for. You drop your files in, the metadata is stripped locally in your browser, and you download a clean version. Nothing is uploaded anywhere - the entire process happens on your device.
+This is exactly what PrivMeta is designed for. You drop your files in, the metadata is stripped locally in your browser, and you download a clean version. Nothing is uploaded anywhere. The entire process happens on your device.
 
 PrivMeta supports all the formats you're likely to upload to an AI tool: images ([JPEG, PNG, WEBP](/blog/remove-metadata-from-photo-guide)), [Word documents](/blog/remove-metadata-from-word-document), [PDFs](/blog/remove-metadata-from-pdf-guide), and [audio files](/blog/remove-metadata-from-audio-files).
 
@@ -54,7 +54,7 @@ That clean file is then what you send to the AI tool.
 
 ## A Simple Habit Worth Building
 
-Most privacy advice around AI tools focuses on what you type - be careful what you ask, don't share personal details in prompts. That's sensible. But the files you attach deserve the same consideration.
+Most privacy advice around AI tools focuses on what you type. Be careful what you ask, and don't share personal details in prompts. That's sensible. But the files you attach deserve the same consideration.
 
 Stripping metadata before uploading takes a few seconds and eliminates a category of data sharing that's easy to overlook. For photos taken at home or work, documents with author information, or any file where the context of its creation is sensitive, it's a straightforward precaution.
 

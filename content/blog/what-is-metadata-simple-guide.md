@@ -1,10 +1,10 @@
 ---
 title: "What Is Metadata? Hidden Data Explained"
-description: "Metadata is hidden data in every photo, document, and PDF - your location, name, edit history and more. Remove it free in your browser. No sign-up needed."
+description: "Metadata is hidden data in every photo, document, and PDF: your location, name, edit history and more. Remove it free in your browser. No sign-up needed."
 date: "2025-11-20"
 ---
 
-Metadata is "data about data" - information that describes other information. Think of it like a digital ID card for your files. Just like your ID card has your name, photo, and birth date without containing your actual body, metadata describes a file without being the main content.
+Metadata is "data about data", information that describes other information. Think of it like a digital ID card for your files. Just like your ID card has your name, photo, and birth date without containing your actual body, metadata describes a file without being the main content.
 
 ## Common Examples of Metadata
 
@@ -35,7 +35,7 @@ Metadata can reveal sensitive information even when the main content seems harml
 
 ## The PrivMeta Solution
 
-If you want to remove metadata safely without compromising your files, **PrivMeta** offers a privacy-first solution that runs entirely in your browser. Unlike other tools that upload your files to external servers, PrivMeta processes everything locally on your device - your files never leave your computer.
+If you want to remove metadata safely without compromising your files, **PrivMeta** offers a privacy-first solution that runs entirely in your browser. Unlike other tools that upload your files to external servers, PrivMeta processes everything locally on your device. Your files never leave your computer.
 
 Try PrivMeta today to:
 
@@ -56,6 +56,6 @@ Understanding metadata is the first step to digital privacy. By being aware of t
 
 ## Remove Your File Metadata Now
 
-Now you know what metadata is and what it can reveal. [PrivMeta](/) lets you strip it from any file - photos, documents, PDFs, video, audio - entirely in your browser. Nothing is uploaded.
+Now you know what metadata is and what it can reveal. [PrivMeta](/) lets you strip it from any file, photos, documents, PDFs, video, audio, entirely in your browser. Nothing is uploaded.
 
 [Remove Metadata Free](/)
