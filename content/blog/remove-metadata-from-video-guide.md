@@ -1,126 +1,84 @@
 ---
-title: "Remove Metadata from MP4, MOV, AVI & More"
-description: "Strip hidden metadata from MP4, MOV, AVI, WEBM, and MKV video files directly in your browser - no upload, no software needed. Try it free - no sign-up needed."
-date: "2025-12-15"
+title: "How to Remove Metadata from Video Files. MP4, MOV and More."
+description: "Remove GPS coordinates, device details and timestamps from MP4, MOV and other video files in your browser. Your files never leave your device. Free."
+date: "2026-04-19"
 ---
 
-Video files are often the last place people think to check for metadata. Yet every MP4, MOV, or AVI you record carries a layer of hidden information - from the GPS coordinates of where you were standing to the exact make and model of the device that shot it.
+Video files carry more hidden data than most people realise. Every MP4 or MOV recorded on a smartphone quietly embeds where you were standing, what device you used, and exactly when you pressed record. None of this is visible when someone watches the file. All of it is readable by anyone who knows how to look.
 
-Unlike photos, where the EXIF privacy risk is widely understood, video metadata tends to go unnoticed. But the data embedded in a short phone clip can be just as identifying - and just as easy for anyone who receives the file to extract.
+Removing metadata from video files takes a few seconds and requires no specialist software. This guide covers how to do it, what your video files actually contain, and whether quality is affected.
 
-## What Metadata Do Video Files Contain?
+## How to Remove Metadata from a Video File in Your Browser
 
-Video metadata is embedded at the container level - in the file's structure, not in the image or audio content. The exact fields depend on the format, but across all common video formats you'll typically find:
+[PrivMeta](/) removes all metadata from video files directly in your browser. Your files are never uploaded to a server. PrivMeta uses FFmpeg compiled to WebAssembly, which means the entire process runs locally in your browser tab.
 
-### Identifying Information
-- **Creation date and time** - when recording started, often down to the millisecond
-- **Device make and model** - the phone or camera that recorded the footage
-- **Software version** - the app or firmware used to record or export the file
-- **GPS coordinates** - latitude, longitude, and sometimes altitude of the recording location
-
-### Technical Metadata
-- **Duration, frame rate, and resolution** - the video's technical specs
-- **Video and audio codec details** - codec name, version, and encoding settings used
-- **Bit rate and colour profile**
-- **Rotation tag** - the physical orientation of the device when recording
-
-### Editorial and Encoder Tags
-- **Title, comment, and description** - free-text fields often auto-populated by editing software
-- **Author / Artist** - the named creator
-- **Copyright string**
-- **Encoder tag** - the name and version of the software used to export the finished file
-
-## How Different Video Formats Store Metadata
-
-Each container format has its own metadata architecture:
-
-| Format | Metadata Structure | Key Privacy Fields |
-|--------|-------------------|--------------------|
-| MP4 | `udta` and `moov` atoms (ISO Base Media) | GPS, encoder, creation date, device model |
-| MOV | QuickTime metadata atoms | GPS, device model, creation date |
-| MKV | Matroska tags and Segment Info | Writing app, muxing app, creation date |
-| AVI | RIFF INFO chunks | Software, creation date, author |
-| WEBM | WebM-specific tags | Encoder, muxing app, creation date |
-
-**MP4 and MOV** files recorded on iPhones, Android phones, or dedicated cameras routinely include GPS coordinates when location services are enabled. The QuickTime-style atoms embedded in these files can contain precise latitude and longitude - readable by any metadata tool, no specialist knowledge required.
-
-**MKV files** often carry a `Writing application` field naming the software and version used to create or remux the file, alongside a `Muxing application` field. These can reveal your internal post-production toolchain.
-
-## Real Privacy Scenarios
-
-**Sharing event footage**: An unstripped MP4 from a phone contains the GPS coordinates of where it was filmed and the exact model of the device. For protests, interviews, private gatherings, or any footage where location matters, that metadata travels with every copy.
-
-**Distributing edited content**: Exporting through a video editor embeds the application name and version in the metadata. For client deliverables or publicly shared content, this can expose internal workflow details you didn't intend to share.
-
-**Sending video directly**: Platforms like YouTube and Vimeo strip metadata on upload, but that protection doesn't exist when you share files directly - via email, AirDrop, WeTransfer, messaging apps, or any direct file transfer. The recipient gets the file with all metadata intact.
-
-**Unreleased material**: If you share a rough cut with collaborators before release, the creation timestamp and encoder tag in the file can reveal when the work was done and which tools were used.
-
-## How to Remove Metadata from Video Files
-
-### PrivMeta - In-Browser, No Upload
-
-PrivMeta uses FFmpeg compiled to WebAssembly, running entirely inside your browser tab. Your video files never leave your device - nothing is uploaded to any server.
-
-**Supported formats:** MP4, MOV, MKV, AVI, WEBM
+**Supported formats:** MP4, MOV, AVI, WEBM, MKV
 
 1. Go to [PrivMeta](/)
-2. Drop your video files into the dropzone
+2. Drop your video file into the upload area
 3. Click **Remove metadata**
-4. Download the cleaned files
+4. Download the cleaned file
 
-PrivMeta strips all metadata streams using `-map_metadata -1` and copies the video and audio tracks without re-encoding - so your video quality is preserved exactly. No transcoding, no quality loss, no waiting for a server to process your files.
+PrivMeta strips all metadata streams and copies the video and audio tracks without transcoding, so your video quality is preserved exactly. No recompression, no quality loss, no waiting for a server.
 
-### Command Line (FFmpeg)
-
-For batch processing or scripting:
+**For technical users who prefer the command line:**
 
 ```bash
 ffmpeg -i input.mp4 -map_metadata -1 -c copy output.mp4
 ```
 
-The same approach works for other formats - replace the extension accordingly. The `-c copy` flag copies all streams without re-encoding, making this fast even for large files.
+The `-map_metadata -1` flag removes all metadata streams. The `-c copy` flag copies the video and audio streams without transcoding, keeping the process fast even for large files.
 
-To verify the result:
+## What Metadata Does a Video File Contain?
 
-```bash
-ffprobe -v quiet -print_format json -show_format output.mp4
-```
+Video metadata is stored at the container level, in the file's structure rather than in the image or audio content itself. The exact fields depend on the format, but across all common video formats you will typically find:
 
-An empty or minimal `tags` object in the output confirms the metadata has been stripped.
+**GPS coordinates** — latitude, longitude, and sometimes altitude of the recording location. Smartphones with location services enabled write this automatically to every video they record.
 
-### ExifTool
+**Device make and model** — the phone or camera that captured the footage.
 
-ExifTool reads and strips metadata from a wide range of video formats:
+**Creation date and time** — when recording started, often precise to the millisecond.
 
-```bash
-exiftool -all= input.mp4
-```
+**Software and encoder details** — the application or firmware used to record or export the file, including version number.
 
-This modifies the file in place and creates a backup by default. ExifTool handles many metadata fields but may not strip all embedded chunks in every container format - FFmpeg's `-map_metadata -1` is more thorough for video specifically.
+**Title, comment, and description** — free text fields that editing software often populates automatically.
 
-## What Remains After Cleaning?
+**Author and copyright** — named creator fields, sometimes filled in from software account settings.
 
-After processing through PrivMeta:
+**Technical details** — duration, frame rate, resolution, codec name, and bit rate. These are less sensitive but still part of the metadata layer that travels with the file.
 
-- No GPS coordinates or location data
-- No device make or model
-- No creation timestamp
-- No software or encoder tags
-- No author, title, or comment fields
+GPS is the most significant privacy concern. MP4 and MOV files recorded on iPhones, Android phones, and dedicated cameras routinely include precise coordinates when location services are enabled. This data is readable by any metadata tool, with no specialist knowledge required.
 
-The video content, audio track, resolution, frame rate, chapter markers, and subtitles are preserved exactly as they were.
+When you send a video directly, via email, messaging apps, AirDrop, or any file transfer, the recipient gets the original file with all its metadata intact. Platforms like YouTube and Vimeo strip metadata on upload, but that protection does not exist for direct file sharing.
 
-## When to Remove Video Metadata
+## Supported Video Formats
 
-- Before sharing footage from events, interviews, or locations where GPS is sensitive
-- Before delivering video files to clients when encoder or workflow details are confidential
-- Before uploading raw footage to shared storage or sending to collaborators
-- Before distributing personal videos where device model or timestamp could identify you
-- When archiving footage and stripping production metadata before long-term storage
+PrivMeta handles the most widely used video formats:
 
-If you also work with audio recordings, see our guide on [removing metadata from audio files](/blog/remove-metadata-from-audio-files) - MP3, FLAC, WAV, and more, all processed in-browser with no upload required.
+| Format | Common use | Key metadata fields |
+|--------|-----------|---------------------|
+| MP4 | Smartphones, cameras, web video | GPS, device model, creation date, encoder |
+| MOV | iPhones, Final Cut Pro | GPS, device model, creation date |
+| MKV | Open source video, archiving | Writing app, muxing app, creation date |
+| AVI | Windows, legacy recording | Software, creation date, author |
+| WEBM | Web streaming | Encoder, muxing app, creation date |
 
-## Try It Now
+MKV files often carry a "Writing application" field naming the software and version used to create or process the file. For anyone distributing edited content, this can expose internal production workflow details you did not intend to share.
 
-[Remove metadata from your video files - free, in your browser, no upload required.](/)
+## Does Removing Metadata Affect Video Quality?
+
+No. Video quality is completely unaffected.
+
+Metadata is stored in a separate part of the container file, entirely distinct from the video and audio streams. When metadata is removed, the streams themselves are untouched. The video plays back at exactly the same resolution, frame rate, and quality as the original.
+
+PrivMeta uses stream copying rather than transcoding, which means the video is never decoded and recompressed during processing. The pixels in your video are never touched.
+
+After processing, the following are fully preserved: video content, audio track, resolution, frame rate, chapter markers, and subtitles. The following are removed: GPS coordinates, device information, creation timestamps, software tags, and all other metadata fields.
+
+## Share Video Without the Hidden Details
+
+Before sharing footage from events, interviews, or any location where GPS matters, strip the metadata first. Before delivering video files to clients when encoder or workflow details should stay private, strip it. Before uploading raw footage to shared storage or sending to collaborators, strip it.
+
+[PrivMeta removes metadata from your video files](/) in your browser in seconds. No upload, no account, no software to install.
+
+If you also work with audio recordings, see our guide on [removing metadata from audio files](/blog/remove-metadata-from-audio-files), covering MP3, FLAC, WAV, and more, all processed in your browser with no upload required.

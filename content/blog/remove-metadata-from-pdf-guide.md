@@ -1,92 +1,74 @@
 ---
-title: "Remove Metadata from PDFs - Free & In-Browser"
-description: "PDF files hide author names, software details, creation dates, and tracked changes inside their metadata. Learn how to remove PDF metadata privately without uploading your files to any server."
-date: "2026-01-10"
+title: "How to Remove Metadata from a PDF. Free, No Software."
+description: "Remove hidden author details, creation dates and document history from PDFs in your browser. Your files never leave your device. Free, no account."
+date: "2026-04-19"
 ---
 
-PDF files are rarely as clean as they look. Behind the visible text and images, every PDF carries a layer of invisible metadata - and that metadata can reveal far more about you than you intended to share.
+PDF files are rarely as clean as they look. Every PDF you create or export quietly stores a layer of invisible information: who made it, what software was used, when it was created, and sometimes much more. None of this is visible when someone opens the document. All of it travels with the file when you share it.
 
-## What Metadata Is Hidden Inside PDFs?
+Remove metadata from a PDF before sending it and that hidden information stays private. This guide covers how to do it, what metadata PDFs actually contain, and why it matters.
 
-When you create or save a PDF, your software automatically embeds details including:
+## How to Remove Metadata from a PDF in Your Browser
 
-- **Author name** - the full name registered to your software license
-- **Creator application** - e.g. "Microsoft Word 16.0", "Adobe Acrobat Pro", "LibreOffice 7.5"
-- **Producer application** - the tool that converted the file to PDF
-- **Creation and modification dates** - exact timestamps down to the second
-- **Document title and subject** - often auto-populated from file properties
-- **Custom properties** - company name, department, or document tags added by your organisation
-
-This information is invisible to anyone reading the PDF normally, but trivially easy to extract using free tools, or simply by opening the file's Document Properties panel.
-
-## Why PDF Metadata Is a Genuine Privacy Risk
-
-### Revealing the Wrong Software Version
-
-If your PDF says it was created by an outdated version of Acrobat or Word, that tells an attacker exactly which known vulnerabilities might apply to your system.
-
-### Exposing Internal Names and Structure
-
-Documents shared externally often still carry the author's real name, their manager's name (via comments), or internal department identifiers. Whistleblowers, journalists, and legal professionals have been identified this way.
-
-### Tracking Timelines
-
-Creation and modification timestamps can prove when a document was drafted - information that may be legally or professionally sensitive.
-
-### Version History Leaks
-
-Some PDF workflows embed hidden revision history, tracked changes from the original Word or Google Docs source, or comments that were marked as resolved but never truly deleted.
-
-## How to Remove Metadata from a PDF
-
-### Option 1: PrivMeta (Private, No Upload Required)
-
-PrivMeta strips PDF metadata entirely in your browser - no file ever leaves your device:
+[PrivMeta](/) removes PDF metadata directly in your browser. Your file is never uploaded to a server.
 
 1. Go to [PrivMeta](/)
-2. Drag and drop your PDF into the dropzone
+2. Drop your PDF into the upload area
 3. Click **Remove metadata**
-4. Download your cleaned PDF
+4. Download the cleaned file
 
-PrivMeta removes the document's Info dictionary (title, author, subject, keywords, creator, producer) and the XMP metadata stream. The cleaned file contains no identifiable metadata fields.
+The document's text, images, and layout are completely untouched. Only the hidden metadata is removed. The process takes a few seconds and requires no software installation or account.
 
-### Option 2: Adobe Acrobat Pro
+PrivMeta removes both the Info dictionary (which stores author, title, subject, keywords, creator, and producer) and the XMP metadata stream. After processing, the PDF contains no identifiable metadata fields.
 
-If you have Acrobat Pro, use **File → Properties → Description** to clear visible fields, then run **Tools → Redact → Sanitize Document** for a thorough clean. Note: this uploads nothing to Adobe servers when done in the desktop app.
+## What Metadata Does a PDF Contain?
 
-### Option 3: Command Line (ExifTool)
+PDF files store metadata in two places: the Info dictionary and the XMP stream. Both are invisible when you read the document normally, but readable by anyone who knows where to look.
 
-For technical users:
+**Author** is the full name registered to the software licence used to create the document. This is often a personal name pulled from a Microsoft Office or Adobe account.
 
-```bash
-exiftool -all= yourfile.pdf
-```
+**Creator application** is the software that produced the original document, for example "Microsoft Word 16.0" or "LibreOffice 7.5". This tells a reader exactly which application, and which version, was used.
 
-This strips all metadata in place. Check the output with `exiftool yourfile.pdf` to verify.
+**Producer** is the tool that converted the file to PDF. This may be different from the creator if the document was exported through a print driver or a separate converter.
 
-## What Metadata Remains After Cleaning?
+**Creation date and modification date** are exact timestamps, often down to the second, recording when the file was first saved and when it was last changed.
 
-After running through PrivMeta, your PDF will have:
+**Title and subject** are often automatically populated from the document's file properties, which may contain internal project names or descriptions you never intended to share.
 
-- No author, title, subject, or keyword fields
-- No creator or producer application references
-- No creation or modification timestamps
-- No XMP metadata stream
+**Keywords** are any tags applied to the document, sometimes added automatically by document management systems.
 
-The file content - text, images, layout - is preserved exactly as-is.
+**Company or organisation** is embedded automatically when the document was created using a corporate software licence.
 
-## When Should You Always Clean PDF Metadata?
+**Document history** can include revision information or tracked changes inherited from the source document, a Word file for example, that were not properly removed before the PDF was exported.
 
-- Before sending documents to clients or external parties
-- When publishing PDFs on a website or public repository
-- Before submitting documents to legal or regulatory bodies
-- When sharing research, journalism, or sensitive internal reports
-- Before attaching PDFs to emails on public mailing lists
+If the PDF was created from a photo, such as a scanned document, it may also inherit GPS coordinates and device information from the original image's EXIF data.
 
-If you also work with Word documents, see our guide on [removing metadata from DOCX files](/blog/remove-metadata-from-word-document) - the same in-browser approach, no installation needed.
+## Does Removing PDF Metadata Affect the File?
 
-## Try It Now
+No. The document's content is completely unaffected.
 
-Remove PDF metadata privately - no account, no upload, no tracking.
+Metadata in a PDF is stored separately from the content layer. Text, images, tables, fonts, and layout are all held in a different part of the file structure. When metadata is removed, only those hidden property fields are cleared. Everything the reader sees stays exactly as it was.
 
-[Clean Your PDF Now](/)
+File size decreases slightly because the metadata fields are no longer present, but this is negligible in practice.
+
+## Why Removing PDF Metadata Matters
+
+**Legal documents.** Legal and court documents often retain the author's name, revision timestamps, and creation software. In litigation, metadata is discoverable. It has been used to challenge document authenticity and to show that a file was altered after a specific date.
+
+**CVs and job applications.** A CV created in Microsoft Word and exported as a PDF may carry the applicant's full name, the company they currently work for (pulled from their Office licence), and how long the document was open during editing. Sending this to a prospective employer shares context you may not have intended to include.
+
+**Reports and client documents.** Reports sent to clients or published on a website often contain internal author names, draft timestamps, and company information that is irrelevant once the document leaves the organisation, and potentially sensitive.
+
+**Academic submissions.** Universities and journals increasingly strip metadata before peer review to support blind reviewing. Cleaning your PDF before submission ensures the process works as intended.
+
+**GDPR and data minimisation.** Under GDPR, the principle of data minimisation requires that personal data is not shared beyond what is necessary. Metadata embedded in PDFs often qualifies as personal data. Removing it before sharing documents is a straightforward step toward compliance.
+
+**Software version disclosure.** The creator application field reveals exactly which software version produced the document. An outdated version of Word or Acrobat listed in a PDF's metadata tells an attacker which known vulnerabilities may apply to your systems. This is a minor but real exposure that takes seconds to close.
+
+## Remove PDF Metadata Before You Share
+
+The fastest and most private way to [remove metadata from your PDFs](/) is to do it in your browser before the file goes anywhere. PrivMeta handles this in seconds, with no upload, no account, and no software to install.
+
+If you also work with Word documents, see our guide on [removing metadata from a Word document](/blog/remove-metadata-from-word-document) for the same in-browser process.
+
+[Remove metadata from your PDF now.](/)
