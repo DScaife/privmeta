@@ -4,6 +4,8 @@ import path from "path";
 
 export const dynamic = "error"; // 👈 Force static generation (no runtime)
 
+const toDateString = (date: Date) => date.toISOString().split("T")[0];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://www.privmeta.com";
 
@@ -29,23 +31,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     console.error("Error loading blog directory:", error);
   }
 
+  const today = toDateString(new Date());
+
   // Your static routes
-const staticRoutes: MetadataRoute.Sitemap = [
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/how-it-works`,
-      lastModified: new Date(),
+      lastModified: today,
       changeFrequency: "monthly",
       priority: 0.8,
     },
