@@ -12,6 +12,23 @@ Sentry.init({
   // Enable logs to be sent to Sentry
   enableLogs: true,
 
+  ignoreErrors: [
+    "Java bridge method invocation error",
+    "TypeError: can't access dead object",
+    /NotFoundError: Failed to execute '(removeChild|insertBefore)' on 'Node'/,
+    "ResizeObserver loop limit exceeded",
+    "ResizeObserver loop completed with undelivered notifications",
+    "Non-Error promise rejection captured",
+    "Non-Error exception captured",
+  ],
+
+  denyUrls: [
+    /extensions\//i,
+    /^chrome-extension:\/\//i,
+    /^moz-extension:\/\//i,
+    /^safari-extension:\/\//i,
+    /^safari-web-extension:\/\//i,
+  ],
 });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
