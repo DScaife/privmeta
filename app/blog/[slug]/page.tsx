@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import html from "remark-html";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Typography from "@/components/Typography";
 import {
   Breadcrumb,
@@ -30,9 +31,20 @@ function estimateReadingTime(content: string): number {
   return Math.max(1, Math.ceil(wordCount / 200));
 }
 
-async function getPostData(slug: string): Promise<BlogPost> {
+async function getPostData(slug: string): Promise<BlogPost | null> {
   const fullPath = path.join(process.cwd(), "content/blog", `${slug}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
+  let fileContents: string;
+
+  try {
+    fileContents = fs.readFileSync(fullPath, "utf8");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return null;
+    }
+
+    throw error;
+  }
+
   const matterResult = matter(fileContents);
 
   const processedContent = await remark().use(remarkGfm).use(html).process(matterResult.content);
@@ -57,6 +69,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostData(slug);
+
+  if (!post) {
+    return {
+      title: "Post Not Found | PrivMeta Blog",
+      description: "The requested blog post could not be found.",
+      robots: { index: false, follow: false },
+    };
+  }
+
   const url = `https://www.privmeta.com/blog/${slug}`;
 
   return {
@@ -85,6 +106,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPostData(slug);
+
+  if (!post) {
+    notFound();
+  }
+
   const url = `https://www.privmeta.com/blog/${slug}`;
 
   const articleSchema = {
