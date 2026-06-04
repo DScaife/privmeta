@@ -1,4 +1,5 @@
 # 1. Use an official Node.js runtime as a parent image
+# Use node:20-alpine for LTS, or pin to a specific minor version with node:20.18.0-alpine
 FROM node:25-alpine
 
 # 2. Set the working directory inside the container
