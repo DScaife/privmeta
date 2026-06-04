@@ -1,4 +1,14 @@
-# Next.js Project
+# privmeta
+
+## About
+
+**privmeta** is a browser-based privacy tool that strips hidden metadata (EXIF, GPS, author info, revision history, etc.) from images, videos, audio, and documents before you share them. Everything runs entirely client-side in your browser — files never leave your device, which is the whole point: the service cannot leak what it never sees. It's aimed at journalists, activists, and anyone who wants to practice basic digital hygiene before posting a photo, sending a PDF, or forwarding a video. The app also bundles results into a downloadable `.zip` for convenience, and supports a "disable internet" mode for paranoid scenarios.
+
+## Tech Stack
+
+Built with **Next.js 15** (App Router), **React 19**, and **TypeScript**, styled with **Tailwind CSS 4** and **Radix UI** primitives. Metadata processing is handled by **piexifjs** (JPEG EXIF), **pdf-lib** (PDF), and **@ffmpeg/ffmpeg** (audio/video). Supporting libraries include **JSZip** (bundling), **Sonner** (toasts), **lucide-react** (icons), **next-themes** (dark mode), **gray-matter** + **remark** (blog), and **Sentry** + **Vercel Analytics** (observability).
+
+## Getting Started
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
