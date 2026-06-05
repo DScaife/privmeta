@@ -10,7 +10,7 @@ const Footer = () => {
 
         <a
           className="underline underline-offset-4 type-fluid type-footer"
-          href="https://github.com/DScaife/privmeta/tree/master"
+          href="https://github.com/VentureAlex/privmeta"
           target="_blank"
           rel="noopener noreferrer"
         >
