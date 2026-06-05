@@ -11,6 +11,8 @@ import ClearAllButton from "@/components/ClearAllButton";
 import ShareFunctions from "@/components/ShareFunctions";
 import Hero from "@/components/Hero";
 import DisableInternet from "@/components/DisableInternet";
+import MetadataReport from "@/components/MetadataReport";
+import type { FileStrippedReport } from "@/utils/stripMetadata";
 
 type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
 
@@ -52,14 +54,8 @@ const showErrorToast = (type: ErrorType) => {
   };
 
   const { title, description, severity } = messages[type];
-
   const show = severity === "warning" ? toast.warning : toast.error;
-
-  show(title, {
-    description,
-    duration: 5000,
-    dismissible: true,
-  });
+  show(title, { description, duration: 5000, dismissible: true });
 };
 
 type FileStatus = "idle" | "processing" | "done" | "failed";
@@ -68,6 +64,7 @@ export default function Home() {
   const [fileStore, setFileStore] = useState<File[]>([]);
   const [fileStatuses, setFileStatuses] = useState<Record<number, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
+  const [reports, setReports] = useState<FileStrippedReport[]>([]);
 
   useEffect(() => {
     const infoTimeout = setTimeout(() => {
@@ -82,24 +79,7 @@ export default function Home() {
       });
     }, 2000);
 
-    const bmcTimeout = setTimeout(() => {
-      toast.info("Like the app?", {
-        id: "support-bmc",
-        description: "Support this project on Buy Me a Coffee.",
-        duration: 10000,
-        action: {
-          label: "Support",
-          onClick: () => {
-            window.open("https://buymeacoffee.com/privco", "_blank");
-          },
-        },
-      });
-    }, 60000);
-
-    return () => {
-      clearTimeout(infoTimeout);
-      clearTimeout(bmcTimeout);
-    };
+    return () => clearTimeout(infoTimeout);
   }, []);
 
   const handleFilesAccepted = (newFiles: File[]) => {
@@ -108,11 +88,8 @@ export default function Home() {
       showErrorToast("file_count");
       return;
     }
-
     setFileStore((prevFiles) => [...prevFiles, ...newFiles].slice(0, MAX_FILE_COUNT));
-    toast.success(newFiles.length <= 1 ? "1 File queued" : `${newFiles.length} files queued`, {
-      duration: 1700,
-    });
+    toast.success(newFiles.length <= 1 ? "1 File queued" : `${newFiles.length} files queued`, { duration: 1700 });
   };
 
   const handleFileRemoved = (index: number) => {
@@ -128,9 +105,15 @@ export default function Home() {
     });
   };
 
+  const handleClearAll = (files: File[]) => {
+    setFileStore(files);
+    if (files.length === 0) setReports([]);
+  };
+
   const handleMetadataRemoval = async () => {
     setProcessing(true);
     setFileStatuses({});
+    setReports([]);
 
     await new Promise((res) => setTimeout(res, 1000));
 
@@ -139,26 +122,27 @@ export default function Home() {
 
     try {
       const cleanedFiles: File[] = [];
+      const collectedReports: FileStrippedReport[] = [];
       let failedCount = 0;
 
       for (let i = 0; i < fileStore.length; i++) {
         const file = fileStore[i];
         setFileStatuses((prev) => ({ ...prev, [i]: "processing" }));
 
-        let cleaned: File | null = null;
+        let result: { file: File | null; report: FileStrippedReport } | null = null;
 
         if (file.type === "image/jpeg" || file.type === "image/jpg") {
-          cleaned = await stripJpegMetadata(file);
+          result = await stripJpegMetadata(file);
         } else if (file.type.startsWith("image/")) {
-          cleaned = await stripImageMetadata(file);
+          result = await stripImageMetadata(file);
         } else if (file.type === "application/pdf") {
-          cleaned = await stripPdfMetadata(file);
+          result = await stripPdfMetadata(file);
         } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-          cleaned = await stripDocxMetadata(file);
+          result = await stripDocxMetadata(file);
         } else if (file.type.startsWith("video/")) {
-          cleaned = await stripVideoMetadata(file);
+          result = await stripVideoMetadata(file);
         } else if (file.type.startsWith("audio/")) {
-          cleaned = await stripAudioMetadata(file);
+          result = await stripAudioMetadata(file);
         } else {
           showErrorToast("unsupported_format");
           setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
@@ -166,13 +150,13 @@ export default function Home() {
           continue;
         }
 
-        if (cleaned) {
-          const renamed = new File([cleaned], renameWithSuffix(file), {
-            type: cleaned.type,
-          });
+        if (result?.file) {
+          const renamed = new File([result.file], renameWithSuffix(file), { type: result.file.type });
           cleanedFiles.push(renamed);
+          collectedReports.push(result.report);
           setFileStatuses((prev) => ({ ...prev, [i]: "done" }));
         } else {
+          if (result?.report) collectedReports.push(result.report);
           setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
           failedCount++;
         }
@@ -193,15 +177,17 @@ export default function Home() {
         const url = URL.createObjectURL(zipBlob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "PrivMeta_cleaned.zip";
+        a.download = "CleanPhoto_cleaned.zip";
         a.click();
         URL.revokeObjectURL(url);
       }
 
+      setReports(collectedReports);
+
       if (failedCount === 0) {
         toast.success("Download ready ✨");
       } else if (cleanedFiles.length > 0) {
-        toast.warning(`Download ready - ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
+        toast.warning(`Download ready — ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
       } else {
         showErrorToast("general");
       }
@@ -214,7 +200,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = processing ? "Cleaning metadata..." : "PrivMeta";
+    document.title = processing ? "Cleaning metadata..." : "CleanPhoto";
   }, [processing]);
 
   return (
@@ -230,7 +216,7 @@ export default function Home() {
           onError={(type: ErrorType) => showErrorToast(type)}
         />
         <div className="w-full flex justify-end gap-(--space-md)">
-          <ClearAllButton fileStore={fileStore} setFileStore={setFileStore} processing={processing} />
+          <ClearAllButton fileStore={fileStore} setFileStore={handleClearAll} processing={processing} />
           <Button
             className="type-fluid type-button-lg p-(--fluid-md-xl)"
             disabled={fileStore.length <= 0 || processing}
@@ -243,6 +229,12 @@ export default function Home() {
       </div>
       <DisableInternet />
       <div className="h-0.75 w-full bg-foreground" />
+      {reports.length > 0 && (
+        <>
+          <MetadataReport reports={reports} />
+          <div className="h-0.75 w-full bg-foreground" />
+        </>
+      )}
       <ShareFunctions />
     </div>
   );
