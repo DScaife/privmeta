@@ -43,7 +43,7 @@ export default function BlogPage() {
         {sortedPosts.map((post, index) => (
           <React.Fragment key={post.slug}>
             {index > 0 && <Divider />}
-            <Link href={`/blog/${post.slug}`} className="group flex flex-col gap-(--space-lg) py-(--fluid-xl-2xl)">
+            <Link href={`/blog/${post.slug}`} prefetch={false} className="group flex flex-col gap-(--space-lg) py-(--fluid-xl-2xl)">
               <Typography variant="label" muted>
                 {post.date
                   ? new Date(post.date).toLocaleDateString("en-US", {
