@@ -19,6 +19,12 @@ const nextConfig: NextConfig = {
         source: "/site.webmanifest",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
       },
+      // Self-hosted ffmpeg.wasm core (~31MB) - only changes when @ffmpeg/core is
+      // upgraded; if that ever happens, move it to a new path to bust this cache
+      {
+        source: "/ffmpeg/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
     ];
   },
 };

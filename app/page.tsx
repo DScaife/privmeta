@@ -1,8 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Dropzone from "@/components/Dropzone";
+import Dropzone, { type FileStatus, type StoredFile } from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
+import { ACCEPTED_FILE_TYPES, MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -62,11 +62,9 @@ const showErrorToast = (type: ErrorType) => {
   });
 };
 
-type FileStatus = "idle" | "processing" | "done" | "failed";
-
 export default function Home() {
-  const [fileStore, setFileStore] = useState<File[]>([]);
-  const [fileStatuses, setFileStatuses] = useState<Record<number, FileStatus>>({});
+  const [fileStore, setFileStore] = useState<StoredFile[]>([]);
+  const [fileStatuses, setFileStatuses] = useState<Record<string, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
 
   useEffect(() => {
@@ -109,21 +107,18 @@ export default function Home() {
       return;
     }
 
-    setFileStore((prevFiles) => [...prevFiles, ...newFiles].slice(0, MAX_FILE_COUNT));
+    const wrapped: StoredFile[] = newFiles.map((file) => ({ id: crypto.randomUUID(), file }));
+    setFileStore((prevFiles) => [...prevFiles, ...wrapped].slice(0, MAX_FILE_COUNT));
     toast.success(newFiles.length <= 1 ? "1 File queued" : `${newFiles.length} files queued`, {
       duration: 1700,
     });
   };
 
-  const handleFileRemoved = (index: number) => {
-    setFileStore((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  const handleFileRemoved = (id: string) => {
+    setFileStore((prevFiles) => prevFiles.filter((stored) => stored.id !== id));
     setFileStatuses((prev) => {
-      const next: Record<number, FileStatus> = {};
-      Object.entries(prev).forEach(([k, v]) => {
-        const ki = Number(k);
-        if (ki < index) next[ki] = v;
-        else if (ki > index) next[ki - 1] = v;
-      });
+      const next = { ...prev };
+      delete next[id];
       return next;
     });
   };
@@ -134,36 +129,42 @@ export default function Home() {
 
     await new Promise((res) => setTimeout(res, 1000));
 
-    const { stripImageMetadata, stripPdfMetadata, stripDocxMetadata, stripVideoMetadata, stripAudioMetadata, stripJpegMetadata } =
+    const { stripImageMetadata, stripGifMetadata, stripPdfMetadata, stripDocxMetadata, stripFfmpegMetadata, stripJpegMetadata } =
       await import("@/utils/stripMetadata");
 
     try {
       const cleanedFiles: File[] = [];
       let failedCount = 0;
 
-      for (let i = 0; i < fileStore.length; i++) {
-        const file = fileStore[i];
-        setFileStatuses((prev) => ({ ...prev, [i]: "processing" }));
+      for (const { id, file } of fileStore) {
+        setFileStatuses((prev) => ({ ...prev, [id]: "processing" }));
 
         let cleaned: File | null = null;
 
-        if (file.type === "image/jpeg" || file.type === "image/jpg") {
-          cleaned = await stripJpegMetadata(file);
-        } else if (file.type.startsWith("image/")) {
-          cleaned = await stripImageMetadata(file);
-        } else if (file.type === "application/pdf") {
-          cleaned = await stripPdfMetadata(file);
-        } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-          cleaned = await stripDocxMetadata(file);
-        } else if (file.type.startsWith("video/")) {
-          cleaned = await stripVideoMetadata(file);
-        } else if (file.type.startsWith("audio/")) {
-          cleaned = await stripAudioMetadata(file);
-        } else {
-          showErrorToast("unsupported_format");
-          setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
-          failedCount++;
-          continue;
+        switch (ACCEPTED_FILE_TYPES[file.type]?.kind) {
+          case "jpeg":
+            cleaned = await stripJpegMetadata(file);
+            break;
+          case "image":
+            cleaned = await stripImageMetadata(file);
+            break;
+          case "gif":
+            cleaned = await stripGifMetadata(file);
+            break;
+          case "pdf":
+            cleaned = await stripPdfMetadata(file);
+            break;
+          case "docx":
+            cleaned = await stripDocxMetadata(file);
+            break;
+          case "ffmpeg":
+            cleaned = await stripFfmpegMetadata(file);
+            break;
+          default:
+            showErrorToast("unsupported_format");
+            setFileStatuses((prev) => ({ ...prev, [id]: "failed" }));
+            failedCount++;
+            continue;
         }
 
         if (cleaned) {
@@ -171,9 +172,9 @@ export default function Home() {
             type: cleaned.type,
           });
           cleanedFiles.push(renamed);
-          setFileStatuses((prev) => ({ ...prev, [i]: "done" }));
+          setFileStatuses((prev) => ({ ...prev, [id]: "done" }));
         } else {
-          setFileStatuses((prev) => ({ ...prev, [i]: "failed" }));
+          setFileStatuses((prev) => ({ ...prev, [id]: "failed" }));
           failedCount++;
         }
       }
@@ -216,6 +217,14 @@ export default function Home() {
   useEffect(() => {
     document.title = processing ? "Cleaning metadata..." : "PrivMeta";
   }, [processing]);
+
+  // Preload the ffmpeg core as soon as an audio/video file is queued, so
+  // processing still works if the user goes offline before hitting "Remove"
+  useEffect(() => {
+    if (fileStore.some(({ file }) => ACCEPTED_FILE_TYPES[file.type]?.kind === "ffmpeg")) {
+      import("@/utils/stripMetadata").then((m) => m.preloadFfmpeg());
+    }
+  }, [fileStore]);
 
   return (
     <div className="w-full flex flex-col gap-(--fluid-xl-3xl) h-full items-center py-(--fluid-md-2xl)">

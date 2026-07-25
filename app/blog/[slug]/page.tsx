@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import html from "remark-html";
@@ -16,54 +13,18 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { getPost, getPostSlugs } from "@/lib/blog";
 
-type BlogPost = {
-  slug: string;
-  title: string;
-  description: string;
-  date: string;
-  contentHtml: string;
-  readingTime: number;
-};
+async function getPostData(slug: string) {
+  const post = getPost(slug);
+  if (!post) return null;
 
-function estimateReadingTime(content: string): number {
-  const wordCount = content.trim().split(/\s+/).length;
-  return Math.max(1, Math.ceil(wordCount / 200));
-}
-
-async function getPostData(slug: string): Promise<BlogPost | null> {
-  const fullPath = path.join(process.cwd(), "content/blog", `${slug}.md`);
-  let fileContents: string;
-
-  try {
-    fileContents = fs.readFileSync(fullPath, "utf8");
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      return null;
-    }
-
-    throw error;
-  }
-
-  const matterResult = matter(fileContents);
-
-  const processedContent = await remark().use(remarkGfm).use(html).process(matterResult.content);
-  const contentHtml = processedContent.toString();
-
-  return {
-    slug,
-    contentHtml,
-    title: matterResult.data.title || "",
-    description: matterResult.data.description || "",
-    date: matterResult.data.date || "",
-    readingTime: estimateReadingTime(matterResult.content),
-  };
+  const processedContent = await remark().use(remarkGfm).use(html).process(post.content);
+  return { ...post, contentHtml: processedContent.toString() };
 }
 
 export async function generateStaticParams() {
-  const postsDirectory = path.join(process.cwd(), "content/blog");
-  const filenames = fs.readdirSync(postsDirectory);
-  return filenames.map((filename) => ({ slug: filename.replace(/\.md$/, "") }));
+  return getPostSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
