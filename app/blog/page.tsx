@@ -1,10 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import matter from "gray-matter";
-import fs from "fs";
-import path from "path";
 import type { Metadata } from "next";
 import Typography from "@/components/Typography";
+import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Privacy Blog - Metadata Guides & Tips | PrivMeta",
@@ -28,40 +26,10 @@ export const metadata: Metadata = {
   },
 };
 
-type BlogPost = {
-  slug: string;
-  title: string;
-  description: string;
-  date: string;
-  readingTime: number;
-};
-
-function estimateReadingTime(content: string): number {
-  const wordCount = content.trim().split(/\s+/).length;
-  return Math.max(1, Math.ceil(wordCount / 200));
-}
-
 const Divider = () => <div className="h-0.75 w-full bg-foreground" />;
 
 export default function BlogPage() {
-  const postsDirectory = path.join(process.cwd(), "content/blog");
-  const filenames = fs.readdirSync(postsDirectory);
-
-  const posts: BlogPost[] = filenames.map((filename) => {
-    const filePath = path.join(postsDirectory, filename);
-    const fileContents = fs.readFileSync(filePath, "utf8");
-    const { data, content } = matter(fileContents);
-
-    return {
-      slug: filename.replace(/\.md$/, ""),
-      title: data.title || "Untitled",
-      description: data.description || "",
-      date: data.date || "",
-      readingTime: estimateReadingTime(content),
-    };
-  });
-
-  const sortedPosts = [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const sortedPosts = getAllPosts();
 
   return (
     <div className="w-full flex flex-col gap-(--fluid-xl-3xl) py-(--fluid-lg-3xl)">
@@ -75,7 +43,7 @@ export default function BlogPage() {
         {sortedPosts.map((post, index) => (
           <React.Fragment key={post.slug}>
             {index > 0 && <Divider />}
-            <Link href={`/blog/${post.slug}`} className="group flex flex-col gap-(--space-lg) py-(--fluid-xl-2xl)">
+            <Link href={`/blog/${post.slug}`} prefetch={false} className="group flex flex-col gap-(--space-lg) py-(--fluid-xl-2xl)">
               <Typography variant="label" muted>
                 {post.date
                   ? new Date(post.date).toLocaleDateString("en-US", {

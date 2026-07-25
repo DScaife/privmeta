@@ -1,11 +1,9 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import html from "remark-html";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Typography from "@/components/Typography";
 import {
   Breadcrumb,
@@ -15,48 +13,32 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { getPost, getPostSlugs } from "@/lib/blog";
 
-type BlogPost = {
-  slug: string;
-  title: string;
-  description: string;
-  date: string;
-  contentHtml: string;
-  readingTime: number;
-};
+async function getPostData(slug: string) {
+  const post = getPost(slug);
+  if (!post) return null;
 
-function estimateReadingTime(content: string): number {
-  const wordCount = content.trim().split(/\s+/).length;
-  return Math.max(1, Math.ceil(wordCount / 200));
-}
-
-async function getPostData(slug: string): Promise<BlogPost> {
-  const fullPath = path.join(process.cwd(), "content/blog", `${slug}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const matterResult = matter(fileContents);
-
-  const processedContent = await remark().use(remarkGfm).use(html).process(matterResult.content);
-  const contentHtml = processedContent.toString();
-
-  return {
-    slug,
-    contentHtml,
-    title: matterResult.data.title || "",
-    description: matterResult.data.description || "",
-    date: matterResult.data.date || "",
-    readingTime: estimateReadingTime(matterResult.content),
-  };
+  const processedContent = await remark().use(remarkGfm).use(html).process(post.content);
+  return { ...post, contentHtml: processedContent.toString() };
 }
 
 export async function generateStaticParams() {
-  const postsDirectory = path.join(process.cwd(), "content/blog");
-  const filenames = fs.readdirSync(postsDirectory);
-  return filenames.map((filename) => ({ slug: filename.replace(/\.md$/, "") }));
+  return getPostSlugs().map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostData(slug);
+
+  if (!post) {
+    return {
+      title: "Post Not Found | PrivMeta Blog",
+      description: "The requested blog post could not be found.",
+      robots: { index: false, follow: false },
+    };
+  }
+
   const url = `https://www.privmeta.com/blog/${slug}`;
 
   return {
@@ -85,6 +67,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPostData(slug);
+
+  if (!post) {
+    notFound();
+  }
+
   const url = `https://www.privmeta.com/blog/${slug}`;
 
   const articleSchema = {
@@ -120,13 +107,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/">Home</Link>
+              <Link href="/" prefetch={false}>Home</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/blog">Blog</Link>
+              <Link href="/blog" prefetch={false}>Blog</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

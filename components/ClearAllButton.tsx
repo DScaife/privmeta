@@ -4,10 +4,11 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import Typography from "./Typography";
+import type { StoredFile } from "./Dropzone";
 
 type ClearAllButtonProps = {
-  fileStore: File[];
-  setFileStore: (files: File[]) => void;
+  fileStore: StoredFile[];
+  setFileStore: (files: StoredFile[]) => void;
   processing: boolean;
 };
 

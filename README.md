@@ -1,33 +1,42 @@
-# Next.js Project
+# PrivMeta
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[PrivMeta](https://www.privmeta.com) is a free online metadata remover with a privacy focus. All file processing runs **entirely in the browser** — files are never uploaded to a server.
 
-## Getting Started
+## Supported formats
 
-First, run the development server:
+| Type | Formats | How metadata is removed |
+|------|---------|-------------------------|
+| Images | JPEG, PNG, WebP | JPEG: lossless segment stripping (EXIF, XMP, IPTC, comments). PNG/WebP: canvas re-encode. |
+| Animated | GIF | lossless block-level stripping (comments, XMP) - frames and palette untouched |
+| Documents | PDF, DOCX | PDF: XMP, Info dictionary and /ID removed (pdf-lib). DOCX: docProps parts and thumbnail removed (jszip). |
+| Video | MP4, WebM, AVI, MOV, MKV | ffmpeg.wasm stream copy, container metadata dropped |
+| Audio | WAV, MP3, FLAC, AAC, OGG, M4A | ffmpeg.wasm stream copy, container metadata dropped |
+
+The ffmpeg.wasm core is self-hosted (copied from `node_modules` to `public/ffmpeg/` by `scripts/copy-ffmpeg-core.mjs`, wired into `predev`/`prebuild`), so processing keeps working if the user goes offline after the page loads.
+
+## Tech stack
+
+- [Next.js](https://nextjs.org) (App Router, fully static) + React
+- Tailwind CSS v4, Radix UI, sonner
+- pdf-lib, jszip, ffmpeg.wasm for client-side processing
+- Markdown blog in `content/blog/` (gray-matter + remark, statically generated)
+- Sentry for error reporting (console breadcrumbs and logs disabled so user file names never leave the device)
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-````
+```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a modern font family from Vercel.
-
-
-## Running the Project with Docker
+## Running the project with Docker
 
 This project can also be built and run using **Docker Compose**.
 
 ### Build and start the container
+
 Clone the repo and in the root of the project use this command when you have made code changes or when running for the first time:
 
 ```bash
@@ -51,23 +60,3 @@ To stop the running service:
 ```bash
 docker compose down
 ```
-
----
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-* [Next.js Documentation](https://nextjs.org/docs) – learn about Next.js features and API.
-* [Learn Next.js](https://nextjs.org/learn) – an interactive Next.js tutorial.
-
-You can check out the [Next.js GitHub repository](https://github.com/vercel/next.js) - feedback and contributions are welcome!
-
----
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is using the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme), created by the team behind Next.js.
-
-See the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
