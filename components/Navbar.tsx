@@ -38,7 +38,7 @@ const Navbar = () => {
     <header className="relative z-50">
       <nav className="h-40 flex flex-col sm:flex-row gap-(--space-lg) justify-center sm:justify-between items-start sm:items-center">
         <div className="flex justify-between items-center w-full">
-          <Link href="/" prefetch={false} aria-label="Go to PrivMeta homepage">
+          <Link href="/" aria-label="Go to PrivMeta homepage">
             <span className="flex items-center gap-(--fluid-sm-lg) type-fluid type-h1">
               <Logo />
               <Typography as="span" variant="h1" className="leading-none">
