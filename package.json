@@ -2,6 +2,9 @@
   "name": "privmeta",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "predev": "node scripts/copy-ffmpeg-core.mjs",
     "dev": "next dev",
@@ -16,7 +19,6 @@
     "@ffmpeg/util": "^0.12.2",
     "@sentry/nextjs": "^10.53.1",
     "@tailwindcss/typography": "^0.5.19",
-    "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",

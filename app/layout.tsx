@@ -5,7 +5,6 @@ import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@vercel/analytics/react";
 import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
@@ -150,10 +149,16 @@ export default function RootLayout({
         />
         <meta name="application-name" content="PrivMeta" />
         <meta name="theme-color" content="#ffffff" />
+        {process.env.NEXT_PUBLIC_CF_BEACON_TOKEN && (
+          <Script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={JSON.stringify({ token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN })}
+          />
+        )}
       </head>
 
       <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${avenirNext.variable} font-avenir`}>
-        <Analytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <TooltipProvider>
             <div className="flex flex-col flex-1 items-center">

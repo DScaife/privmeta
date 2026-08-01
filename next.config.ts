@@ -2,30 +2,12 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async headers() {
-    return [
-      // Fonts never change - cache for 1 year in the browser
-      {
-        source: "/fonts/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
-      // Images / icons / favicons - branding assets that never change
-      {
-        source: "/:path*\\.(png|ico|jpg|jpeg|svg|webp)",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
-      // Web manifest - allow it to refresh daily in case PWA config changes
-      {
-        source: "/site.webmanifest",
-        headers: [{ key: "Cache-Control", value: "public, max-age=86400" }],
-      },
-      // Self-hosted ffmpeg.wasm core (~31MB) - only changes when @ffmpeg/core is
-      // upgraded; if that ever happens, move it to a new path to bust this cache
-      {
-        source: "/ffmpeg/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
-    ];
+  // Static export for Cloudflare Pages - there's no Next.js server in production,
+  // so headers()/redirects()/rewrites() don't apply; caching is handled by
+  // public/_headers instead. See https://nextjs.org/docs/messages/export-no-custom-routes
+  output: "export",
+  images: {
+    unoptimized: true,
   },
 };
 
@@ -53,12 +35,6 @@ export default withSentryConfig(nextConfig, {
   // tunnelRoute: "/monitoring",
 
   webpack: {
-    // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)
-    // See the following for more information:
-    // https://docs.sentry.io/product/crons/
-    // https://vercel.com/docs/cron-jobs
-    automaticVercelMonitors: true,
-
     // Tree-shaking options for reducing bundle size
     treeshake: {
       // Automatically tree-shake Sentry logger statements to reduce bundle size
