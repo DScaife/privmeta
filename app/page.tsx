@@ -129,7 +129,7 @@ export default function Home() {
 
     await new Promise((res) => setTimeout(res, 1000));
 
-    const { stripImageMetadata, stripGifMetadata, stripPdfMetadata, stripDocxMetadata, stripFfmpegMetadata, stripJpegMetadata } =
+    const { stripImageMetadata, stripGifMetadata, stripPdfMetadata, stripDocxMetadata, stripContainerMetadata, stripJpegMetadata } =
       await import("@/utils/stripMetadata");
 
     try {
@@ -157,8 +157,8 @@ export default function Home() {
           case "docx":
             cleaned = await stripDocxMetadata(file);
             break;
-          case "ffmpeg":
-            cleaned = await stripFfmpegMetadata(file);
+          case "container":
+            cleaned = await stripContainerMetadata(file);
             break;
           default:
             showErrorToast("unsupported_format");
@@ -217,14 +217,6 @@ export default function Home() {
   useEffect(() => {
     document.title = processing ? "Cleaning metadata..." : "PrivMeta";
   }, [processing]);
-
-  // Preload the ffmpeg core as soon as an audio/video file is queued, so
-  // processing still works if the user goes offline before hitting "Remove"
-  useEffect(() => {
-    if (fileStore.some(({ file }) => ACCEPTED_FILE_TYPES[file.type]?.kind === "ffmpeg")) {
-      import("@/utils/stripMetadata").then((m) => m.preloadFfmpeg());
-    }
-  }, [fileStore]);
 
   return (
     <div className="w-full flex flex-col gap-(--fluid-xl-3xl) h-full items-center py-(--fluid-md-2xl)">

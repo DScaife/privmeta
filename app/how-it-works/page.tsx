@@ -158,13 +158,13 @@ export default function HowItWorks() {
           <div className="flex flex-col gap-(--space-sm)">
             <Typography variant="label">Video</Typography>
             <Typography variant="body" muted>
-              MP4, MOV, MKV, AVI, WEBM
+              MP4, MOV, MKV, WEBM
             </Typography>
           </div>
           <div className="flex flex-col gap-(--space-sm)">
             <Typography variant="label">Audio</Typography>
             <Typography variant="body" muted>
-              MP3, WAV, FLAC, AAC, OGG, M4A
+              MP3, WAV, FLAC, AAC, M4A
             </Typography>
           </div>
         </div>

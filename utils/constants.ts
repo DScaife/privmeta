@@ -5,8 +5,8 @@ const MAX_FILE_COUNT = 10;
 const MAX_FILE_SIZE_MB = 100;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
-/** Which stripping pipeline handles the file. "ffmpeg" covers audio and video. */
-type FileKind = "jpeg" | "image" | "gif" | "pdf" | "docx" | "ffmpeg";
+/** Which stripping pipeline handles the file. "container" covers audio and video. */
+type FileKind = "jpeg" | "image" | "gif" | "pdf" | "docx" | "container";
 
 const ACCEPTED_FILE_TYPES: Record<string, { extensions: string[]; kind: FileKind }> = {
   // Image
@@ -22,19 +22,17 @@ const ACCEPTED_FILE_TYPES: Record<string, { extensions: string[]; kind: FileKind
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": { extensions: [".docx"], kind: "docx" },
 
   // Video
-  "video/mp4": { extensions: [".mp4"], kind: "ffmpeg" },
-  "video/avi": { extensions: [".avi"], kind: "ffmpeg" },
-  "video/webm": { extensions: [".webm"], kind: "ffmpeg" },
-  "video/quicktime": { extensions: [".mov"], kind: "ffmpeg" },
-  "video/x-matroska": { extensions: [".mkv"], kind: "ffmpeg" },
+  "video/mp4": { extensions: [".mp4"], kind: "container" },
+  "video/webm": { extensions: [".webm"], kind: "container" },
+  "video/quicktime": { extensions: [".mov"], kind: "container" },
+  "video/x-matroska": { extensions: [".mkv"], kind: "container" },
 
   // Audio
-  "audio/wav": { extensions: [".wav"], kind: "ffmpeg" },
-  "audio/mpeg": { extensions: [".mp3"], kind: "ffmpeg" },
-  "audio/flac": { extensions: [".flac"], kind: "ffmpeg" },
-  "audio/aac": { extensions: [".aac"], kind: "ffmpeg" },
-  "audio/ogg": { extensions: [".ogg"], kind: "ffmpeg" },
-  "audio/mp4": { extensions: [".m4a"], kind: "ffmpeg" },
-  "audio/x-m4a": { extensions: [".m4a", ".mp4"], kind: "ffmpeg" },
-  "audio/m4a": { extensions: [".m4a"], kind: "ffmpeg" },
+  "audio/wav": { extensions: [".wav"], kind: "container" },
+  "audio/mpeg": { extensions: [".mp3"], kind: "container" },
+  "audio/flac": { extensions: [".flac"], kind: "container" },
+  "audio/aac": { extensions: [".aac"], kind: "container" },
+  "audio/mp4": { extensions: [".m4a"], kind: "container" },
+  "audio/x-m4a": { extensions: [".m4a", ".mp4"], kind: "container" },
+  "audio/m4a": { extensions: [".m4a"], kind: "container" },
 };

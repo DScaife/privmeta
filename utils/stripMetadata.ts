@@ -1,63 +1,13 @@
 import { PDFDocument, PDFName } from "pdf-lib";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { fetchFile } from "@ffmpeg/util";
+import { concatBytes } from "./binary";
 
-let ffmpegLoad: Promise<FFmpeg> | null = null;
-
-function getFFmpeg(): Promise<FFmpeg> {
-  if (!ffmpegLoad) {
-    ffmpegLoad = (async () => {
-      const instance = new FFmpeg();
-      // Self-hosted core (copied to public/ by scripts/copy-ffmpeg-core.mjs).
-      // Without explicit URLs the library fetches the core from a third-party CDN,
-      // which would break processing for users who go offline. classWorkerURL
-      // must point at the unbundled worker: the bundled copy rewrites the
-      // worker's dynamic import of the core and fails at runtime.
-      // Fully-qualified URLs: the library resolves relative URLs against the
-      // bundled chunk's import.meta.url, which is not a page-origin URL.
-      await instance.load({
-        coreURL: `${location.origin}/ffmpeg/ffmpeg-core.js`,
-        wasmURL: `${location.origin}/ffmpeg/ffmpeg-core.wasm`,
-        classWorkerURL: `${location.origin}/ffmpeg/worker.js`,
-      });
-      return instance;
-    })().catch((err) => {
-      ffmpegLoad = null; // allow a retry, e.g. after a failed fetch while offline
-      throw err;
-    });
-  }
-  return ffmpegLoad;
-}
-
-/**
- * Warms up the ffmpeg core so audio/video processing still works if the
- * user follows the site's advice and goes offline before hitting "Remove".
- */
-export async function preloadFfmpeg(): Promise<void> {
-  try {
-    await getFFmpeg();
-  } catch {
-    // best-effort: a failed preload is retried (and surfaced) at processing time
-  }
-}
+export { stripContainerMetadata } from "./stripContainerMetadata";
 
 // JPEG markers whose segments carry metadata rather than image data:
 // APP1 (0xE1) = EXIF and XMP, APP13 (0xED) = IPTC/Photoshop IRB, COM (0xFE) = comments.
 // APP0 (JFIF), APP2 (ICC color profile) and APP14 (Adobe color transform) are kept
 // because removing them can change how the image is decoded or displayed.
 const STRIPPED_JPEG_MARKERS = new Set([0xe1, 0xed, 0xfe]);
-
-function concatBytes(chunks: Uint8Array[]): Uint8Array {
-  const out = new Uint8Array(
-    chunks.reduce((total, chunk) => total + chunk.length, 0),
-  );
-  let pos = 0;
-  for (const chunk of chunks) {
-    out.set(chunk, pos);
-    pos += chunk.length;
-  }
-  return out;
-}
 
 /**
  * Removes metadata segments from a JPEG by walking its segment structure and
@@ -216,82 +166,6 @@ export async function stripGifMetadata(file: File): Promise<File | null> {
   } catch (err) {
     console.error("GIF metadata stripping failed:", err);
     return null;
-  }
-}
-
-const FFMPEG_EXTENSIONS = [
-  "wav",
-  "mp3",
-  "flac",
-  "aac",
-  "ogg",
-  "m4a",
-  "mp4",
-  "webm",
-  "avi",
-  "mov",
-  "mkv",
-];
-
-/** Strips metadata from audio and video files via ffmpeg.wasm (streams are copied, not re-encoded). */
-export async function stripFfmpegMetadata(file: File): Promise<File | null> {
-  if (typeof window === "undefined") return null;
-
-  const extension = file.name.split(".").pop()?.toLowerCase();
-  if (!extension || !FFMPEG_EXTENSIONS.includes(extension)) {
-    console.error("Unsupported format for ffmpeg metadata stripping");
-    return null;
-  }
-
-  const inputFile = `input.${extension}`;
-  const outputFile = `output.${extension}`;
-  let ffmpeg: FFmpeg | null = null;
-
-  try {
-    ffmpeg = await getFFmpeg();
-    await ffmpeg.writeFile(inputFile, await fetchFile(file));
-    // -map 0 keeps every stream (without it ffmpeg picks one video + one audio track,
-    // silently dropping secondary audio and subtitles); -map_metadata -1 drops the
-    // container metadata and the :s:v/:s:a forms drop per-stream tags (handler names,
-    // per-stream creation times); +bitexact stops the muxer writing its own tags.
-    await ffmpeg.exec([
-      "-i",
-      inputFile,
-      "-map",
-      "0",
-      "-map_metadata",
-      "-1",
-      "-map_metadata:s:v",
-      "-1",
-      "-map_metadata:s:a",
-      "-1",
-      "-fflags",
-      "+bitexact",
-      "-c",
-      "copy",
-      outputFile,
-    ]);
-    const data = await ffmpeg.readFile(outputFile);
-    const mimeType = file.type || "application/octet-stream";
-    return new File(
-      [new Blob([data as BlobPart], { type: mimeType })],
-      file.name,
-      { type: mimeType },
-    );
-  } catch (err) {
-    console.error("ffmpeg metadata stripping failed:", err);
-    return null;
-  } finally {
-    // Free the wasm virtual filesystem - written files otherwise persist for the page lifetime
-    if (ffmpeg) {
-      for (const name of [inputFile, outputFile]) {
-        try {
-          await ffmpeg.deleteFile(name);
-        } catch {
-          // file may not exist if the run failed early
-        }
-      }
-    }
   }
 }
 
