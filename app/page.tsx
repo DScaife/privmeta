@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import Dropzone, { type FileStatus, type StoredFile } from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import { ACCEPTED_FILE_TYPES, MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
+import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB, getKindForFilename } from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -141,7 +141,7 @@ export default function Home() {
 
         let cleaned: File | null = null;
 
-        switch (ACCEPTED_FILE_TYPES[file.type]?.kind) {
+        switch (getKindForFilename(file.name)) {
           case "jpeg":
             cleaned = await stripJpegMetadata(file);
             break;

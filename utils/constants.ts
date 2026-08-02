@@ -1,4 +1,4 @@
-export { MAX_FILE_COUNT, MAX_FILE_SIZE_MB, MAX_FILE_SIZE_BYTES, ACCEPTED_FILE_TYPES };
+export { MAX_FILE_COUNT, MAX_FILE_SIZE_MB, MAX_FILE_SIZE_BYTES, ACCEPTED_FILE_TYPES, getKindForFilename };
 export type { FileKind };
 
 const MAX_FILE_COUNT = 10;
@@ -36,3 +36,20 @@ const ACCEPTED_FILE_TYPES: Record<string, { extensions: string[]; kind: FileKind
   "audio/x-m4a": { extensions: [".m4a", ".mp4"], kind: "container" },
   "audio/m4a": { extensions: [".m4a"], kind: "container" },
 };
+
+// Browser-reported MIME types for less-standardized formats are unreliable
+// (e.g. Chrome reports .mkv as "video/matroska", not the "video/x-matroska"
+// key above) - file identity is validated by extension instead, which is
+// unambiguous regardless of browser/OS MIME sniffing quirks.
+const EXTENSION_TO_KIND: Record<string, FileKind> = {};
+for (const { extensions, kind } of Object.values(ACCEPTED_FILE_TYPES)) {
+  for (const ext of extensions) {
+    EXTENSION_TO_KIND[ext.toLowerCase()] = kind;
+  }
+}
+
+function getKindForFilename(filename: string): FileKind | undefined {
+  const dotIndex = filename.lastIndexOf(".");
+  if (dotIndex === -1) return undefined;
+  return EXTENSION_TO_KIND[filename.slice(dotIndex).toLowerCase()];
+}
