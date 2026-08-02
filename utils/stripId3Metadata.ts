@@ -14,6 +14,7 @@ import { matchesAscii, readSynchsafeUint32, readUint32LE } from "./binary";
  * recognized tags at all is returned byte-identical (true pass-through - this
  * is also how raw .aac, which has no native tagging format, is handled).
  */
+
 export function stripId3Tags(bytes: Uint8Array): Uint8Array {
   let leadingEnd = 0;
   if (bytes.length >= 10 && matchesAscii(bytes, 0, "ID3")) {
