@@ -9,7 +9,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "privacy:install": "playwright install chromium",
+    "privacy:test": "playwright test --config=tests/privacy/playwright.config.ts",
+    "privacy:test:headed": "playwright test --config=tests/privacy/playwright.config.ts --headed"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.53.1",
@@ -34,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^19",

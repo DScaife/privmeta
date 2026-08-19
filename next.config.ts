@@ -2,6 +2,9 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Privacy browser tests may run alongside the normal dev server. A separate
+  // cache prevents Next's single-dev-server lock and build artifacts colliding.
+  ...(process.env.PRIVMETA_TEST === "1" ? { distDir: ".next-privacy" } : {}),
   // Static export for Cloudflare Pages - there's no Next.js server in production,
   // so headers()/redirects()/rewrites() don't apply; caching is handled by
   // public/_headers instead. See https://nextjs.org/docs/messages/export-no-custom-routes
@@ -11,7 +14,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig, {
+const configuredNext = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
@@ -42,3 +45,7 @@ export default withSentryConfig(nextConfig, {
     },
   },
 });
+
+// The privacy harness validates a local static export and does not upload
+// source maps or need Sentry's build-time instrumentation.
+export default process.env.PRIVMETA_TEST === "1" ? nextConfig : configuredNext;

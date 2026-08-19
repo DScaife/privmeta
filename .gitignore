@@ -12,9 +12,18 @@
 
 # testing
 /coverage
+/test-results/
+/privacy-results/
+
+# Real privacy fixtures may contain identifying metadata. Keep their directory
+# structure, but never commit the files placed inside it.
+/tests/privacy/fixtures/real/**
+!/tests/privacy/fixtures/real/**/
+!/tests/privacy/fixtures/real/**/.gitkeep
 
 # next.js
 /.next/
+/.next-privacy/
 /out/
 
 # production
