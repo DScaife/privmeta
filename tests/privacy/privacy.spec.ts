@@ -23,6 +23,7 @@ const fixtureRoots = [
   path.join(__dirname, "fixtures", "synthetic"),
 ];
 const reportDirectory = path.join(repositoryRoot, "privacy-results");
+const staticOutputRoot = path.join(repositoryRoot, ".next-privacy");
 const applicationUrl = "http://127.0.0.1:3100";
 const fixtures = discoverFixtures(fixtureRoots);
 let httpServer: Server | undefined;
@@ -53,16 +54,24 @@ function buildStaticApplication(): void {
 }
 
 function resolveStaticPath(requestPath: string): string | null {
-  const outputRoot = path.join(repositoryRoot, "out");
   const pathname = decodeURIComponent(requestPath.split("?")[0]);
   const relative = pathname.replace(/^\/+/, "");
   const candidates = relative
-    ? [path.join(outputRoot, relative), path.join(outputRoot, `${relative}.html`), path.join(outputRoot, relative, "index.html")]
-    : [path.join(outputRoot, "index.html")];
+    ? [
+        path.join(staticOutputRoot, relative),
+        path.join(staticOutputRoot, `${relative}.html`),
+        path.join(staticOutputRoot, relative, "index.html"),
+      ]
+    : [path.join(staticOutputRoot, "index.html")];
 
   for (const candidate of candidates) {
     const resolved = path.resolve(candidate);
-    if (!resolved.startsWith(`${path.resolve(outputRoot)}${path.sep}`) && resolved !== path.resolve(outputRoot)) continue;
+    if (
+      !resolved.startsWith(`${path.resolve(staticOutputRoot)}${path.sep}`) &&
+      resolved !== path.resolve(staticOutputRoot)
+    ) {
+      continue;
+    }
     if (fs.existsSync(resolved) && fs.statSync(resolved).isFile()) return resolved;
   }
   return null;

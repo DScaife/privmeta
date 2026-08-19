@@ -1,5 +1,5 @@
 import { PDFDocument, PDFName } from "pdf-lib";
-import { concatBytes } from "./binary";
+import { concatBytes, matchesAscii, readUint32LE, writeUint32LE } from "./binary";
 
 export { stripContainerMetadata } from "./stripContainerMetadata";
 
@@ -196,6 +196,14 @@ export async function stripImageMetadata(file: File): Promise<File | null> {
           finish(null);
           return;
         }
+        if (file.type === "image/webp") {
+          blob
+            .arrayBuffer()
+            .then((buffer) => stripWebpMetadataChunks(new Uint8Array(buffer)))
+            .then((bytes) => finish(bytes ? new File([bytes as BlobPart], file.name, { type: file.type }) : null))
+            .catch(() => finish(null));
+          return;
+        }
         finish(new File([blob], file.name, { type: file.type }));
       }, file.type);
     };
@@ -204,6 +212,58 @@ export async function stripImageMetadata(file: File): Promise<File | null> {
 
     img.src = url;
   });
+}
+
+/**
+ * Removes metadata chunks that Chromium may add while encoding WebP. If the
+ * extended header has no remaining alpha/animation features, it is redundant
+ * and is removed too, yielding a normal simple WebP container.
+ */
+export function stripWebpMetadataChunks(bytes: Uint8Array): Uint8Array | null {
+  if (
+    bytes.length < 12 ||
+    !matchesAscii(bytes, 0, "RIFF") ||
+    !matchesAscii(bytes, 8, "WEBP")
+  ) {
+    return null;
+  }
+
+  const chunks: Uint8Array[] = [];
+  let offset = 12;
+  while (offset + 8 <= bytes.length) {
+    const size = readUint32LE(bytes, offset + 4);
+    const paddedSize = size + (size & 1);
+    const end = offset + 8 + paddedSize;
+    if (end > bytes.length) return null;
+
+    const isMetadata =
+      matchesAscii(bytes, offset, "ICCP") ||
+      matchesAscii(bytes, offset, "EXIF") ||
+      matchesAscii(bytes, offset, "XMP ");
+    if (!isMetadata) {
+      if (matchesAscii(bytes, offset, "VP8X") && size >= 10) {
+        const chunk = bytes.slice(offset, end);
+        // ICC, EXIF and XMP flags respectively. Leave alpha and animation.
+        chunk[8] &= ~(0x20 | 0x08 | 0x04);
+        if ((chunk[8] & (0x10 | 0x02)) !== 0) chunks.push(chunk);
+      } else {
+        chunks.push(bytes.slice(offset, end));
+      }
+    }
+    offset = end;
+  }
+  if (offset !== bytes.length) return null;
+
+  const totalSize = 12 + chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const output = new Uint8Array(totalSize);
+  output.set(bytes.subarray(0, 12), 0);
+  writeUint32LE(output, 4, totalSize - 8);
+  let outputOffset = 12;
+  for (const chunk of chunks) {
+    output.set(chunk, outputOffset);
+    outputOffset += chunk.length;
+  }
+  return output;
 }
 
 export async function stripPdfMetadata(file: File): Promise<File | null> {

@@ -66,6 +66,10 @@ const commonForbidden = [
   "XMP:*",
 ];
 
+// MPEG:Encoder is the LAME/Xing technical frame header, not a user tag. MP3
+// still forbids all ID3/APE metadata below, including their EncodedBy fields.
+const mp3Forbidden = commonForbidden.filter((pattern) => pattern !== "*:Encoder");
+
 const imagePreserve = ["FileType", "ImageWidth", "ImageHeight"];
 const videoPreserve = ["FileType", "Duration", "ImageSize", "VideoFrameRate", "CompressorID", "Rotation"];
 const audioPreserve = ["FileType", "Duration", "AudioSampleRate", "AudioChannels"];
@@ -108,7 +112,7 @@ const policies: Record<SupportedExtension, FormatPolicy> = {
   webm: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, browserProbe: "video" },
   mkv: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, browserProbe: "video" },
   mp3: {
-    forbiddenAfter: [...commonForbidden, "ID3:*", "ID3v1:*", "ID3v2:*", "APE:*"],
+    forbiddenAfter: [...mp3Forbidden, "ID3:*", "ID3v1:*", "ID3v2:*", "APE:*"],
     preserveTags: audioPreserve,
     browserProbe: "audio",
   },
