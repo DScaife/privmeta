@@ -15,7 +15,7 @@ const MAX_FILE_SIZE_MB = 100;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 // Cleaned files and the final ZIP can coexist in memory. Bounding the whole
 // queue prevents a batch of individually valid files from exhausting a tab.
-const MAX_TOTAL_FILE_SIZE_MB = 100;
+const MAX_TOTAL_FILE_SIZE_MB = 500;
 const MAX_TOTAL_FILE_SIZE_BYTES = MAX_TOTAL_FILE_SIZE_MB * 1024 * 1024;
 
 function getTotalFileSizeBytes(files: readonly Pick<File, "size">[]): number {
