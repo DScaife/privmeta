@@ -91,6 +91,19 @@ sentinels whenever possible because they catch data ExifTool may not decode.
 npm run privacy:test
 ```
 
+## Continuous integration
+
+The GitHub Actions workflow in `.github/workflows/privacy.yml` runs the full
+suite for pull requests into `master`, pushes to `master`, and manual workflow
+dispatches. It installs ExifTool and Chromium on an Ubuntu runner, regenerates
+the non-sensitive browser-recorded fixtures, and tests every committed
+synthetic fixture.
+
+Each non-cancelled run uploads `privacy-results/` and any Playwright traces as
+a workflow artifact for 14 days. The job fails when the harness reports a
+privacy or integrity failure; warnings remain visible in the report without
+failing CI.
+
 For visible browser automation:
 
 ```powershell
