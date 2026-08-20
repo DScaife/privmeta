@@ -1,6 +1,6 @@
 ---
 title: "How to Strip Metadata from Photos. Fast and Private."
-description: "Strip metadata from photos in your browser in seconds. GPS, device details and timestamps removed. Your files never leave your device. Free."
+description: "Remove targeted GPS, device and timestamp metadata structures from supported photos in your browser without a file upload."
 date: "2026-04-19"
 ---
 

@@ -4,8 +4,8 @@ const Hero = () => {
   return (
     <section>
       <Typography variant="hero" as={"h1"}>
-        This app removes hidden metadata directly in your browser, so your files stay on your device and you can practice good digital
-        hygiene.
+        This app removes targeted privacy-sensitive metadata directly in your browser, without uploading your file, so you can practise
+        better digital hygiene.
       </Typography>
     </section>
   );

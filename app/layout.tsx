@@ -39,7 +39,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Free & Private Metadata Remover",
-  description: "Remove hidden metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
+  description: "Remove targeted metadata from supported images, videos, audio, PDFs, and documents. Free, no account, no file uploads.",
   keywords: [
     "remove metadata from image",
     "remove metadata from photo",

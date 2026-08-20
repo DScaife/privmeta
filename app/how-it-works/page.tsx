@@ -6,11 +6,11 @@ import Typography from "@/components/Typography";
 
 export const metadata: Metadata = {
   title: "How it Works - Private Metadata Removal",
-  description: "See how PrivMeta removes metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
+  description: "See how PrivMeta removes targeted metadata from supported files in your browser, with no account or file upload.",
   alternates: { canonical: "https://www.privmeta.com/how-it-works" },
   openGraph: {
     title: "How it Works - Private Metadata Removal",
-    description: "See how PrivMeta removes metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
+    description: "See how PrivMeta removes targeted metadata from supported files in your browser, with no account or file upload.",
     url: "https://www.privmeta.com/how-it-works",
     siteName: "PrivMeta",
     type: "website",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "How it Works - Private Metadata Removal",
-    description: "See how PrivMeta removes metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
+    description: "See how PrivMeta removes targeted metadata from supported files in your browser, with no account or file upload.",
     images: ["/og-image.png"],
   },
 };

@@ -37,10 +37,10 @@ When you share files online, you're revealing far more than the visible content.
 | File Type | Common Metadata Risks                                  | Removal Method                  |
 | --------- | ------------------------------------------------------ | ------------------------------- |
 | Photos    | GPS coordinates, Camera model, Facial recognition data | PrivMeta's EXIF cleaner         |
-| Documents | Author name, Edit history, Comments                    | PrivMeta's document sanitizer   |
-| PDFs      | Creation software, Signatures, Encryption status       | PrivMeta's PDF metadata remover |
-| Videos    | Location, Device info, Creation date                   | PrivMeta's video processor      |
-| Audio     | Recording device, Timestamps, Artist info              | PrivMeta's audio metadata tool  |
+| DOCX      | Package properties, author identities, revision IDs    | PrivMeta's DOCX sanitizer       |
+| PDFs      | Info properties, XMP, persistent document ID           | PrivMeta's PDF metadata remover |
+| Videos    | Location, device/software tags, creation timestamps    | PrivMeta's container cleaners   |
+| Audio     | Conventional tags, artwork, broadcast-origin fields    | PrivMeta's audio format parsers |
 
 ## The Privacy Cascade Effect
 
@@ -56,22 +56,22 @@ A single file with metadata can trigger an exposure chain reaction:
 
 ## PrivMeta: Your Local Privacy Shield
 
-PrivMeta breaks this exposure chain by ensuring metadata never leaves your device:
+PrivMeta reduces this exposure by cleaning documented metadata structures before sharing:
 
-1. **Complete Client-Side Processing**
+1. **Client-Side File Processing**
 
-   - Your files are processed locally in the browser
-   - Zero server uploads or cloud processing
+   - File bytes are processed locally in the browser
+   - No file-processing upload or cloud transformation
 
 2. **One-Click Sanitization**
 
    - Drag-and-drop interface
-   - Instant metadata stripping
-   - Visual confirmation of removal
+   - Clear processing status
+   - Downloadable cleaned result
 
-3. **Comprehensive File Support**
-   - Photos, videos, documents, PDFs
-   - Proprietary and open formats
+3. **Documented Format Support**
+   - Selected photos, videos, audio, DOCX, and PDFs
+   - Public structure-by-structure coverage and limitations
    - Batch processing capability
 
 ## Step-by-Step Protection Guide
@@ -90,7 +90,7 @@ Cloud-based metadata removal tools create new privacy risks:
 - Processing logs become new metadata trails
 - Service providers can access your content
 
-PrivMeta solves these problems by keeping everything on your device. No uploads, no storage, no hidden access.
+PrivMeta keeps file cleaning on your device: no file-processing upload or server-side file storage. Ordinary website asset and operational-telemetry requests are separate and do not receive file contents or file names.
 
 ## Strip Metadata Before You Share
 

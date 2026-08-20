@@ -41,7 +41,7 @@ Open Source Intelligence (OSINT) analysts use publicly available information to 
    - [Strip author information from Word documents](/blog/remove-metadata-from-word-document): name, edit history, company
    - [Clear metadata from PDFs](/blog/remove-metadata-from-pdf-guide): author, creator app, modification dates
 
-   You can clean all of these using [PrivMeta](/), which processes files locally in your browser. Nothing is uploaded.
+   PrivMeta targets these fields across its supported formats and processes file bytes locally in your browser without uploading them.
 
 2. **Metadata Auditing**:
    - Monthly reviews of your digital footprint
@@ -76,6 +76,6 @@ By understanding how OSINT analysts use metadata and implementing proper protect
 
 ## Clean Your Files Before They Can Be Used Against You
 
-OSINT investigators need metadata to work. Remove it and you remove their easiest trail. [PrivMeta](/) strips metadata from photos, documents, PDFs, video, and audio, locally in your browser, with no upload.
+Metadata can provide an easy investigative trail. [PrivMeta](/) removes documented metadata structures from supported photos, documents, PDFs, video, and audio locally in your browser without uploading file bytes. Visible content and unknown structures still require review.
 
 [Remove Metadata Now](/)

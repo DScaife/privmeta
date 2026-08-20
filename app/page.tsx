@@ -70,7 +70,7 @@ export default function Home() {
   useEffect(() => {
     const infoTimeout = setTimeout(() => {
       toast.info("Your files stay local", {
-        id: "offline-mode",
+        id: "local-processing",
         duration: 10000,
         description: "Cleaning runs in your browser. File bytes are not uploaded.",
         action: {

@@ -1,6 +1,6 @@
 ---
 title: "Does Discord Remove EXIF Data from Photos? And Instagram?"
-description: "Most platforms strip some photo metadata, but behaviour varies and cannot be verified. Remove it yourself before sharing. Your files never leave your device."
+description: "Platform photo-metadata behaviour varies. Clean documented metadata structures before sharing without uploading the photo for processing."
 date: "2026-04-19"
 ---
 

@@ -27,7 +27,7 @@ every possible private value in every valid or damaged file can be detected.
 | Format | Removed or neutralised | Preserved / important limits |
 |---|---|---|
 | JPEG/JPG | EXIF and XMP APP1 segments, IPTC/Photoshop APP13 segments, comments | Compressed image data is copied losslessly. ICC colour profiles and unrecognised application segments are preserved. |
-| PNG | Browser raster decode/re-encode, followed by metadata-chunk removal | Intended for static PNG. Animated PNG is not guaranteed to remain animated; colour-profile behaviour depends on the browser. |
+| PNG | Browser raster decode/re-encode to a new PNG | Intended for static PNG. Animated PNG is not guaranteed to remain animated; colour-profile behaviour depends on the browser. |
 | WebP | Browser raster decode/re-encode, then EXIF/XMP/ICC chunk removal | Intended for static WebP. Animated WebP is not guaranteed to remain animated. |
 | GIF | Comment extensions, XMP and non-rendering application extensions | Frames, timing, loop data and palette are copied without re-encoding. |
 | PDF | Document Info fields, catalog XMP Metadata reference, trailer ID | Pages are reserialised. Visible text, annotations, forms, attachments and other document content are not redacted or inspected for personal information. |
@@ -63,6 +63,18 @@ Additional private real-world fixtures can be run locally and are deliberately
 ignored by Git. Real-world coverage is therefore useful but incomplete, and
 public claims should describe tested structures rather than promise universal
 removal.
+
+## Rules for product claims
+
+Public copy may say that file cleaning is client-side and that the cleaning
+path does not upload file bytes. It should name supported formats and, where
+space permits, link to this document.
+
+Public copy should not claim “all metadata,” “completely private,” “anonymous,”
+“no tracking,” guaranteed offline operation, or support for an unlisted format.
+Operational telemetry must be described separately from file processing. A
+change to a cleaner should update this matrix, its fixtures/policy, and any
+format-specific article in the same pull request.
 
 Run the suite with:
 

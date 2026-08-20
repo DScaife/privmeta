@@ -157,3 +157,8 @@ ExifTool is an independent metadata oracle, not the only oracle. Browser
 decoding, PDF/DOCX structure checks, property preservation, and raw sentinel
 scans complement it. Additional validators such as ffprobe can be added later
 without affecting the deployed bundle.
+
+The public wording derived from this evidence is maintained in
+[`docs/PRIVACY_AND_FORMAT_COVERAGE.md`](../../docs/PRIVACY_AND_FORMAT_COVERAGE.md).
+When a cleaner or test policy changes, update that coverage matrix and any
+format-specific product copy in the same change.

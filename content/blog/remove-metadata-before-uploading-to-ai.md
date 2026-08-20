@@ -46,9 +46,9 @@ The metadata in your files adds another layer of information on top of what you'
 
 The straightforward fix is to remove the metadata from a file before uploading it to any AI service. What the tool needs to do its job is the content: the text, the image, the audio. It doesn't need to know who created the file, when, or where.
 
-This is exactly what PrivMeta is designed for. You drop your files in, the metadata is stripped locally in your browser, and you download a clean version. Nothing is uploaded anywhere. The entire process happens on your device.
+This is what PrivMeta is designed for. You add a supported file, documented metadata structures are cleaned locally in your browser, and you download the result. The cleaning path does not upload the file bytes.
 
-PrivMeta supports all the formats you're likely to upload to an AI tool: images ([JPEG, PNG, WEBP](/blog/remove-metadata-from-photo-guide)), [Word documents](/blog/remove-metadata-from-word-document), [PDFs](/blog/remove-metadata-from-pdf-guide), and [audio files](/blog/remove-metadata-from-audio-files).
+PrivMeta supports common formats used with AI tools: images ([JPEG, PNG, WEBP](/blog/remove-metadata-from-photo-guide)), [DOCX documents](/blog/remove-metadata-from-word-document), [PDFs](/blog/remove-metadata-from-pdf-guide), and selected [audio files](/blog/remove-metadata-from-audio-files).
 
 That clean file is then what you send to the AI tool.
 

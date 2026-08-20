@@ -1,6 +1,6 @@
 ---
 title: "How to Remove Metadata from Photos."
-description: "Remove GPS location, camera details and timestamps from photos in your browser. Your files never leave your device. Works on iPhone, Android and Mac. Free."
+description: "Remove targeted GPS, camera and timestamp metadata structures from supported photos in a compatible browser without a file upload."
 date: "2026-04-19"
 ---
 
@@ -84,10 +84,10 @@ This works without installing any app. The photo is processed locally in Safari 
 
 **Sharing directly from the Photos app:** iOS does give you a basic option to share photos without location data. When you tap Share and select a recipient, you may see an **Options** button at the top of the share sheet. Tapping this lets you turn off location for that share action. However, this only removes GPS coordinates and only in that moment. It does not remove other EXIF fields such as device model, timestamp, or lens data, and it does not produce a cleaned file you can keep or reuse.
 
-For a properly stripped file you can share anywhere, use [PrivMeta](/) in Safari to remove metadata from photos on your iPhone before sending.
+For more control before sharing, use [PrivMeta](/) in a compatible browser to clean the documented metadata structures it recognises, then inspect the result.
 
 ## Share Photos Without the Hidden Details
 
 Your photos contain more information than most people realise. GPS coordinates, device details, and timestamps are all embedded by default and travel with every image you share.
 
-[Remove metadata from your photos at PrivMeta](/) before you send them. It works in your browser on any device, takes a few seconds, and your photos never leave your device during the process. No account, no install, no upload.
+[Remove targeted metadata from supported photos at PrivMeta](/) before sending them. Cleaning runs in a compatible browser with no account, install, or file-processing upload.

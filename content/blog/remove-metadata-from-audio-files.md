@@ -1,6 +1,6 @@
 ---
 title: "Remove Metadata from Audio Files"
-description: "Strip hidden tags from MP3, FLAC, WAV, and other audio files privately in your browser. No upload, no software to install. Try it free, no sign-up needed."
+description: "Strip targeted tags from MP3, FLAC, WAV, AAC and M4A files in your browser. No file upload, software install or sign-up."
 date: "2026-02-18"
 ---
 

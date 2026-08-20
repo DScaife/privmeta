@@ -1,6 +1,6 @@
 ---
 title: "How to Remove Metadata from Video Files. MP4, MOV and More."
-description: "Remove GPS coordinates, device details and timestamps from MP4, MOV and other video files in your browser. Your files never leave your device. Free."
+description: "Remove targeted GPS, device and timestamp metadata from MP4, MOV, MKV and WebM files in your browser without a file upload."
 date: "2026-04-19"
 ---
 
@@ -68,7 +68,7 @@ MKV files often carry a "Writing application" field naming the software and vers
 
 The encoded audio and video samples are not transcoded.
 
-Metadata is stored in a separate part of the container file, entirely distinct from the video and audio streams. When metadata is removed, the streams themselves are untouched. The video plays back at exactly the same resolution, frame rate, and quality as the original.
+The metadata PrivMeta targets is stored in container structures separate from encoded video and audio samples. Those media samples are left untouched. The regression suite independently checks browser playback and technical properties such as resolution, duration and frame rate where the format reports them.
 
 PrivMeta rewrites or neutralises container structures without decoding and recompressing the media samples. The regression suite checks reported resolution, duration, frame rate where available, and browser playback.
 
@@ -78,6 +78,6 @@ Recognised GPS/location fields, creation timestamps, software tags, titles, comm
 
 Before sharing footage from events, interviews, or any location where GPS matters, strip the metadata first. Before delivering video files to clients when encoder or workflow details should stay private, strip it. Before uploading raw footage to shared storage or sending to collaborators, strip it.
 
-[PrivMeta removes metadata from your video files](/) in your browser in seconds. No upload, no account, no software to install.
+[PrivMeta removes documented metadata structures from supported video files](/) in your browser with no account, software install, or file-processing upload.
 
 If you also work with audio recordings, see our guide on [removing metadata from audio files](/blog/remove-metadata-from-audio-files), covering MP3, FLAC, WAV, AAC, and M4A with client-side processing.
