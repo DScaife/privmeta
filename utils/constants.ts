@@ -1,9 +1,26 @@
-export { MAX_FILE_COUNT, MAX_FILE_SIZE_MB, MAX_FILE_SIZE_BYTES, ACCEPTED_FILE_TYPES, getKindForFilename };
+export {
+  MAX_FILE_COUNT,
+  MAX_FILE_SIZE_MB,
+  MAX_FILE_SIZE_BYTES,
+  MAX_TOTAL_FILE_SIZE_MB,
+  MAX_TOTAL_FILE_SIZE_BYTES,
+  ACCEPTED_FILE_TYPES,
+  getKindForFilename,
+  getTotalFileSizeBytes,
+};
 export type { FileKind };
 
 const MAX_FILE_COUNT = 10;
 const MAX_FILE_SIZE_MB = 100;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+// Cleaned files and the final ZIP can coexist in memory. Bounding the whole
+// queue prevents a batch of individually valid files from exhausting a tab.
+const MAX_TOTAL_FILE_SIZE_MB = 100;
+const MAX_TOTAL_FILE_SIZE_BYTES = MAX_TOTAL_FILE_SIZE_MB * 1024 * 1024;
+
+function getTotalFileSizeBytes(files: readonly Pick<File, "size">[]): number {
+  return files.reduce((total, file) => total + file.size, 0);
+}
 
 /** Which stripping pipeline handles the file. "container" covers audio and video. */
 type FileKind = "jpeg" | "image" | "gif" | "pdf" | "docx" | "container";

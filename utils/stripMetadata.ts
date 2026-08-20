@@ -1,5 +1,6 @@
 import { PDFDocument, PDFName } from "pdf-lib";
 import { concatBytes, matchesAscii, readUint32LE, writeUint32LE } from "./binary";
+import { inspectRasterAnimation, type RasterAnimationStatus } from "./imageAnimation";
 
 export { stripContainerMetadata } from "./stripContainerMetadata";
 
@@ -169,7 +170,20 @@ export async function stripGifMetadata(file: File): Promise<File | null> {
   }
 }
 
-export async function stripImageMetadata(file: File): Promise<File | null> {
+export async function stripImageMetadata(
+  file: File,
+  knownAnimationStatus?: RasterAnimationStatus,
+): Promise<File | null> {
+  const animationStatus = knownAnimationStatus ?? await inspectRasterAnimation(file);
+  if (animationStatus === "animated" || animationStatus === "invalid") {
+    console.error(
+      animationStatus === "animated"
+        ? "Animated PNG/WebP files are rejected to avoid flattening their frames."
+        : "Invalid PNG/WebP container rejected.",
+    );
+    return null;
+  }
+
   return new Promise((resolve) => {
     const img = new Image();
     const url = URL.createObjectURL(file);

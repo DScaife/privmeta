@@ -2,7 +2,14 @@
 import { Button } from "@/components/ui/button";
 import Dropzone, { type FileStatus, type StoredFile } from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import { MAX_FILE_COUNT, MAX_FILE_SIZE_MB, getKindForFilename } from "@/utils/constants";
+import {
+  MAX_FILE_COUNT,
+  MAX_FILE_SIZE_MB,
+  MAX_TOTAL_FILE_SIZE_BYTES,
+  MAX_TOTAL_FILE_SIZE_MB,
+  getKindForFilename,
+  getTotalFileSizeBytes,
+} from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -12,7 +19,14 @@ import ShareFunctions from "@/components/ShareFunctions";
 import Hero from "@/components/Hero";
 import DisableInternet from "@/components/DisableInternet";
 
-type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
+type ErrorType =
+  | "file_count"
+  | "unsupported_format"
+  | "file_too_large"
+  | "batch_too_large"
+  | "animated_image"
+  | "general"
+  | "dropzone_error";
 
 const renameWithSuffix = (file: File, suffix = "_cleaned"): string => {
   const nameParts = file.name.split(".");
@@ -26,7 +40,7 @@ const showErrorToast = (type: ErrorType) => {
   const messages: Record<ErrorType, { title: string; description: string; severity: "warning" | "error" }> = {
     file_count: {
       title: "Too many files",
-      description: `You can only upload up to ${MAX_FILE_COUNT} files.`,
+      description: `You can only queue up to ${MAX_FILE_COUNT} files.`,
       severity: "warning",
     },
     unsupported_format: {
@@ -36,7 +50,17 @@ const showErrorToast = (type: ErrorType) => {
     },
     file_too_large: {
       title: "File too large",
-      description: `Each file must be under ${MAX_FILE_SIZE_MB}MB.`,
+      description: `Each file can be up to ${MAX_FILE_SIZE_MB} MB.`,
+      severity: "warning",
+    },
+    batch_too_large: {
+      title: "Batch too large",
+      description: `Queued files can total up to ${MAX_TOTAL_FILE_SIZE_MB} MB. Remove a file or choose a smaller batch.`,
+      severity: "warning",
+    },
+    animated_image: {
+      title: "Animated image not supported",
+      description: "Animated PNG and WebP files are rejected because browser cleaning would flatten them to one frame.",
       severity: "warning",
     },
     general: {
@@ -107,6 +131,15 @@ export default function Home() {
       return;
     }
 
+    const totalSize = getTotalFileSizeBytes([
+      ...fileStore.map(({ file }) => file),
+      ...newFiles,
+    ]);
+    if (totalSize > MAX_TOTAL_FILE_SIZE_BYTES) {
+      showErrorToast("batch_too_large");
+      return;
+    }
+
     const wrapped: StoredFile[] = newFiles.map((file) => ({ id: crypto.randomUUID(), file }));
     setFileStore((prevFiles) => [...prevFiles, ...wrapped].slice(0, MAX_FILE_COUNT));
     toast.success(newFiles.length <= 1 ? "1 File queued" : `${newFiles.length} files queued`, {
@@ -131,10 +164,13 @@ export default function Home() {
 
     const { stripImageMetadata, stripGifMetadata, stripPdfMetadata, stripDocxMetadata, stripContainerMetadata, stripJpegMetadata } =
       await import("@/utils/stripMetadata");
+    const { inspectRasterAnimation } = await import("@/utils/imageAnimation");
 
     try {
       const cleanedFiles: File[] = [];
       let failedCount = 0;
+      let animatedCount = 0;
+      let animatedWarningShown = false;
 
       for (const { id, file } of fileStore) {
         setFileStatuses((prev) => ({ ...prev, [id]: "processing" }));
@@ -145,9 +181,21 @@ export default function Home() {
           case "jpeg":
             cleaned = await stripJpegMetadata(file);
             break;
-          case "image":
-            cleaned = await stripImageMetadata(file);
+          case "image": {
+            const animationStatus = await inspectRasterAnimation(file);
+            if (animationStatus === "animated") {
+              if (!animatedWarningShown) {
+                showErrorToast("animated_image");
+                animatedWarningShown = true;
+              }
+              setFileStatuses((prev) => ({ ...prev, [id]: "failed" }));
+              failedCount++;
+              animatedCount++;
+              continue;
+            }
+            cleaned = await stripImageMetadata(file, animationStatus);
             break;
+          }
           case "gif":
             cleaned = await stripGifMetadata(file);
             break;
@@ -203,7 +251,7 @@ export default function Home() {
         toast.success("Download ready ✨");
       } else if (cleanedFiles.length > 0) {
         toast.warning(`Download ready - ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
-      } else {
+      } else if (animatedCount !== failedCount) {
         showErrorToast("general");
       }
     } catch (error) {

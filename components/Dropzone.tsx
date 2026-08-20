@@ -4,7 +4,14 @@ import React, { useCallback, useRef, useState } from "react";
 import { File as FileIcon, X, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import Typography from "./Typography";
-import { MAX_FILE_SIZE_BYTES, MAX_FILE_COUNT, ACCEPTED_FILE_TYPES, getKindForFilename } from "@/utils/constants";
+import {
+  MAX_FILE_SIZE_BYTES,
+  MAX_FILE_COUNT,
+  MAX_TOTAL_FILE_SIZE_MB,
+  ACCEPTED_FILE_TYPES,
+  getKindForFilename,
+  getTotalFileSizeBytes,
+} from "@/utils/constants";
 
 export type FileStatus = "idle" | "processing" | "done" | "failed";
 
@@ -29,6 +36,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
 
   const isAcceptedType = (file: File) => getKindForFilename(file.name) !== undefined;
   const isAcceptedSize = (file: File) => file.size <= MAX_FILE_SIZE_BYTES;
+  const queuedSizeMb = getTotalFileSizeBytes(fileStore.map(({ file }) => file)) / (1024 * 1024);
 
   const handleFiles = useCallback(
     (files: FileList | File[]) => {
@@ -178,7 +186,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
           </ul>
         )}
         <Typography as="p" variant="bodySm" weight={500} muted className="absolute right-(--space-xl) bottom-(--space-md)">
-          {`${fileStore.length}/${MAX_FILE_COUNT}`}
+          {`${fileStore.length}/${MAX_FILE_COUNT} files · ${queuedSizeMb.toFixed(1)}/${MAX_TOTAL_FILE_SIZE_MB} MB`}
         </Typography>
       </div>
     </div>
