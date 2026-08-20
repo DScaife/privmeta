@@ -318,9 +318,38 @@ export async function stripPdfMetadata(file: File): Promise<File | null> {
 
 let cachedJSZip: import("jszip") | null = null;
 
-// Known limitation: author names embedded in the document body (tracked changes,
-// comments, w:rsid revision IDs in word/*.xml) are not scrubbed - only the
-// document-level properties parts are removed.
+/**
+ * Clears identity-bearing WordprocessingML attributes while preserving visible
+ * document text, comments, and revision markup. Namespace prefixes are not
+ * assumed: valid OOXML producers may choose prefixes other than `w`/`w15`.
+ */
+export function sanitizeWordprocessingXml(xml: string): string {
+  let cleaned = xml;
+
+  // Word's revision-session table is non-content metadata and can be removed
+  // wholesale. Individual rsid attributes are removed below as well.
+  cleaned = cleaned.replace(
+    /<([A-Za-z_][\w.-]*):rsids\b[^>]*>[\s\S]*?<\/\1:rsids\s*>/gi,
+    "",
+  );
+
+  // These string attributes identify comment/revision authors or their Office
+  // account. Keep an empty attribute where some OOXML versions require it.
+  cleaned = cleaned.replace(
+    /(\s(?:[A-Za-z_][\w.-]*:)?(?:author|initials|providerId|userId|personId)\s*=\s*)(["'])[^"'<>]*\2/gi,
+    (_match, prefix: string, quote: string) => `${prefix}${quote}${quote}`,
+  );
+
+  // Revision dates and identifiers carry editing history but are not needed to
+  // render the current document or its comment text.
+  cleaned = cleaned.replace(
+    /\s+(?:[A-Za-z_][\w.-]*:)?(?:date(?:Utc)?|durableId|rsid[A-Za-z0-9_.-]*)\s*=\s*(["'])[^"'<>]*\1/gi,
+    "",
+  );
+
+  return cleaned;
+}
+
 export async function stripDocxMetadata(file: File): Promise<File | null> {
   try {
     if (!file.name.endsWith(".docx")) {
@@ -340,6 +369,16 @@ export async function stripDocxMetadata(file: File): Promise<File | null> {
     // The entire docProps folder is document metadata: core.xml (author, dates),
     // app.xml (application, edit time), custom.xml and the page-1 thumbnail
     zip.remove("docProps");
+
+    // Identity can also occur in tracked changes, comments, headers, footers,
+    // notes, settings, and Office's people part. Sanitize every Word XML part
+    // so less-common document stories receive the same treatment.
+    for (const entry of Object.values(zip.files)) {
+      if (entry.dir || !/^word\/.*\.xml$/i.test(entry.name)) continue;
+      const xml = await entry.async("string");
+      const cleanedXml = sanitizeWordprocessingXml(xml);
+      if (cleanedXml !== xml) zip.file(entry.name, cleanedXml);
+    }
 
     // DEFLATE the rebuilt archive: a .docx is a compressed zip, but JSZip
     // defaults to STORE (no compression), which would balloon the file ~10x.

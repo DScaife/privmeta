@@ -241,6 +241,15 @@ function bufferContainsSentinel(bytes: Buffer, sentinel: string): boolean {
   return bytes.includes(Buffer.from(sentinel, "utf8")) || bytes.includes(Buffer.from(sentinel, "utf16le"));
 }
 
+async function readDocxXml(zip: JSZip): Promise<string> {
+  const parts: string[] = [];
+  for (const entry of Object.values(zip.files)) {
+    if (entry.dir || !/\.(?:xml|rels)$/i.test(entry.name)) continue;
+    parts.push(await entry.async("string"));
+  }
+  return parts.join("\n");
+}
+
 export async function validateDocumentIntegrity(
   extension: SupportedExtension,
   beforePath: string,
@@ -262,11 +271,37 @@ export async function validateDocumentIntegrity(
 
   if (extension === "docx") {
     try {
-      const zip = await JSZip.loadAsync(fs.readFileSync(afterPath));
-      if (!zip.file("[Content_Types].xml") || !zip.file("word/document.xml")) {
+      const beforeZip = await JSZip.loadAsync(fs.readFileSync(beforePath));
+      const afterZip = await JSZip.loadAsync(fs.readFileSync(afterPath));
+      if (!afterZip.file("[Content_Types].xml") || !afterZip.file("word/document.xml")) {
         errors.push("Cleaned DOCX is missing required package parts");
       } else {
         preserved.push("DOCX package structure");
+      }
+      if (Object.keys(afterZip.files).some((name) => /^docProps\//i.test(name))) {
+        errors.push("Cleaned DOCX still contains the docProps metadata folder");
+      }
+
+      const beforeXml = await readDocxXml(beforeZip);
+      const afterXml = await readDocxXml(afterZip);
+      const packageSentinels = [...new Set(beforeXml.match(/PRIVMETA_TEST_[A-Z0-9_-]+/g) ?? [])];
+      const remainingSentinels = packageSentinels.filter((sentinel) => afterXml.includes(sentinel));
+      if (remainingSentinels.length > 0) {
+        errors.push(`DOCX XML sentinel strings remain: ${remainingSentinels.join(", ")}`);
+      } else if (packageSentinels.length > 0) {
+        preserved.push(`DOCX XML sentinels removed=${packageSentinels.length}`);
+      }
+
+      const nonEmptyIdentityAttribute =
+        /\s(?:[A-Za-z_][\w.-]*:)?(?:author|initials|providerId|userId|personId)\s*=\s*(["'])[^"'<>]+\1/i;
+      if (nonEmptyIdentityAttribute.test(afterXml)) {
+        errors.push("Cleaned DOCX still contains a non-empty comment/revision identity attribute");
+      }
+      if (
+        /\s(?:[A-Za-z_][\w.-]*:)?rsid[A-Za-z0-9_.-]*\s*=/i.test(afterXml) ||
+        /<(?:[A-Za-z_][\w.-]*:)?rsids\b/i.test(afterXml)
+      ) {
+        errors.push("Cleaned DOCX still contains Word revision-session IDs");
       }
     } catch (error) {
       errors.push(`DOCX ZIP validation failed: ${error instanceof Error ? error.message : String(error)}`);

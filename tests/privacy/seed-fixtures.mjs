@@ -240,6 +240,9 @@ function seedMatroska(filePath) {
 async function seedDocx(filePath) {
   const zip = await JSZip.loadAsync(fs.readFileSync(filePath));
   if (!zip.file("word/document.xml")) throw new Error(`DOCX document.xml is missing: ${filePath}`);
+  const trackedAuthor = "PRIVMETA_TEST_TRACKED_AUTHOR";
+  const commentAuthor = "PRIVMETA_TEST_COMMENT_AUTHOR";
+  const personUserId = "PRIVMETA_TEST_PERSON_USER_ID";
   const core = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${SENTINELS.title}</dc:title><dc:subject>${SENTINELS.comment}</dc:subject><dc:creator>${SENTINELS.author}</dc:creator><cp:keywords>PRIVMETA_TEST_KEYWORDS</cp:keywords><cp:lastModifiedBy>${SENTINELS.author}</cp:lastModifiedBy><cp:revision>42</cp:revision></cp:coreProperties>`;
   const app = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -247,6 +250,79 @@ async function seedDocx(filePath) {
   const fixtureDate = new Date("2000-01-01T00:00:00.000Z");
   zip.file("docProps/core.xml", core, { date: fixtureDate });
   zip.file("docProps/app.xml", app, { date: fixtureDate });
+
+  let documentXml = await zip.file("word/document.xml").async("string");
+  if (!documentXml.includes(trackedAuthor)) {
+    const paragraphMatch = documentXml.match(/<w:p\b[^>]*>/);
+    if (!paragraphMatch || paragraphMatch.index === undefined) throw new Error(`DOCX has no paragraph: ${filePath}`);
+    const paragraphOpen = paragraphMatch[0].replace(
+      />$/,
+      ' w:rsidR="A1B2C3D4" w:rsidRDefault="DEADBEEF">',
+    );
+    documentXml =
+      documentXml.slice(0, paragraphMatch.index) +
+      paragraphOpen +
+      '<w:commentRangeStart w:id="987"/>' +
+      documentXml.slice(paragraphMatch.index + paragraphMatch[0].length);
+    documentXml = documentXml.replace(
+      /<w:r\b[^>]*>[\s\S]*?<\/w:r>/,
+      `<w:ins w:id="986" w:author="${trackedAuthor}" w:date="2024-01-02T03:04:05Z">$&</w:ins>`,
+    );
+    documentXml = documentXml.replace(
+      /<\/w:p>/,
+      '<w:commentRangeEnd w:id="987"/><w:r><w:commentReference w:id="987"/></w:r></w:p>',
+    );
+    zip.file("word/document.xml", documentXml, { date: fixtureDate });
+  }
+
+  const comments = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:comments xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:comment w:id="987" w:author="${commentAuthor}" w:initials="PM" w:date="2024-01-02T03:04:05Z"><w:p w:rsidR="2468ACE0"><w:r><w:t>This comment content must be preserved.</w:t></w:r></w:p></w:comment></w:comments>`;
+  const people = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w15:people xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml"><w15:person w15:author="${commentAuthor}"><w15:presenceInfo w15:providerId="ActiveDirectory" w15:userId="${personUserId}"/></w15:person></w15:people>`;
+  zip.file("word/comments.xml", comments, { date: fixtureDate });
+  zip.file("word/people.xml", people, { date: fixtureDate });
+
+  const relsPath = "word/_rels/document.xml.rels";
+  let rels = await zip.file(relsPath).async("string");
+  if (!rels.includes("relationships/comments")) {
+    rels = rels.replace(
+      /<\/Relationships>/,
+      '<Relationship Id="rIdPrivacyComments" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments" Target="comments.xml"/></Relationships>',
+    );
+  }
+  if (!rels.includes("relationships/people")) {
+    rels = rels.replace(
+      /<\/Relationships>/,
+      '<Relationship Id="rIdPrivacyPeople" Type="http://schemas.microsoft.com/office/2011/relationships/people" Target="people.xml"/></Relationships>',
+    );
+  }
+  zip.file(relsPath, rels, { date: fixtureDate });
+
+  let contentTypes = await zip.file("[Content_Types].xml").async("string");
+  if (!contentTypes.includes('PartName="/word/comments.xml"')) {
+    contentTypes = contentTypes.replace(
+      /<\/Types>/,
+      '<Override PartName="/word/comments.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml"/></Types>',
+    );
+  }
+  if (!contentTypes.includes('PartName="/word/people.xml"')) {
+    contentTypes = contentTypes.replace(
+      /<\/Types>/,
+      '<Override PartName="/word/people.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.people+xml"/></Types>',
+    );
+  }
+  zip.file("[Content_Types].xml", contentTypes, { date: fixtureDate });
+
+  const settingsEntry = zip.file("word/settings.xml");
+  if (settingsEntry) {
+    let settings = await settingsEntry.async("string");
+    settings = settings.replace(/<w:rsids\b[^>]*>[\s\S]*?<\/w:rsids\s*>/g, "");
+    settings = settings.replace(
+      /<\/w:settings>/,
+      '<w:rsids><w:rsidRoot w:val="13572468"/><w:rsid w:val="A1B2C3D4"/></w:rsids></w:settings>',
+    );
+    zip.file("word/settings.xml", settings, { date: fixtureDate });
+  }
   const output = await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE", compressionOptions: { level: 6 } });
   fs.writeFileSync(filePath, output);
 }
