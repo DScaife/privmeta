@@ -157,7 +157,15 @@ function findTechnicalValue(snapshot: MetadataSnapshot, tag: string): unknown {
   return Object.entries(snapshot).find(([key]) => key.split(":").at(-1) === tag)?.[1];
 }
 
-function valuesEqual(before: unknown, after: unknown, tag: string): boolean {
+function valuesEqual(before: unknown, after: unknown, tag: string, extension: SupportedExtension): boolean {
+  if (tag === "FileType") {
+    if (extension === "webp" && [before, after].every((value) => value === "WEBP" || value === "Extended WEBP")) {
+      return true;
+    }
+    // ExifTool identifies raw AAC with a non-standard leading ID3 tag as MP3;
+    // after the tag is stripped it correctly reports AAC.
+    if (extension === "aac" && before === "MP3" && after === "AAC") return true;
+  }
   if (typeof before === "number" && typeof after === "number") {
     const tolerance = tag === "Duration" ? 0.02 : tag === "VideoFrameRate" ? 0.001 : 0;
     return Math.abs(before - after) <= tolerance;
@@ -299,7 +307,7 @@ export function assessPrivacyCase(args: {
       warnings.push(`Preservation field was not reported for the original: ${tag}`);
     } else if (after === undefined) {
       errors.push(`Preservation field disappeared: ${tag}`);
-    } else if (!valuesEqual(before, after, tag)) {
+    } else if (!valuesEqual(before, after, tag, fixture.extension)) {
       errors.push(`Preservation field changed: ${tag} (${JSON.stringify(before)} -> ${JSON.stringify(after)})`);
     } else {
       preserved.push(`${tag}=${JSON.stringify(after)}`);

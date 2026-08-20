@@ -29,6 +29,21 @@ test directory is included in the Cloudflare export.
 Synthetic, non-sensitive fixtures intended for source control can go under
 `fixtures/synthetic/`.
 
+The checked-in synthetic samples are deliberately seeded with recognizable
+author, title, comment, software, GPS, document-property, audio-tag, and
+container-tag values. To recreate or refresh those values and their
+`.privacy.json` expectations, run:
+
+```powershell
+npm run privacy:seed
+```
+
+The command modifies the synthetic fixture files in place. It is deterministic
+and safe to rerun: an immediate second run produces byte-identical fixtures.
+It uses ExifTool for writable image/PDF/ISO media formats and local fixture-only
+builders for ID3, FLAC, WAVE, DOCX, and Matroska metadata. These builders are
+test tooling and are not included in the production application bundle.
+
 The supported folders are:
 
 ```text
