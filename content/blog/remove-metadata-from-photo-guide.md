@@ -59,7 +59,7 @@ Steps:
 - On iPhone: Use “Share” → “Options” → Toggle off “Location” and “All Photos Data.”
 - On Android: Use built-in gallery settings or third-party apps.
 
-Unlike the OS tools above, [PrivMeta](/) removes all EXIF fields, including GPS, serial number, and software tags, in a single step, without installing anything.
+[PrivMeta](/) removes the recognised EXIF segment containing common GPS, serial-number and software fields, plus targeted XMP, IPTC and comment structures, in a single step.
 
 ---
 

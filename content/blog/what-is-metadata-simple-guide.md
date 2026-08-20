@@ -56,6 +56,6 @@ Understanding metadata is the first step to digital privacy. By being aware of t
 
 ## Remove Your File Metadata Now
 
-Now you know what metadata is and what it can reveal. [PrivMeta](/) lets you strip it from any file, photos, documents, PDFs, video, audio, entirely in your browser. Nothing is uploaded.
+Now you know what metadata is and what it can reveal. [PrivMeta](/) removes documented metadata structures from its supported photo, document, PDF, video and audio formats in your browser without uploading file bytes.
 
 [Remove Metadata Free](/)

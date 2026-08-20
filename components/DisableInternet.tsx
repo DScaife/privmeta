@@ -4,7 +4,7 @@ const DisableInternet = () => {
   return (
     <section className="w-full">
       <Typography variant="body" weight={500}>
-        All files are processed in-browser and never touch a server.
+        File cleaning happens in your browser. File bytes are not uploaded.
       </Typography>
     </section>
   );

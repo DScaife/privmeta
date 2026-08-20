@@ -69,10 +69,10 @@ export default function Home() {
 
   useEffect(() => {
     const infoTimeout = setTimeout(() => {
-      toast.info("You can disable your internet", {
+      toast.info("Your files stay local", {
         id: "offline-mode",
         duration: 10000,
-        description: "Runs in your browser only. Files never leave your device.",
+        description: "Cleaning runs in your browser. File bytes are not uploaded.",
         action: {
           label: "Got it",
           onClick: () => {},

@@ -19,7 +19,7 @@ Remove metadata from a PDF before sending it and that hidden information stays p
 
 The document's text, images, and layout are completely untouched. Only the hidden metadata is removed. The process takes a few seconds and requires no software installation or account.
 
-PrivMeta removes both the Info dictionary (which stores author, title, subject, keywords, creator, and producer) and the XMP metadata stream. After processing, the PDF contains no identifiable metadata fields.
+PrivMeta removes the standard Info dictionary fields, the catalog XMP Metadata reference, and the trailer ID. It does not redact visible text or inspect annotations, forms, attachments, and arbitrary application-specific content for personal information.
 
 ## What Metadata Does a PDF Contain?
 

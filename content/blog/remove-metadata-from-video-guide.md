@@ -4,22 +4,22 @@ description: "Remove GPS coordinates, device details and timestamps from MP4, MO
 date: "2026-04-19"
 ---
 
-Video files carry more hidden data than most people realise. Every MP4 or MOV recorded on a smartphone quietly embeds where you were standing, what device you used, and exactly when you pressed record. None of this is visible when someone watches the file. All of it is readable by anyone who knows how to look.
+Video files can carry more hidden data than most people realise. Depending on the device and settings, an MP4 or MOV may contain a recording location, device or software details, timestamps, titles, and other container tags. None of this needs to be visible during playback to travel with the file.
 
 Removing metadata from video files takes a few seconds and requires no specialist software. This guide covers how to do it, what your video files actually contain, and whether quality is affected.
 
 ## How to Remove Metadata from a Video File in Your Browser
 
-[PrivMeta](/) removes all metadata from video files directly in your browser. Your files are never uploaded to a server. PrivMeta uses FFmpeg compiled to WebAssembly, which means the entire process runs locally in your browser tab.
+[PrivMeta](/) removes targeted metadata structures from supported video containers directly in your browser. File bytes are not uploaded to a processing server. PrivMeta uses format-specific JavaScript parsers rather than FFmpeg, so there is no large media engine in the deployed app.
 
-**Supported formats:** MP4, MOV, AVI, WEBM, MKV
+**Supported formats:** MP4, MOV, WEBM, MKV
 
 1. Go to [PrivMeta](/)
 2. Drop your video file into the upload area
 3. Click **Remove metadata**
 4. Download the cleaned file
 
-PrivMeta strips all metadata streams and copies the video and audio tracks without transcoding, so your video quality is preserved exactly. No recompression, no quality loss, no waiting for a server.
+PrivMeta neutralises recognised container metadata while leaving encoded video and audio samples untouched. MP4/MOV coverage includes standard metadata boxes, timestamps, Apple metadata tracks, and common fragmented files. WebM/MKV coverage includes tags, chapters, attachments, application strings, and track names. Unsupported or ambiguous layouts fail instead of being rewritten speculatively.
 
 **For technical users who prefer the command line:**
 
@@ -27,7 +27,7 @@ PrivMeta strips all metadata streams and copies the video and audio tracks witho
 ffmpeg -i input.mp4 -map_metadata -1 -c copy output.mp4
 ```
 
-The `-map_metadata -1` flag removes all metadata streams. The `-c copy` flag copies the video and audio streams without transcoding, keeping the process fast even for large files.
+The `-map_metadata -1` flag drops standard global metadata and `-c copy` avoids transcoding. Files with dedicated data tracks, chapters, or attachments may require additional mapping options, so inspect the result rather than treating one command as a universal guarantee.
 
 ## What Metadata Does a Video File Contain?
 
@@ -60,20 +60,19 @@ PrivMeta handles the most widely used video formats:
 | MP4 | Smartphones, cameras, web video | GPS, device model, creation date, encoder |
 | MOV | iPhones, Final Cut Pro | GPS, device model, creation date |
 | MKV | Open source video, archiving | Writing app, muxing app, creation date |
-| AVI | Windows, legacy recording | Software, creation date, author |
 | WEBM | Web streaming | Encoder, muxing app, creation date |
 
 MKV files often carry a "Writing application" field naming the software and version used to create or process the file. For anyone distributing edited content, this can expose internal production workflow details you did not intend to share.
 
 ## Does Removing Metadata Affect Video Quality?
 
-No. Video quality is completely unaffected.
+The encoded audio and video samples are not transcoded.
 
 Metadata is stored in a separate part of the container file, entirely distinct from the video and audio streams. When metadata is removed, the streams themselves are untouched. The video plays back at exactly the same resolution, frame rate, and quality as the original.
 
-PrivMeta uses stream copying rather than transcoding, which means the video is never decoded and recompressed during processing. The pixels in your video are never touched.
+PrivMeta rewrites or neutralises container structures without decoding and recompressing the media samples. The regression suite checks reported resolution, duration, frame rate where available, and browser playback.
 
-After processing, the following are fully preserved: video content, audio track, resolution, frame rate, chapter markers, and subtitles. The following are removed: GPS coordinates, device information, creation timestamps, software tags, and all other metadata fields.
+Recognised GPS/location fields, creation timestamps, software tags, titles, comments and similar container metadata are targeted. MKV/WebM chapters and attachments are intentionally removed because they may contain private titles or embedded files. Unknown application-specific structures are not claimed to be universally detectable.
 
 ## Share Video Without the Hidden Details
 
@@ -81,4 +80,4 @@ Before sharing footage from events, interviews, or any location where GPS matter
 
 [PrivMeta removes metadata from your video files](/) in your browser in seconds. No upload, no account, no software to install.
 
-If you also work with audio recordings, see our guide on [removing metadata from audio files](/blog/remove-metadata-from-audio-files), covering MP3, FLAC, WAV, and more, all processed in your browser with no upload required.
+If you also work with audio recordings, see our guide on [removing metadata from audio files](/blog/remove-metadata-from-audio-files), covering MP3, FLAC, WAV, AAC, and M4A with client-side processing.

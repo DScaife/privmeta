@@ -20,15 +20,15 @@ PrivMeta's full source code is [on GitHub](https://github.com/DScaife/privmeta/t
 
 **1. Files never leave your browser**
 
-PrivMeta processes files using JavaScript running directly in your browser tab. There are no API calls to external servers, no cloud processing endpoints, no upload functions hidden in the codebase. You can confirm this by reading the source.
+PrivMeta processes file bytes using JavaScript running directly in your browser tab. There is no file-processing API or upload endpoint. Like most websites, the deployed page can still request static assets and may use configured operational telemetry; the auditable boundary is that those requests do not receive file contents or file names.
 
 **2. Metadata is actually removed**
 
-Different file types need different approaches. For images, PrivMeta strips EXIF, IPTC, and XMP segments. For DOCX files, it removes the `docProps/` XML files from the ZIP archive. For audio and video, it uses FFmpeg compiled to WebAssembly, running locally in your browser, not on a server. The code for each format is readable on GitHub.
+Different file types need different approaches. For images, PrivMeta removes targeted EXIF, IPTC, XMP and comment structures. For DOCX files, it removes `docProps/` and anonymises author, account and revision-session identities throughout Word XML. Audio and video use hand-written format parsers for MP4/MOV/M4A, Matroska, MP3/AAC tags, FLAC and WAV. The code and exact [coverage limitations](https://github.com/DScaife/privmeta/blob/master/docs/PRIVACY_AND_FORMAT_COVERAGE.md) are readable on GitHub.
 
-**3. Nothing is tracked on your end**
+**3. The telemetry boundary**
 
-Some tools claim to be private while embedding analytics that log file types, sizes, or usage timestamps. With PrivMeta's code public, what is and isn't collected is verifiable, not just a policy claim.
+Some tools make broad privacy claims without distinguishing file processing from website telemetry. PrivMeta's source lets you verify both: optional Sentry and Cloudflare telemetry may make ordinary operational requests, while the cleaning path does not upload file contents or file names.
 
 ## Who This Matters For
 
@@ -59,16 +59,18 @@ No account or installation needed:
 3. Click **Remove metadata**
 4. Download the cleaned files
 
-PrivMeta supports batch processing. You can drop multiple files at once and download them as a ZIP. Everything stays local. You can even use PrivMeta offline after the initial page load, since all processing is in-browser.
+PrivMeta supports batch processing. You can drop multiple files at once and download them as a ZIP; the files are cleaned and bundled in the browser.
 
 ## Supported File Types
 
 PrivMeta removes metadata from:
 
-- **Images**: JPEG, PNG, WEBP, GIF, including GPS coordinates, camera model, and timestamps
-- **Documents**: PDF, DOCX, including author name, revision history, and company details
-- **Video**: MP4, MOV, MKV, AVI, WEBM, including device info and creation dates
-- **Audio**: MP3, WAV, FLAC, AAC, OGG, M4A, including encoder tags and recording metadata
+- **Images**: JPEG, PNG, static WEBP, and GIF
+- **Documents**: PDF and DOCX
+- **Video**: MP4, MOV, MKV, and WEBM
+- **Audio**: MP3, WAV, FLAC, raw AAC, and M4A
+
+Coverage is structure-specific. A successful clean is not a promise that visible content, filenames, or every unknown application-specific field is anonymous.
 
 ## A Note on Trust in Privacy Tools
 

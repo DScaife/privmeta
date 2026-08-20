@@ -27,7 +27,7 @@ For a full breakdown of EXIF fields and what they mean, see our guide on [what E
 
 ## How to Remove Metadata from Photos in Your Browser
 
-[PrivMeta](/) removes all EXIF metadata from photos directly in your browser. This works on any device including iPhone, Android, Mac, and Windows. Your photos are never uploaded to a server.
+[PrivMeta](/) removes targeted EXIF, XMP, IPTC and comment structures from supported photos directly in a compatible browser. Photo bytes are not uploaded to a processing server.
 
 **Supported formats:** JPEG, JPG, PNG, WEBP, GIF
 
@@ -56,13 +56,13 @@ This is not a theoretical risk. Journalists have used geotagged photos to locate
 
 Removing the geotag before sharing is the only way to be certain the location information is gone. Relying on a platform to strip it for you is a different thing entirely. Platform behaviour varies, changes without notice, and cannot be verified after the fact.
 
-[PrivMeta](/) removes GPS coordinates along with all other EXIF fields in a single step, in your browser, before the image goes anywhere.
+[PrivMeta](/) removes the EXIF segment that carries standard GPS coordinates and other common camera fields, in your browser before sharing.
 
 ## Does Removing Metadata Affect Photo Quality?
 
 No. Removing metadata has no effect on image quality whatsoever.
 
-EXIF data is stored in a separate section of the image file, completely distinct from the pixel data that makes up the actual photo. When metadata is removed, the pixel data is left entirely untouched. The image looks identical at every zoom level and retains its full resolution.
+In JPEG files, EXIF is stored separately from compressed image data, so PrivMeta removes the relevant segments without recompressing the photo. Static PNG and WebP files are raster re-encoded by the browser, so the visual content and dimensions are preserved but byte-for-byte equivalence is not claimed.
 
 File size decreases slightly because the metadata section is no longer present, but the difference is negligible and has no visual impact.
 

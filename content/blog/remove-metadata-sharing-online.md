@@ -77,7 +77,7 @@ PrivMeta breaks this exposure chain by ensuring metadata never leaves your devic
 ## Step-by-Step Protection Guide
 
 1. **Audit**: Check files for hidden metadata
-2. **Sanitize**: Use PrivMeta to clean all files
+2. **Sanitize**: Use a format-appropriate cleaner for supported files
 3. **Verify**: Confirm metadata removal
 4. **Share**: Distribute clean files confidently
 5. **Educate**: Teach others about metadata risks
@@ -94,6 +94,6 @@ PrivMeta solves these problems by keeping everything on your device. No uploads,
 
 ## Strip Metadata Before You Share
 
-Every file format covered above is supported by [PrivMeta](/): photos, documents, PDFs, video, and audio, all processed locally in your browser. Drop your files in, remove the metadata, download the clean version.
+[PrivMeta](/) supports documented image, PDF, DOCX, MP4/MOV, Matroska, MP3/AAC, FLAC and WAV structures, all processed locally in your browser. Review the cleaned output and remember that visible content, filenames and unknown application-specific data are outside a universal metadata guarantee.
 
 [Remove Metadata Now](/)

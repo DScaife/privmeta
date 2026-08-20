@@ -56,7 +56,7 @@ Stripping the metadata yourself before uploading eliminates all of these uncerta
 
 ## How to Remove Metadata Before Sharing
 
-[PrivMeta](/) removes all EXIF data from your photos in your browser before you share them. Your photos are never uploaded to a server.
+[PrivMeta](/) removes the EXIF, XMP, IPTC and comment structures targeted by its image cleaners in your browser before you share. Photo bytes are not uploaded to a processing server.
 
 **Supported formats:** JPEG, JPG, PNG, WEBP, GIF
 
@@ -72,6 +72,6 @@ For a full guide on what photo metadata contains and how to remove it across dif
 
 ## Remove It Yourself. Know It Is Done.
 
-Platform behaviour is inconsistent, undocumented, and outside your control. The only method that guarantees your photo metadata is gone before sharing is removing it yourself, before the file goes anywhere.
+Platform behaviour is inconsistent, undocumented, and outside your control. Cleaning and checking the file yourself before upload gives you control over the metadata structures your tool recognises, rather than relying on the destination platform.
 
 [Strip EXIF data from your photos at PrivMeta](/) before your next upload. Free, no account, nothing sent to a server.

@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Free & Private Metadata Remover",
     description:
-      "Free metadata remover for photos, videos, PDFs, and documents - everything runs in your browser. No upload, no account, no tracking.",
+      "Free metadata remover for photos, videos, PDFs, and documents. File cleaning runs in your browser with no file upload or account.",
     url: "https://www.privmeta.com/",
     siteName: "PrivMeta",
     images: [
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Free & Private Metadata Remover",
     description:
-      "Strip metadata from photos, videos, PDFs, and docs - 100% in your browser. Free, no account, no upload. Your files never leave your device.",
+      "Remove targeted metadata from photos, videos, PDFs, and documents in your browser. Free, no account, and no file upload.",
     images: ["/og-image.png"],
     creator: "@privmeta",
   },
@@ -129,7 +129,7 @@ export default function RootLayout({
                 url: "https://www.privmeta.com/web-app-manifest-192x192.png",
               },
               image: "https://www.privmeta.com/og-image.png",
-              description: "Remove metadata from files with PrivMeta, a secure, offline-first tool for privacy-conscious users.",
+              description: "Remove targeted metadata from supported files with client-side processing and no file uploads.",
               foundingDate: "2025-01-01",
               applicationCategory: "WebApplication",
               operatingSystem: "All",
