@@ -54,6 +54,9 @@ const technicalTags = [
   "Rotation",
   "AudioSampleRate",
   "AudioChannels",
+  "SampleRate",
+  "Channels",
+  "NumChannels",
   "PageCount",
   "FrameCount",
   "AnimationIterations",
@@ -152,9 +155,17 @@ function matchingTags(snapshot: MetadataSnapshot, patterns: string[]): string[] 
 }
 
 function findTechnicalValue(snapshot: MetadataSnapshot, tag: string): unknown {
-  const exact = snapshot[tag];
-  if (exact !== undefined) return exact;
-  return Object.entries(snapshot).find(([key]) => key.split(":").at(-1) === tag)?.[1];
+  const aliases: Record<string, string[]> = {
+    AudioSampleRate: ["AudioSampleRate", "SampleRate"],
+    AudioChannels: ["AudioChannels", "Channels", "NumChannels"],
+  };
+  for (const candidate of aliases[tag] ?? [tag]) {
+    const exact = snapshot[candidate];
+    if (exact !== undefined) return exact;
+    const grouped = Object.entries(snapshot).find(([key]) => key.split(":").at(-1) === candidate)?.[1];
+    if (grouped !== undefined) return grouped;
+  }
+  return undefined;
 }
 
 function valuesEqual(before: unknown, after: unknown, tag: string, extension: SupportedExtension): boolean {
@@ -282,6 +293,7 @@ export function assessPrivacyCase(args: {
   const forbiddenPatterns = [...policy.forbiddenAfter, ...(fixture.overrides.forbiddenAfter ?? [])];
   const requiredPatterns = fixture.overrides.requiredBefore ?? [];
   const preserveTags = fixture.overrides.preserveTags ?? policy.preserveTags;
+  const optionalPreserveTags = fixture.overrides.preserveTags ? [] : (policy.optionalPreserveTags ?? []);
   const errors = [...args.exifValidation.errors, ...args.documentValidation.errors];
   const warnings = [...args.exifValidation.warnings];
   const preserved = [...args.documentValidation.preserved];
@@ -300,11 +312,14 @@ export function assessPrivacyCase(args: {
   const forbiddenAfter = matchingTags(args.afterMetadata, forbiddenPatterns);
   if (forbiddenAfter.length > 0) errors.push(`Forbidden metadata remains: ${forbiddenAfter.join(", ")}`);
 
-  for (const tag of preserveTags) {
+  for (const [tag, optional] of [
+    ...preserveTags.map((value) => [value, false] as const),
+    ...optionalPreserveTags.map((value) => [value, true] as const),
+  ]) {
     const before = findTechnicalValue(args.beforeTechnical, tag);
     const after = findTechnicalValue(args.afterTechnical, tag);
     if (before === undefined) {
-      warnings.push(`Preservation field was not reported for the original: ${tag}`);
+      if (!optional) warnings.push(`Preservation field was not reported for the original: ${tag}`);
     } else if (after === undefined) {
       errors.push(`Preservation field disappeared: ${tag}`);
     } else if (!valuesEqual(before, after, tag, fixture.extension)) {

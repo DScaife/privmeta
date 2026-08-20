@@ -30,6 +30,7 @@ export type FixtureOverrides = {
 export type FormatPolicy = {
   forbiddenAfter: string[];
   preserveTags: string[];
+  optionalPreserveTags?: string[];
   browserProbe: "image" | "video" | "audio" | "none";
 };
 
@@ -71,7 +72,8 @@ const commonForbidden = [
 const mp3Forbidden = commonForbidden.filter((pattern) => pattern !== "*:Encoder");
 
 const imagePreserve = ["FileType", "ImageWidth", "ImageHeight"];
-const videoPreserve = ["FileType", "Duration", "ImageSize", "VideoFrameRate", "CompressorID", "Rotation"];
+const videoPreserve = ["FileType", "Duration", "ImageSize", "VideoFrameRate"];
+const videoOptionalPreserve = ["CompressorID", "Rotation"];
 const audioPreserve = ["FileType", "Duration", "AudioSampleRate", "AudioChannels"];
 
 const imagePolicy: FormatPolicy = {
@@ -87,7 +89,8 @@ const policies: Record<SupportedExtension, FormatPolicy> = {
   webp: imagePolicy,
   gif: {
     forbiddenAfter: [...commonForbidden, "GIF:Comment", "*:CommentExtension"],
-    preserveTags: [...imagePreserve, "FrameCount", "AnimationIterations"],
+    preserveTags: imagePreserve,
+    optionalPreserveTags: ["FrameCount", "AnimationIterations"],
     browserProbe: "image",
   },
   pdf: {
@@ -107,18 +110,23 @@ const policies: Record<SupportedExtension, FormatPolicy> = {
     preserveTags: ["FileType"],
     browserProbe: "none",
   },
-  mp4: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, browserProbe: "video" },
-  mov: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, browserProbe: "video" },
-  webm: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, browserProbe: "video" },
-  mkv: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, browserProbe: "video" },
+  mp4: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, optionalPreserveTags: videoOptionalPreserve, browserProbe: "video" },
+  mov: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, optionalPreserveTags: videoOptionalPreserve, browserProbe: "video" },
+  webm: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, optionalPreserveTags: videoOptionalPreserve, browserProbe: "video" },
+  mkv: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, optionalPreserveTags: videoOptionalPreserve, browserProbe: "video" },
   mp3: {
     forbiddenAfter: [...mp3Forbidden, "ID3:*", "ID3v1:*", "ID3v2:*", "APE:*"],
-    preserveTags: audioPreserve,
+    preserveTags: ["FileType", "Duration", "AudioSampleRate"],
+    optionalPreserveTags: ["AudioChannels"],
     browserProbe: "audio",
   },
   aac: {
     forbiddenAfter: [...commonForbidden, "ID3:*", "ID3v2:*", "APE:*"],
-    preserveTags: audioPreserve,
+    preserveTags: ["FileType"],
+    // A leading ID3 tag makes ExifTool classify this raw ADTS fixture as MP3,
+    // so these values are compared when available and browser decode remains
+    // the independent integrity check when they are not.
+    optionalPreserveTags: ["Duration", "AudioSampleRate", "AudioChannels"],
     browserProbe: "audio",
   },
   flac: {
