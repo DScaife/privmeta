@@ -104,6 +104,18 @@ schema-verified unknown-size Cluster, run:
 npm run privacy:record-webm
 ```
 
+To create a non-sensitive fragmented MP4 fixture from Chromium's H.264
+`MediaRecorder`, with synthetic title, author, comment, and GPS metadata:
+
+```bash
+npm run privacy:record-mp4
+```
+
+Both generated browser fixtures are refreshed automatically by
+`npm run privacy:test`. Their media is an animated canvas, not a camera or
+screen capture, and the files remain ignored by Git with the other real
+fixtures.
+
 The generator records an animated canvas for five seconds, without camera,
 microphone, or screen-capture permissions. It writes the result under
 `fixtures/real/webm/` only after verifying the Segment and Cluster size VINTs.

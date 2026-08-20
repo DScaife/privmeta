@@ -5,7 +5,7 @@ const repositoryRoot = path.resolve(__dirname, "../..");
 
 export default defineConfig({
   testDir: __dirname,
-  testMatch: "privacy.spec.ts",
+  testMatch: "*.spec.ts",
   fullyParallel: false,
   workers: 1,
   timeout: 15 * 60 * 1000,

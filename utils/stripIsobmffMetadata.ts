@@ -7,6 +7,20 @@ type ByteRange = { start: number; end: number };
 const METADATA_HANDLER_TYPE = "meta";
 const MAX_SAMPLE_TABLE_ENTRIES = 1_000_000;
 
+const TFHD_BASE_DATA_OFFSET_PRESENT = 0x000001;
+const TFHD_SAMPLE_DESCRIPTION_INDEX_PRESENT = 0x000002;
+const TFHD_DEFAULT_SAMPLE_DURATION_PRESENT = 0x000008;
+const TFHD_DEFAULT_SAMPLE_SIZE_PRESENT = 0x000010;
+const TFHD_DEFAULT_SAMPLE_FLAGS_PRESENT = 0x000020;
+const TFHD_DEFAULT_BASE_IS_MOOF = 0x020000;
+
+const TRUN_DATA_OFFSET_PRESENT = 0x000001;
+const TRUN_FIRST_SAMPLE_FLAGS_PRESENT = 0x000004;
+const TRUN_SAMPLE_DURATION_PRESENT = 0x000100;
+const TRUN_SAMPLE_SIZE_PRESENT = 0x000200;
+const TRUN_SAMPLE_FLAGS_PRESENT = 0x000400;
+const TRUN_SAMPLE_COMPOSITION_TIME_OFFSET_PRESENT = 0x000800;
+
 function fourCC(bytes: Uint8Array, offset: number): string {
   return String.fromCharCode(bytes[offset], bytes[offset + 1], bytes[offset + 2], bytes[offset + 3]);
 }
@@ -60,6 +74,15 @@ function findChild(boxes: LocatedBox[], type: string): LocatedBox | undefined {
 
 function payloadStart(box: LocatedBox): number {
   return box.offset + box.headerLength;
+}
+
+function readFullBoxFlags(bytes: Uint8Array, offset: number): number {
+  return (bytes[offset + 1] << 16) | (bytes[offset + 2] << 8) | bytes[offset + 3];
+}
+
+function readInt32BE(bytes: Uint8Array, offset: number): number {
+  const value = readUint32BE(bytes, offset);
+  return value > 0x7fffffff ? value - 0x100000000 : value;
 }
 
 function neutralizeBox(bytes: Uint8Array, box: LocatedBox): void {
@@ -186,14 +209,17 @@ function resolveSampleRanges(bytes: Uint8Array, stbl: LocatedBox, mediaDataRange
 
   const sizeBox = findChild(boxes, "stsz") ?? findChild(boxes, "stz2");
   const chunkOffsetBox = findChild(boxes, "stco") ?? findChild(boxes, "co64");
-  const sampleToChunkBox = findChild(boxes, "stsc");
-  if (!sizeBox || !chunkOffsetBox || !sampleToChunkBox) return null;
+  if (!sizeBox || !chunkOffsetBox) return null;
 
   const sampleSizes = readSampleSizes(bytes, sizeBox);
   const chunkOffsets = readChunkOffsets(bytes, chunkOffsetBox);
-  const sampleToChunk = readSampleToChunk(bytes, sampleToChunkBox);
-  if (!sampleSizes || !chunkOffsets || !sampleToChunk) return null;
+  if (!sampleSizes || !chunkOffsets) return null;
   if (sampleSizes.length === 0) return chunkOffsets.length === 0 ? [] : null;
+
+  const sampleToChunkBox = findChild(boxes, "stsc");
+  if (!sampleToChunkBox) return null;
+  const sampleToChunk = readSampleToChunk(bytes, sampleToChunkBox);
+  if (!sampleToChunk) return null;
 
   const ranges: ByteRange[] = [];
   let sampleIndex = 0;
@@ -222,7 +248,24 @@ function resolveSampleRanges(bytes: Uint8Array, stbl: LocatedBox, mediaDataRange
   return sampleIndex === sampleSizes.length ? ranges : null;
 }
 
-type MetadataTrackPlan = { track: LocatedBox; sampleRanges: ByteRange[] };
+type MetadataTrackPlan = {
+  track: LocatedBox;
+  trackId: number;
+  sampleRanges: ByteRange[];
+  fragmentBoxes: LocatedBox[];
+};
+
+function readTrackId(bytes: Uint8Array, trackChildren: LocatedBox[]): number | null {
+  const tkhd = findChild(trackChildren, "tkhd");
+  if (!tkhd) return null;
+  const start = payloadStart(tkhd);
+  if (start + 4 > tkhd.boxEnd) return null;
+  const version = bytes[start];
+  const trackIdOffset = start + (version === 1 ? 20 : version === 0 ? 12 : -1);
+  if (trackIdOffset < start || trackIdOffset + 4 > tkhd.boxEnd) return null;
+  const trackId = readUint32BE(bytes, trackIdOffset);
+  return trackId === 0 ? null : trackId;
+}
 
 /** Returns undefined for a normal audio/video track, null for a malformed or
  * unsupported metadata track, and a removal plan for a `meta` handler track. */
@@ -245,6 +288,9 @@ function planMetadataTrackRemoval(
   if (handlerPayloadStart + 12 > handler.boxEnd) return null;
   if (fourCC(bytes, handlerPayloadStart + 8) !== METADATA_HANDLER_TYPE) return undefined;
 
+  const trackId = readTrackId(bytes, trackChildren);
+  if (trackId === null) return null;
+
   const minf = findChild(mediaChildren, "minf");
   if (!minf) return null;
   const mediaInfoChildren = readChildBoxes(bytes, payloadStart(minf), minf.boxEnd);
@@ -253,7 +299,7 @@ function planMetadataTrackRemoval(
   if (!stbl) return null;
 
   const sampleRanges = resolveSampleRanges(bytes, stbl, mediaDataRanges);
-  return sampleRanges ? { track, sampleRanges } : null;
+  return sampleRanges ? { track, trackId, sampleRanges, fragmentBoxes: [] } : null;
 }
 
 function collectMetadataTrackPlans(
@@ -272,6 +318,203 @@ function collectMetadataTrackPlans(
     }
   }
   return plans;
+}
+
+function collectTrexDefaultSampleSizes(bytes: Uint8Array, topLevelBoxes: LocatedBox[]): Map<number, number> | null {
+  const defaults = new Map<number, number>();
+  for (const moov of topLevelBoxes.filter((box) => box.type === "moov")) {
+    const moovChildren = readChildBoxes(bytes, payloadStart(moov), moov.boxEnd);
+    if (!moovChildren) return null;
+    for (const mvex of moovChildren.filter((box) => box.type === "mvex")) {
+      const mvexChildren = readChildBoxes(bytes, payloadStart(mvex), mvex.boxEnd);
+      if (!mvexChildren) return null;
+      for (const trex of mvexChildren.filter((box) => box.type === "trex")) {
+        const start = payloadStart(trex);
+        if (start + 24 > trex.boxEnd) return null;
+        const trackId = readUint32BE(bytes, start + 4);
+        if (trackId === 0 || defaults.has(trackId)) return null;
+        defaults.set(trackId, readUint32BE(bytes, start + 16));
+      }
+    }
+  }
+  return defaults;
+}
+
+type TrackFragmentHeader = {
+  trackId: number;
+  baseDataOffset: number | null;
+  defaultBaseIsMoof: boolean;
+  defaultSampleSize: number | null;
+};
+
+function readTrackFragmentHeader(bytes: Uint8Array, tfhd: LocatedBox): TrackFragmentHeader | null {
+  const start = payloadStart(tfhd);
+  if (start + 8 > tfhd.boxEnd) return null;
+  const flags = readFullBoxFlags(bytes, start);
+  const knownFlags =
+    TFHD_BASE_DATA_OFFSET_PRESENT |
+    TFHD_SAMPLE_DESCRIPTION_INDEX_PRESENT |
+    TFHD_DEFAULT_SAMPLE_DURATION_PRESENT |
+    TFHD_DEFAULT_SAMPLE_SIZE_PRESENT |
+    TFHD_DEFAULT_SAMPLE_FLAGS_PRESENT |
+    0x010000 |
+    TFHD_DEFAULT_BASE_IS_MOOF;
+  if ((flags & ~knownFlags) !== 0) return null;
+
+  const trackId = readUint32BE(bytes, start + 4);
+  if (trackId === 0) return null;
+  let cursor = start + 8;
+  let baseDataOffset: number | null = null;
+  let defaultSampleSize: number | null = null;
+
+  if (flags & TFHD_BASE_DATA_OFFSET_PRESENT) {
+    if (cursor + 8 > tfhd.boxEnd) return null;
+    baseDataOffset = readUint64BE(bytes, cursor);
+    if (baseDataOffset === null) return null;
+    cursor += 8;
+  }
+  if (flags & TFHD_SAMPLE_DESCRIPTION_INDEX_PRESENT) cursor += 4;
+  if (flags & TFHD_DEFAULT_SAMPLE_DURATION_PRESENT) cursor += 4;
+  if (flags & TFHD_DEFAULT_SAMPLE_SIZE_PRESENT) {
+    if (cursor + 4 > tfhd.boxEnd) return null;
+    defaultSampleSize = readUint32BE(bytes, cursor);
+    cursor += 4;
+  }
+  if (flags & TFHD_DEFAULT_SAMPLE_FLAGS_PRESENT) cursor += 4;
+  if (cursor > tfhd.boxEnd) return null;
+
+  return {
+    trackId,
+    baseDataOffset,
+    defaultBaseIsMoof: Boolean(flags & TFHD_DEFAULT_BASE_IS_MOOF),
+    defaultSampleSize,
+  };
+}
+
+/** Resolves all samples described by a metadata `traf`. The common streaming
+ * form is relative to the enclosing `moof`; explicit absolute base offsets are
+ * also accepted. Ambiguous multi-track implicit bases fail closed. */
+function resolveTrackFragmentRanges(
+  bytes: Uint8Array,
+  moof: LocatedBox,
+  traf: LocatedBox,
+  trafCount: number,
+  defaultSampleSizeFromTrex: number | undefined,
+  mediaDataRanges: ByteRange[],
+): { trackId: number; ranges: ByteRange[] } | null {
+  const children = readChildBoxes(bytes, payloadStart(traf), traf.boxEnd);
+  if (!children) return null;
+  const tfhd = findChild(children, "tfhd");
+  const truns = children.filter((box) => box.type === "trun");
+  if (!tfhd || truns.length === 0) return null;
+
+  const header = readTrackFragmentHeader(bytes, tfhd);
+  if (!header) return null;
+  const baseDataOffset =
+    header.baseDataOffset ??
+    (header.defaultBaseIsMoof || trafCount === 1 ? moof.offset : null);
+  if (baseDataOffset === null) return null;
+  const defaultSampleSize = header.defaultSampleSize ?? defaultSampleSizeFromTrex;
+
+  const ranges: ByteRange[] = [];
+  let totalSamples = 0;
+  let previousRunEnd: number | null = null;
+  for (const trun of truns) {
+    const start = payloadStart(trun);
+    if (start + 8 > trun.boxEnd) return null;
+    const flags = readFullBoxFlags(bytes, start);
+    const knownFlags =
+      TRUN_DATA_OFFSET_PRESENT |
+      TRUN_FIRST_SAMPLE_FLAGS_PRESENT |
+      TRUN_SAMPLE_DURATION_PRESENT |
+      TRUN_SAMPLE_SIZE_PRESENT |
+      TRUN_SAMPLE_FLAGS_PRESENT |
+      TRUN_SAMPLE_COMPOSITION_TIME_OFFSET_PRESENT;
+    if ((flags & ~knownFlags) !== 0) return null;
+
+    const sampleCount = readUint32BE(bytes, start + 4);
+    totalSamples += sampleCount;
+    if (totalSamples > MAX_SAMPLE_TABLE_ENTRIES) return null;
+    let cursor = start + 8;
+    let position: number;
+    if (flags & TRUN_DATA_OFFSET_PRESENT) {
+      if (cursor + 4 > trun.boxEnd) return null;
+      position = baseDataOffset + readInt32BE(bytes, cursor);
+      cursor += 4;
+    } else {
+      position = previousRunEnd ?? baseDataOffset;
+    }
+    if (!Number.isSafeInteger(position) || position < 0) return null;
+    if (flags & TRUN_FIRST_SAMPLE_FLAGS_PRESENT) cursor += 4;
+
+    for (let index = 0; index < sampleCount; index++) {
+      if (flags & TRUN_SAMPLE_DURATION_PRESENT) cursor += 4;
+      let sampleSize = defaultSampleSize;
+      if (flags & TRUN_SAMPLE_SIZE_PRESENT) {
+        if (cursor + 4 > trun.boxEnd) return null;
+        sampleSize = readUint32BE(bytes, cursor);
+        cursor += 4;
+      }
+      if (sampleSize === undefined || sampleSize === null) return null;
+      if (flags & TRUN_SAMPLE_FLAGS_PRESENT) cursor += 4;
+      if (flags & TRUN_SAMPLE_COMPOSITION_TIME_OFFSET_PRESENT) cursor += 4;
+      if (cursor > trun.boxEnd) return null;
+
+      const end = position + sampleSize;
+      if (!Number.isSafeInteger(end) || end < position) return null;
+      const range = { start: position, end };
+      if (sampleSize > 0 && !isContainedInMediaData(range, mediaDataRanges)) return null;
+      if (sampleSize > 0) ranges.push(range);
+      position = end;
+    }
+    previousRunEnd = position;
+  }
+  return { trackId: header.trackId, ranges };
+}
+
+function addFragmentedMetadataPlans(
+  bytes: Uint8Array,
+  topLevelBoxes: LocatedBox[],
+  mediaDataRanges: ByteRange[],
+  plans: MetadataTrackPlan[],
+): boolean {
+  if (plans.length === 0) return true;
+  const byTrackId = new Map<number, MetadataTrackPlan>();
+  for (const plan of plans) {
+    if (byTrackId.has(plan.trackId)) return false;
+    byTrackId.set(plan.trackId, plan);
+  }
+  const trexDefaults = collectTrexDefaultSampleSizes(bytes, topLevelBoxes);
+  if (!trexDefaults) return false;
+
+  for (const moof of topLevelBoxes.filter((box) => box.type === "moof")) {
+    const children = readChildBoxes(bytes, payloadStart(moof), moof.boxEnd);
+    if (!children) return false;
+    const trafs = children.filter((box) => box.type === "traf");
+    for (const traf of trafs) {
+      const trafChildren = readChildBoxes(bytes, payloadStart(traf), traf.boxEnd);
+      if (!trafChildren) return false;
+      const tfhd = findChild(trafChildren, "tfhd");
+      if (!tfhd) return false;
+      const header = readTrackFragmentHeader(bytes, tfhd);
+      if (!header) return false;
+      const plan = byTrackId.get(header.trackId);
+      if (!plan) continue;
+
+      const resolved = resolveTrackFragmentRanges(
+        bytes,
+        moof,
+        traf,
+        trafs.length,
+        trexDefaults.get(header.trackId),
+        mediaDataRanges,
+      );
+      if (!resolved || resolved.trackId !== header.trackId) return false;
+      plan.sampleRanges.push(...resolved.ranges);
+      plan.fragmentBoxes.push(traf);
+    }
+  }
+  return true;
 }
 
 /** Zeros the creation/modification timestamp fields of an `mvhd`/`tkhd`/`mdhd`
@@ -325,28 +568,28 @@ function walkAndNeutralize(bytes: Uint8Array, start: number, end: number, timest
  * Strips privacy-sensitive metadata from an MP4/MOV/M4A file (all share the
  * same ISOBMFF box structure). In addition to ordinary metadata boxes, Apple
  * `meta` tracks are removed and their timed samples in `mdat` are zeroed. The
- * sample tables are fully validated before any mutation; unsupported layouts
- * fail safely. Returns null if the bytes don't parse as ISOBMFF, or if the file
- * is fragmented (any top-level `moof` box) - full fragmented-MP4 support
- * (`mvex`/`tfhd`/`tfdt`) is out of scope.
+ * classic sample tables and fragmented `tfhd`/`trun` runs are fully validated
+ * before any mutation. Unsupported or ambiguous metadata-track layouts fail
+ * safely; ordinary fragmented video/audio tracks are left byte-for-byte intact.
  */
 export function stripIsobmffBoxes(bytes: Uint8Array): Uint8Array | null {
   if (bytes.length < 8) return null;
 
-  // Validate top-level structure and check for fragmentation before mutating anything.
+  // Validate the complete top-level structure before mutating anything.
   const topLevelBoxes = readChildBoxes(bytes, 0, bytes.length);
   if (!topLevelBoxes || topLevelBoxes.length === 0) return null;
-  if (topLevelBoxes.some((box) => box.type === "moof")) return null; // fragmented MP4, unsupported
 
   const mediaDataRanges = topLevelBoxes
     .filter((box) => box.type === "mdat")
     .map((box) => ({ start: payloadStart(box), end: box.boxEnd }));
   const metadataTrackPlans = collectMetadataTrackPlans(bytes, topLevelBoxes, mediaDataRanges);
   if (!metadataTrackPlans) return null;
+  if (!addFragmentedMetadataPlans(bytes, topLevelBoxes, mediaDataRanges, metadataTrackPlans)) return null;
 
   const result = bytes.slice();
-  for (const { track, sampleRanges } of metadataTrackPlans) {
+  for (const { track, sampleRanges, fragmentBoxes } of metadataTrackPlans) {
     for (const { start, end } of sampleRanges) result.fill(0, start, end);
+    for (const fragmentBox of fragmentBoxes) neutralizeBox(result, fragmentBox);
     neutralizeBox(result, track);
   }
 
