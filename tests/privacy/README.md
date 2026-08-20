@@ -97,6 +97,18 @@ For visible browser automation:
 npm run privacy:test:headed
 ```
 
+To create a non-sensitive real Chromium `MediaRecorder` WebM fixture with a
+schema-verified unknown-size Cluster, run:
+
+```powershell
+npm run privacy:record-webm
+```
+
+The generator records an animated canvas for five seconds, without camera,
+microphone, or screen-capture permissions. It writes the result under
+`fixtures/real/webm/` only after verifying the Segment and Cluster size VINTs.
+The generated recording is ignored by Git like every other real fixture.
+
 Reports and cleaned artifacts are written to `privacy-results/`:
 
 ```text

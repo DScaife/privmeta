@@ -11,8 +11,9 @@
     "start": "next start",
     "lint": "next lint",
     "privacy:install": "playwright install chromium",
+    "privacy:record-webm": "node tests/privacy/generate-mediarecorder-fixture.mjs",
     "privacy:seed": "node tests/privacy/seed-fixtures.mjs",
-    "privacy:test": "playwright test --config=tests/privacy/playwright.config.ts",
+    "privacy:test": "node tests/privacy/generate-mediarecorder-fixture.mjs && playwright test --config=tests/privacy/playwright.config.ts",
     "privacy:test:headed": "playwright test --config=tests/privacy/playwright.config.ts --headed"
   },
   "dependencies": {

@@ -112,7 +112,12 @@ const policies: Record<SupportedExtension, FormatPolicy> = {
   },
   mp4: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, optionalPreserveTags: videoOptionalPreserve, browserProbe: "video" },
   mov: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, optionalPreserveTags: videoOptionalPreserve, browserProbe: "video" },
-  webm: { forbiddenAfter: commonForbidden, preserveTags: videoPreserve, optionalPreserveTags: videoOptionalPreserve, browserProbe: "video" },
+  webm: {
+    forbiddenAfter: commonForbidden,
+    preserveTags: ["FileType", "ImageSize"],
+    optionalPreserveTags: ["Duration", "VideoFrameRate", ...videoOptionalPreserve],
+    browserProbe: "video",
+  },
   mkv: {
     forbiddenAfter: [...commonForbidden, "*:AttachedFile*", "*:ChapterString"],
     preserveTags: videoPreserve,
