@@ -6,6 +6,8 @@ const ID_INFO = 0x1549a966;
 const ID_TRACKS = 0x1654ae6b;
 const ID_TRACK_ENTRY = 0xae;
 const ID_TAGS = 0x1254c367;
+const ID_CHAPTERS = 0x1043a770;
+const ID_ATTACHMENTS = 0x1941a469;
 const ID_CLUSTER = 0x1f43b675;
 const ID_VOID = 0xec;
 const ID_WRITING_APP = 0x5741;
@@ -106,9 +108,9 @@ function neutralizeAsVoid(bytes: Uint8Array, start: number, end: number): boolea
 }
 
 /**
- * Recursively walks Segment/Info/Tracks/TrackEntry, neutralizing `Tags`
- * (rewritten as a same-sized `Void` element) and zeroing `SegmentInfo`'s
- * WritingApp/MuxingApp and per-track Name/Language strings. `Cluster` is
+ * Recursively walks Segment/Info/Tracks/TrackEntry, neutralizing `Tags`,
+ * `Chapters`, and `Attachments` (rewritten as same-sized `Void` elements) and
+ * zeroing `SegmentInfo`'s WritingApp/MuxingApp and per-track Name/Language strings. `Cluster` is
  * skipped wholesale via its size field - it's audio/video data, never
  * descended into. Tolerates the top-level `Segment`'s "unknown size" (extends
  * to EOF) encoding, common from streamed/live-muxed WebM; an unknown size
@@ -128,11 +130,11 @@ function walkAndNeutralize(bytes: Uint8Array, start: number, end: number, isTopL
       if (!neutralizeInfoStrings(bytes, el.payloadStart, el.payloadEnd)) return false;
     } else if (el.id === ID_TRACKS) {
       if (!walkTracks(bytes, el.payloadStart, el.payloadEnd)) return false;
-    } else if (el.id === ID_TAGS) {
+    } else if (el.id === ID_TAGS || el.id === ID_CHAPTERS || el.id === ID_ATTACHMENTS) {
       if (!neutralizeAsVoid(bytes, el.payloadStart, el.payloadEnd)) return false;
     }
-    // ID_CLUSTER and anything else (SeekHead, Cues, Chapters, Attachments,
-    // the EBML header) is left untouched and not descended into.
+    // ID_CLUSTER and anything else (SeekHead, Cues, the EBML header) is left
+    // untouched and not descended into.
 
     offset = el.payloadEnd;
   }

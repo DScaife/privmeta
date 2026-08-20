@@ -1,6 +1,9 @@
 {
   "requiredBefore": [
-    "*:Comment"
+    "*:Comment",
+    "*:AttachedFileDescription",
+    "*:AttachedFileName",
+    "*:ChapterString"
   ],
   "sentinels": [
     "PRIVMETA_TEST_AUTHOR",

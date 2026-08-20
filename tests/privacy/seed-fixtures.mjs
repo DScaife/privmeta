@@ -213,26 +213,68 @@ function readEbmlSize(bytes, offset) {
   return { value, length, unknown: value === 2 ** (7 * length) - 1 };
 }
 
-function seedMatroska(filePath) {
+function seedMatroska(filePath, includeMkvStructures) {
   const bytes = fs.readFileSync(filePath);
-  if (bytes.includes(Buffer.from(SENTINELS.comment))) return;
   const segmentId = Buffer.from([0x18, 0x53, 0x80, 0x67]);
   const segmentOffset = bytes.indexOf(segmentId);
   if (segmentOffset < 0) throw new Error(`Matroska Segment not found: ${filePath}`);
   const sizeOffset = segmentOffset + segmentId.length;
   const segmentSize = readEbmlSize(bytes, sizeOffset);
-  const tagName = ebmlElement([0x45, 0xa3], Buffer.from("COMMENT"));
-  const tagValue = ebmlElement([0x44, 0x87], Buffer.from(SENTINELS.comment));
-  const simpleTag = ebmlElement([0x67, 0xc8], Buffer.concat([tagName, tagValue]));
-  const tag = ebmlElement([0x73, 0x73], simpleTag);
-  const tags = ebmlElement([0x12, 0x54, 0xc3, 0x67], tag);
-  const output = Buffer.concat([bytes, tags]);
+  const additions = [];
+
+  if (!bytes.includes(Buffer.from(SENTINELS.comment))) {
+    const tagName = ebmlElement([0x45, 0xa3], Buffer.from("COMMENT"));
+    const tagValue = ebmlElement([0x44, 0x87], Buffer.from(SENTINELS.comment));
+    const simpleTag = ebmlElement([0x67, 0xc8], Buffer.concat([tagName, tagValue]));
+    const tag = ebmlElement([0x73, 0x73], simpleTag);
+    additions.push(ebmlElement([0x12, 0x54, 0xc3, 0x67], tag));
+  }
+
+  if (includeMkvStructures && !bytes.includes(Buffer.from("PRIVMETA_TEST_COVER.jpg"))) {
+    const coverPath = filesFor("jpeg")[0];
+    if (!coverPath) throw new Error("A seeded JPEG fixture is required for the MKV attachment");
+    const attachedFile = ebmlElement(
+      [0x61, 0xa7],
+      Buffer.concat([
+        ebmlElement([0x46, 0x7e], Buffer.from("PRIVMETA_TEST_ATTACHMENT_DESCRIPTION")),
+        ebmlElement([0x46, 0x6e], Buffer.from("PRIVMETA_TEST_COVER.jpg")),
+        ebmlElement([0x46, 0x60], Buffer.from("image/jpeg")),
+        ebmlElement([0x46, 0xae], Buffer.from([1])),
+        ebmlElement([0x46, 0x5c], fs.readFileSync(coverPath)),
+      ]),
+    );
+    additions.push(ebmlElement([0x19, 0x41, 0xa4, 0x69], attachedFile));
+  }
+
+  if (includeMkvStructures && !bytes.includes(Buffer.from("PRIVMETA_TEST_CHAPTER_TITLE"))) {
+    const chapterDisplay = ebmlElement(
+      [0x80],
+      Buffer.concat([
+        ebmlElement([0x85], Buffer.from("PRIVMETA_TEST_CHAPTER_TITLE")),
+        ebmlElement([0x43, 0x7c], Buffer.from("eng")),
+      ]),
+    );
+    const chapterAtom = ebmlElement(
+      [0xb6],
+      Buffer.concat([
+        ebmlElement([0x73, 0xc4], Buffer.from([1])),
+        ebmlElement([0x91], Buffer.from([0])),
+        chapterDisplay,
+      ]),
+    );
+    const edition = ebmlElement([0x45, 0xb9], chapterAtom);
+    additions.push(ebmlElement([0x10, 0x43, 0xa7, 0x70], edition));
+  }
+
+  if (additions.length === 0) return;
+  const additionLength = additions.reduce((total, addition) => total + addition.length, 0);
+  const output = Buffer.concat([bytes, ...additions]);
   if (!segmentSize.unknown) {
     const payloadStart = sizeOffset + segmentSize.length;
     if (segmentSize.value !== bytes.length - payloadStart) {
       throw new Error(`Matroska Segment size does not reach EOF: ${filePath}`);
     }
-    ebmlSize(segmentSize.value + tags.length, segmentSize.length).copy(output, sizeOffset);
+    ebmlSize(segmentSize.value + additionLength, segmentSize.length).copy(output, sizeOffset);
   }
   fs.writeFileSync(filePath, output);
 }
@@ -394,7 +436,7 @@ const requiredPatterns = {
   aac: ["ID3v2*:*"],
   flac: ["Vorbis:*"],
   wav: ["RIFF:Artist", "RIFF:Comment", "RIFF:Software"],
-  mkv: ["*:Comment"],
+  mkv: ["*:Comment", "*:AttachedFileDescription", "*:AttachedFileName", "*:ChapterString"],
   webm: ["*:Comment"],
 };
 
@@ -427,7 +469,7 @@ async function main() {
   }
   for (const extension of ["mkv", "webm"]) {
     for (const filePath of filesFor(extension)) {
-      seedMatroska(filePath);
+      seedMatroska(filePath, extension === "mkv");
       writeSidecar(filePath, requiredPatterns[extension], `Seeded ${extension.toUpperCase()} Matroska-tag regression fixture.`);
       count++;
     }
