@@ -2,7 +2,14 @@
 import { Button } from "@/components/ui/button";
 import Dropzone, { type FileStatus, type StoredFile } from "@/components/Dropzone";
 import { useState, useEffect } from "react";
-import { ACCEPTED_FILE_TYPES, MAX_FILE_COUNT, MAX_FILE_SIZE_MB } from "@/utils/constants";
+import {
+  MAX_FILE_COUNT,
+  MAX_FILE_SIZE_MB,
+  MAX_TOTAL_FILE_SIZE_BYTES,
+  MAX_TOTAL_FILE_SIZE_MB,
+  getKindForFilename,
+  getTotalFileSizeBytes,
+} from "@/utils/constants";
 import { getFileExtensions } from "@/utils/utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -10,9 +17,16 @@ import JSZip from "jszip";
 import ClearAllButton from "@/components/ClearAllButton";
 import ShareFunctions from "@/components/ShareFunctions";
 import Hero from "@/components/Hero";
-import DisableInternet from "@/components/DisableInternet";
+import { recordSuccessfulClean, SUPPORT_URL, suppressSupportPrompts } from "@/utils/supportPrompts";
 
-type ErrorType = "file_count" | "unsupported_format" | "file_too_large" | "general" | "dropzone_error";
+type ErrorType =
+  | "file_count"
+  | "unsupported_format"
+  | "file_too_large"
+  | "batch_too_large"
+  | "animated_image"
+  | "general"
+  | "dropzone_error";
 
 const renameWithSuffix = (file: File, suffix = "_cleaned"): string => {
   const nameParts = file.name.split(".");
@@ -26,7 +40,7 @@ const showErrorToast = (type: ErrorType) => {
   const messages: Record<ErrorType, { title: string; description: string; severity: "warning" | "error" }> = {
     file_count: {
       title: "Too many files",
-      description: `You can only upload up to ${MAX_FILE_COUNT} files.`,
+      description: `You can only queue up to ${MAX_FILE_COUNT} files.`,
       severity: "warning",
     },
     unsupported_format: {
@@ -36,7 +50,17 @@ const showErrorToast = (type: ErrorType) => {
     },
     file_too_large: {
       title: "File too large",
-      description: `Each file must be under ${MAX_FILE_SIZE_MB}MB.`,
+      description: `Each file can be up to ${MAX_FILE_SIZE_MB} MB.`,
+      severity: "warning",
+    },
+    batch_too_large: {
+      title: "Batch too large",
+      description: `Queued files can total up to ${MAX_TOTAL_FILE_SIZE_MB} MB. Remove a file or choose a smaller batch.`,
+      severity: "warning",
+    },
+    animated_image: {
+      title: "Animated image not supported",
+      description: "Animated PNG and WebP files are rejected because browser cleaning would flatten them to one frame.",
       severity: "warning",
     },
     general: {
@@ -67,43 +91,42 @@ export default function Home() {
   const [fileStatuses, setFileStatuses] = useState<Record<string, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
 
-  useEffect(() => {
-    const infoTimeout = setTimeout(() => {
-      toast.info("You can disable your internet", {
-        id: "offline-mode",
-        duration: 10000,
-        description: "Runs in your browser only. Files never leave your device.",
-        action: {
-          label: "Got it",
-          onClick: () => {},
-        },
-      });
-    }, 2000);
+  const showSuccessfulDownloadToast = () => {
+    const supportPrompt = recordSuccessfulClean();
 
-    const bmcTimeout = setTimeout(() => {
-      toast.info("Like the app?", {
-        id: "support-bmc",
-        description: "Support this project on Buy Me a Coffee.",
-        duration: 10000,
-        action: {
-          label: "Support",
-          onClick: () => {
-            window.open("https://buymeacoffee.com/privco", "_blank");
-          },
-        },
-      });
-    }, 60000);
+    if (!supportPrompt) {
+      toast.success("Download ready");
+      return;
+    }
 
-    return () => {
-      clearTimeout(infoTimeout);
-      clearTimeout(bmcTimeout);
-    };
-  }, []);
+    toast.success("Download ready", {
+      id: "support-bmc",
+      description: supportPrompt.description,
+      duration: 10000,
+      dismissible: true,
+      action: {
+        label: "Support",
+        onClick: () => {
+          suppressSupportPrompts();
+          window.open(SUPPORT_URL, "_blank", "noopener,noreferrer");
+        },
+      },
+    });
+  };
 
   const handleFilesAccepted = (newFiles: File[]) => {
     const totalCount = fileStore.length + newFiles.length;
     if (totalCount > MAX_FILE_COUNT) {
       showErrorToast("file_count");
+      return;
+    }
+
+    const totalSize = getTotalFileSizeBytes([
+      ...fileStore.map(({ file }) => file),
+      ...newFiles,
+    ]);
+    if (totalSize > MAX_TOTAL_FILE_SIZE_BYTES) {
+      showErrorToast("batch_too_large");
       return;
     }
 
@@ -129,25 +152,40 @@ export default function Home() {
 
     await new Promise((res) => setTimeout(res, 1000));
 
-    const { stripImageMetadata, stripGifMetadata, stripPdfMetadata, stripDocxMetadata, stripFfmpegMetadata, stripJpegMetadata } =
+    const { stripImageMetadata, stripGifMetadata, stripPdfMetadata, stripDocxMetadata, stripContainerMetadata, stripJpegMetadata } =
       await import("@/utils/stripMetadata");
+    const { inspectRasterAnimation } = await import("@/utils/imageAnimation");
 
     try {
       const cleanedFiles: File[] = [];
       let failedCount = 0;
+      let animatedCount = 0;
+      let animatedWarningShown = false;
 
       for (const { id, file } of fileStore) {
         setFileStatuses((prev) => ({ ...prev, [id]: "processing" }));
 
         let cleaned: File | null = null;
 
-        switch (ACCEPTED_FILE_TYPES[file.type]?.kind) {
+        switch (getKindForFilename(file.name)) {
           case "jpeg":
             cleaned = await stripJpegMetadata(file);
             break;
-          case "image":
-            cleaned = await stripImageMetadata(file);
+          case "image": {
+            const animationStatus = await inspectRasterAnimation(file);
+            if (animationStatus === "animated") {
+              if (!animatedWarningShown) {
+                showErrorToast("animated_image");
+                animatedWarningShown = true;
+              }
+              setFileStatuses((prev) => ({ ...prev, [id]: "failed" }));
+              failedCount++;
+              animatedCount++;
+              continue;
+            }
+            cleaned = await stripImageMetadata(file, animationStatus);
             break;
+          }
           case "gif":
             cleaned = await stripGifMetadata(file);
             break;
@@ -157,8 +195,8 @@ export default function Home() {
           case "docx":
             cleaned = await stripDocxMetadata(file);
             break;
-          case "ffmpeg":
-            cleaned = await stripFfmpegMetadata(file);
+          case "container":
+            cleaned = await stripContainerMetadata(file);
             break;
           default:
             showErrorToast("unsupported_format");
@@ -199,11 +237,11 @@ export default function Home() {
         URL.revokeObjectURL(url);
       }
 
-      if (failedCount === 0) {
-        toast.success("Download ready ✨");
+      if (failedCount === 0 && cleanedFiles.length > 0) {
+        showSuccessfulDownloadToast();
       } else if (cleanedFiles.length > 0) {
         toast.warning(`Download ready - ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
-      } else {
+      } else if (animatedCount !== failedCount) {
         showErrorToast("general");
       }
     } catch (error) {
@@ -217,14 +255,6 @@ export default function Home() {
   useEffect(() => {
     document.title = processing ? "Cleaning metadata..." : "PrivMeta";
   }, [processing]);
-
-  // Preload the ffmpeg core as soon as an audio/video file is queued, so
-  // processing still works if the user goes offline before hitting "Remove"
-  useEffect(() => {
-    if (fileStore.some(({ file }) => ACCEPTED_FILE_TYPES[file.type]?.kind === "ffmpeg")) {
-      import("@/utils/stripMetadata").then((m) => m.preloadFfmpeg());
-    }
-  }, [fileStore]);
 
   return (
     <div className="w-full flex flex-col gap-(--fluid-xl-3xl) h-full items-center py-(--fluid-md-2xl)">
@@ -250,7 +280,6 @@ export default function Home() {
           </Button>
         </div>
       </div>
-      <DisableInternet />
       <div className="h-0.75 w-full bg-foreground" />
       <ShareFunctions />
     </div>

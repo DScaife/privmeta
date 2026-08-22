@@ -1,26 +1,46 @@
 # PrivMeta
 
-[PrivMeta](https://www.privmeta.com) is a free online metadata remover with a privacy focus. All file processing runs **entirely in the browser** — files are never uploaded to a server.
+[PrivMeta](https://www.privmeta.com) is a free, open-source metadata remover.
+File bytes are processed in the browser and are not uploaded by the cleaning
+code.
 
 ## Supported formats
 
-| Type | Formats | How metadata is removed |
-|------|---------|-------------------------|
-| Images | JPEG, PNG, WebP | JPEG: lossless segment stripping (EXIF, XMP, IPTC, comments). PNG/WebP: canvas re-encode. |
-| Animated | GIF | lossless block-level stripping (comments, XMP) - frames and palette untouched |
-| Documents | PDF, DOCX | PDF: XMP, Info dictionary and /ID removed (pdf-lib). DOCX: docProps parts and thumbnail removed (jszip). |
-| Video | MP4, WebM, AVI, MOV, MKV | ffmpeg.wasm stream copy, container metadata dropped |
-| Audio | WAV, MP3, FLAC, AAC, OGG, M4A | ffmpeg.wasm stream copy, container metadata dropped |
+| Type | Formats | Approach |
+|---|---|---|
+| Images | JPEG/JPG, PNG, WebP | Lossless segment removal for JPEG; browser raster re-encode for static PNG/WebP |
+| Animated images | GIF | Lossless block-level removal; frames, timing and palette preserved |
+| Documents | PDF, DOCX | Remove standard PDF properties/identifiers and DOCX package/author identities |
+| Video | MP4, MOV, WebM, MKV | Format-specific ISO-BMFF and Matroska parsers; no transcoding |
+| Audio | MP3, WAV, FLAC, AAC, M4A | Format-specific tag and container parsers; no transcoding |
 
-The ffmpeg.wasm core is self-hosted (copied from `node_modules` to `public/ffmpeg/` by `scripts/copy-ffmpeg-core.mjs`, wired into `predev`/`prebuild`), so processing keeps working if the user goes offline after the page loads.
+AVI, OGG, HEIC/HEIF, TIFF and other unlisted formats are not currently
+supported. Coverage is deliberately structure-specific rather than described
+as “all metadata.” Read [the privacy model and format coverage](docs/PRIVACY_AND_FORMAT_COVERAGE.md)
+for the exact removal targets, preservation behaviour and known limitations.
+
+## Verification
+
+The privacy regression harness drives the real browser UI, compares metadata
+with ExifTool, scans for raw sentinel values, validates important format
+properties and checks browser decoding. Run it locally with:
+
+```bash
+npm run privacy:test
+```
+
+It also runs in GitHub Actions for pull requests and pushes to `master`. See
+[the harness documentation](tests/privacy/README.md) for setup and fixture
+guidance.
 
 ## Tech stack
 
-- [Next.js](https://nextjs.org) (App Router, fully static) + React
-- Tailwind CSS v4, Radix UI, sonner
-- pdf-lib, jszip, ffmpeg.wasm for client-side processing
-- Markdown blog in `content/blog/` (gray-matter + remark, statically generated)
-- Sentry for error reporting (console breadcrumbs and logs disabled so user file names never leave the device)
+- [Next.js](https://nextjs.org) App Router with a fully static export
+- React, Tailwind CSS, Radix UI and sonner
+- `pdf-lib` and `jszip`, plus hand-written client-side format parsers
+- Markdown blog content rendered with gray-matter and remark
+- Optional Sentry and Cloudflare operational telemetry; file contents and file
+  names must not be included
 
 ## Getting started
 
@@ -29,33 +49,23 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Running the project with Docker
+## Docker
 
-This project can also be built and run using **Docker Compose**.
-
-### Build and start the container
-
-Clone the repo and in the root of the project use this command when you have made code changes or when running for the first time:
+Build and start:
 
 ```bash
 docker compose up --build
 ```
 
-### Start the container (without rebuilding)
-
-Use this command for subsequent runs when no code changes were made:
+Start an existing build in the background:
 
 ```bash
 docker compose up -d
 ```
 
-This runs the container in detached mode.
-
-### Stop the container
-
-To stop the running service:
+Stop it:
 
 ```bash
 docker compose down

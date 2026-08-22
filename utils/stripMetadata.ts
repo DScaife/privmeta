@@ -1,63 +1,14 @@
 import { PDFDocument, PDFName } from "pdf-lib";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { fetchFile } from "@ffmpeg/util";
+import { concatBytes, matchesAscii, readUint32LE, writeUint32LE } from "./binary";
+import { inspectRasterAnimation, type RasterAnimationStatus } from "./imageAnimation";
 
-let ffmpegLoad: Promise<FFmpeg> | null = null;
-
-function getFFmpeg(): Promise<FFmpeg> {
-  if (!ffmpegLoad) {
-    ffmpegLoad = (async () => {
-      const instance = new FFmpeg();
-      // Self-hosted core (copied to public/ by scripts/copy-ffmpeg-core.mjs).
-      // Without explicit URLs the library fetches the core from a third-party CDN,
-      // which would break processing for users who go offline. classWorkerURL
-      // must point at the unbundled worker: the bundled copy rewrites the
-      // worker's dynamic import of the core and fails at runtime.
-      // Fully-qualified URLs: the library resolves relative URLs against the
-      // bundled chunk's import.meta.url, which is not a page-origin URL.
-      await instance.load({
-        coreURL: `${location.origin}/ffmpeg/ffmpeg-core.js`,
-        wasmURL: `${location.origin}/ffmpeg/ffmpeg-core.wasm`,
-        classWorkerURL: `${location.origin}/ffmpeg/worker.js`,
-      });
-      return instance;
-    })().catch((err) => {
-      ffmpegLoad = null; // allow a retry, e.g. after a failed fetch while offline
-      throw err;
-    });
-  }
-  return ffmpegLoad;
-}
-
-/**
- * Warms up the ffmpeg core so audio/video processing still works if the
- * user follows the site's advice and goes offline before hitting "Remove".
- */
-export async function preloadFfmpeg(): Promise<void> {
-  try {
-    await getFFmpeg();
-  } catch {
-    // best-effort: a failed preload is retried (and surfaced) at processing time
-  }
-}
+export { stripContainerMetadata } from "./stripContainerMetadata";
 
 // JPEG markers whose segments carry metadata rather than image data:
 // APP1 (0xE1) = EXIF and XMP, APP13 (0xED) = IPTC/Photoshop IRB, COM (0xFE) = comments.
 // APP0 (JFIF), APP2 (ICC color profile) and APP14 (Adobe color transform) are kept
 // because removing them can change how the image is decoded or displayed.
 const STRIPPED_JPEG_MARKERS = new Set([0xe1, 0xed, 0xfe]);
-
-function concatBytes(chunks: Uint8Array[]): Uint8Array {
-  const out = new Uint8Array(
-    chunks.reduce((total, chunk) => total + chunk.length, 0),
-  );
-  let pos = 0;
-  for (const chunk of chunks) {
-    out.set(chunk, pos);
-    pos += chunk.length;
-  }
-  return out;
-}
 
 /**
  * Removes metadata segments from a JPEG by walking its segment structure and
@@ -219,83 +170,20 @@ export async function stripGifMetadata(file: File): Promise<File | null> {
   }
 }
 
-const FFMPEG_EXTENSIONS = [
-  "wav",
-  "mp3",
-  "flac",
-  "aac",
-  "ogg",
-  "m4a",
-  "mp4",
-  "webm",
-  "avi",
-  "mov",
-  "mkv",
-];
-
-/** Strips metadata from audio and video files via ffmpeg.wasm (streams are copied, not re-encoded). */
-export async function stripFfmpegMetadata(file: File): Promise<File | null> {
-  if (typeof window === "undefined") return null;
-
-  const extension = file.name.split(".").pop()?.toLowerCase();
-  if (!extension || !FFMPEG_EXTENSIONS.includes(extension)) {
-    console.error("Unsupported format for ffmpeg metadata stripping");
-    return null;
-  }
-
-  const inputFile = `input.${extension}`;
-  const outputFile = `output.${extension}`;
-  let ffmpeg: FFmpeg | null = null;
-
-  try {
-    ffmpeg = await getFFmpeg();
-    await ffmpeg.writeFile(inputFile, await fetchFile(file));
-    // -map 0 keeps every stream (without it ffmpeg picks one video + one audio track,
-    // silently dropping secondary audio and subtitles); -map_metadata -1 drops the
-    // container metadata and the :s:v/:s:a forms drop per-stream tags (handler names,
-    // per-stream creation times); +bitexact stops the muxer writing its own tags.
-    await ffmpeg.exec([
-      "-i",
-      inputFile,
-      "-map",
-      "0",
-      "-map_metadata",
-      "-1",
-      "-map_metadata:s:v",
-      "-1",
-      "-map_metadata:s:a",
-      "-1",
-      "-fflags",
-      "+bitexact",
-      "-c",
-      "copy",
-      outputFile,
-    ]);
-    const data = await ffmpeg.readFile(outputFile);
-    const mimeType = file.type || "application/octet-stream";
-    return new File(
-      [new Blob([data as BlobPart], { type: mimeType })],
-      file.name,
-      { type: mimeType },
+export async function stripImageMetadata(
+  file: File,
+  knownAnimationStatus?: RasterAnimationStatus,
+): Promise<File | null> {
+  const animationStatus = knownAnimationStatus ?? await inspectRasterAnimation(file);
+  if (animationStatus === "animated" || animationStatus === "invalid") {
+    console.error(
+      animationStatus === "animated"
+        ? "Animated PNG/WebP files are rejected to avoid flattening their frames."
+        : "Invalid PNG/WebP container rejected.",
     );
-  } catch (err) {
-    console.error("ffmpeg metadata stripping failed:", err);
     return null;
-  } finally {
-    // Free the wasm virtual filesystem - written files otherwise persist for the page lifetime
-    if (ffmpeg) {
-      for (const name of [inputFile, outputFile]) {
-        try {
-          await ffmpeg.deleteFile(name);
-        } catch {
-          // file may not exist if the run failed early
-        }
-      }
-    }
   }
-}
 
-export async function stripImageMetadata(file: File): Promise<File | null> {
   return new Promise((resolve) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
@@ -322,6 +210,14 @@ export async function stripImageMetadata(file: File): Promise<File | null> {
           finish(null);
           return;
         }
+        if (file.type === "image/webp") {
+          blob
+            .arrayBuffer()
+            .then((buffer) => stripWebpMetadataChunks(new Uint8Array(buffer)))
+            .then((bytes) => finish(bytes ? new File([bytes as BlobPart], file.name, { type: file.type }) : null))
+            .catch(() => finish(null));
+          return;
+        }
         finish(new File([blob], file.name, { type: file.type }));
       }, file.type);
     };
@@ -330,6 +226,58 @@ export async function stripImageMetadata(file: File): Promise<File | null> {
 
     img.src = url;
   });
+}
+
+/**
+ * Removes metadata chunks that Chromium may add while encoding WebP. If the
+ * extended header has no remaining alpha/animation features, it is redundant
+ * and is removed too, yielding a normal simple WebP container.
+ */
+export function stripWebpMetadataChunks(bytes: Uint8Array): Uint8Array | null {
+  if (
+    bytes.length < 12 ||
+    !matchesAscii(bytes, 0, "RIFF") ||
+    !matchesAscii(bytes, 8, "WEBP")
+  ) {
+    return null;
+  }
+
+  const chunks: Uint8Array[] = [];
+  let offset = 12;
+  while (offset + 8 <= bytes.length) {
+    const size = readUint32LE(bytes, offset + 4);
+    const paddedSize = size + (size & 1);
+    const end = offset + 8 + paddedSize;
+    if (end > bytes.length) return null;
+
+    const isMetadata =
+      matchesAscii(bytes, offset, "ICCP") ||
+      matchesAscii(bytes, offset, "EXIF") ||
+      matchesAscii(bytes, offset, "XMP ");
+    if (!isMetadata) {
+      if (matchesAscii(bytes, offset, "VP8X") && size >= 10) {
+        const chunk = bytes.slice(offset, end);
+        // ICC, EXIF and XMP flags respectively. Leave alpha and animation.
+        chunk[8] &= ~(0x20 | 0x08 | 0x04);
+        if ((chunk[8] & (0x10 | 0x02)) !== 0) chunks.push(chunk);
+      } else {
+        chunks.push(bytes.slice(offset, end));
+      }
+    }
+    offset = end;
+  }
+  if (offset !== bytes.length) return null;
+
+  const totalSize = 12 + chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const output = new Uint8Array(totalSize);
+  output.set(bytes.subarray(0, 12), 0);
+  writeUint32LE(output, 4, totalSize - 8);
+  let outputOffset = 12;
+  for (const chunk of chunks) {
+    output.set(chunk, outputOffset);
+    outputOffset += chunk.length;
+  }
+  return output;
 }
 
 export async function stripPdfMetadata(file: File): Promise<File | null> {
@@ -384,9 +332,38 @@ export async function stripPdfMetadata(file: File): Promise<File | null> {
 
 let cachedJSZip: import("jszip") | null = null;
 
-// Known limitation: author names embedded in the document body (tracked changes,
-// comments, w:rsid revision IDs in word/*.xml) are not scrubbed - only the
-// document-level properties parts are removed.
+/**
+ * Clears identity-bearing WordprocessingML attributes while preserving visible
+ * document text, comments, and revision markup. Namespace prefixes are not
+ * assumed: valid OOXML producers may choose prefixes other than `w`/`w15`.
+ */
+export function sanitizeWordprocessingXml(xml: string): string {
+  let cleaned = xml;
+
+  // Word's revision-session table is non-content metadata and can be removed
+  // wholesale. Individual rsid attributes are removed below as well.
+  cleaned = cleaned.replace(
+    /<([A-Za-z_][\w.-]*):rsids\b[^>]*>[\s\S]*?<\/\1:rsids\s*>/gi,
+    "",
+  );
+
+  // These string attributes identify comment/revision authors or their Office
+  // account. Keep an empty attribute where some OOXML versions require it.
+  cleaned = cleaned.replace(
+    /(\s(?:[A-Za-z_][\w.-]*:)?(?:author|initials|providerId|userId|personId)\s*=\s*)(["'])[^"'<>]*\2/gi,
+    (_match, prefix: string, quote: string) => `${prefix}${quote}${quote}`,
+  );
+
+  // Revision dates and identifiers carry editing history but are not needed to
+  // render the current document or its comment text.
+  cleaned = cleaned.replace(
+    /\s+(?:[A-Za-z_][\w.-]*:)?(?:date(?:Utc)?|durableId|rsid[A-Za-z0-9_.-]*)\s*=\s*(["'])[^"'<>]*\1/gi,
+    "",
+  );
+
+  return cleaned;
+}
+
 export async function stripDocxMetadata(file: File): Promise<File | null> {
   try {
     if (!file.name.endsWith(".docx")) {
@@ -406,6 +383,16 @@ export async function stripDocxMetadata(file: File): Promise<File | null> {
     // The entire docProps folder is document metadata: core.xml (author, dates),
     // app.xml (application, edit time), custom.xml and the page-1 thumbnail
     zip.remove("docProps");
+
+    // Identity can also occur in tracked changes, comments, headers, footers,
+    // notes, settings, and Office's people part. Sanitize every Word XML part
+    // so less-common document stories receive the same treatment.
+    for (const entry of Object.values(zip.files)) {
+      if (entry.dir || !/^word\/.*\.xml$/i.test(entry.name)) continue;
+      const xml = await entry.async("string");
+      const cleanedXml = sanitizeWordprocessingXml(xml);
+      if (cleanedXml !== xml) zip.file(entry.name, cleanedXml);
+    }
 
     // DEFLATE the rebuilt archive: a .docx is a compressed zip, but JSZip
     // defaults to STORE (no compression), which would balloon the file ~10x.

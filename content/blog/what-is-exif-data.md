@@ -78,14 +78,14 @@ Online: Upload to a service like Jeffrey's Exif Viewer, though be cautious about
 
 ### PrivMeta. Private, In-Browser Removal
 
-PrivMeta strips EXIF data from JPEG, PNG, WebP, and GIF files directly in your browser. Your photos are never uploaded to any server:
+PrivMeta removes the documented privacy-metadata structures targeted by its JPEG, PNG, static WebP, and GIF cleaners directly in your browser. Photo bytes are not uploaded to a processing server:
 
 1. Go to [PrivMeta](/)
 2. Drop your images into the dropzone
 3. Click **Remove metadata**
 4. Download your cleaned photos
 
-Everything runs locally. Your photos never leave your browser tab. No account, no upload.
+File cleaning runs locally in the browser. No account or file upload is required.
 
 For JPEG files specifically, PrivMeta uses targeted EXIF removal that preserves image quality without re-encoding. The pixels remain identical.
 

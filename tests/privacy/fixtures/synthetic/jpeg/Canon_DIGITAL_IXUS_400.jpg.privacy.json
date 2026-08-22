@@ -1,0 +1,16 @@
+{
+  "requiredBefore": [
+    "*:Artist",
+    "*:UserComment",
+    "*GPS*"
+  ],
+  "sentinels": [
+    "PRIVMETA_TEST_AUTHOR",
+    "PRIVMETA_TEST_TITLE",
+    "PRIVMETA_TEST_COMMENT",
+    "PRIVMETA_TEST_SOFTWARE",
+    "PRIVMETA_TEST_LOCATION",
+    "PRIVMETA_TEST_COMPANY"
+  ],
+  "notes": "Seeded JPEG privacy regression fixture."
+}

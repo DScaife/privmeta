@@ -1,0 +1,56 @@
+name: Privacy regression suite
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: privacy-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  privacy:
+    name: Browser cleaning and ExifTool validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Install ExifTool
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libimage-exiftool-perl
+
+      - name: Install Chromium and system dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Run privacy regression suite
+        run: npm run privacy:test
+
+      - name: Upload privacy reports and browser traces
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: privacy-results-${{ github.run_attempt }}
+          path: |
+            privacy-results/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14

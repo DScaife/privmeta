@@ -1,6 +1,6 @@
 ---
 title: "How to Remove Metadata from Word Documents"
-description: "Remove hidden author names, revision history and tracked changes from Word documents in your browser. Your files never leave your device. Free, no account."
+description: "Remove document properties and author identities from Word documents in your browser. No file upload, free, and no account."
 date: "2026-04-19"
 ---
 
@@ -10,16 +10,16 @@ How to remove metadata from a Word document is simpler than most people expect. 
 
 ## How to Remove Metadata from a Word Document in Your Browser
 
-This method works on Mac, Windows, Chromebook, and any other device with a browser. [PrivMeta](/) strips all hidden metadata from your `.docx` file locally in your browser. Your document is never uploaded to a server.
+This method works on Mac, Windows, Chromebook, and other devices with a compatible browser. [PrivMeta](/) removes documented property and identity structures from your `.docx` file locally in your browser. The document bytes are not uploaded to a processing server.
 
 1. Go to [PrivMeta](/)
 2. Drop your `.docx` file into the upload area
 3. Click **Remove metadata**
 4. Download the cleaned file
 
-The document's content, formatting, images, and layout are completely untouched. Only the hidden metadata is removed. The whole process takes around ten seconds and requires no software installation or account.
+The DOCX package is rebuilt while preserving its document parts. PrivMeta removes the `docProps/` folder and anonymises author/account attributes, revision dates and revision-session IDs throughout Word XML.
 
-This is the most thorough option because it removes all three metadata files stored inside the DOCX format, not just the fields Word's own tools expose.
+PrivMeta deliberately preserves visible comment text and tracked-change markup; it clears their author identities and dates rather than deleting editorial content. If you want comments gone or changes permanently accepted/rejected, do that in Word or another document editor before sharing.
 
 ## How to Remove Metadata from Word on Mac
 
@@ -34,7 +34,7 @@ On a Mac, you can use PrivMeta in Safari (the method above), or use Word's built
 5. Click **Inspect**, then **Remove All** next to any categories with results
 6. Save the document
 
-The limitation with Word's built-in tools on Mac is that coverage varies depending on your version of Word. Some fields, particularly those in the application properties file such as company name and total editing time, are not always removed cleanly. Using [PrivMeta](/) in Safari removes all three metadata files in the same amount of time, with no ambiguity about what was stripped.
+The coverage of Word's built-in tools varies by version. PrivMeta provides a consistent documented target: package properties plus identity and revision-session attributes in Word XML. It does not claim to inspect the semantics of every embedded object or custom extension.
 
 ## How to Remove Metadata from Word on Windows
 
@@ -48,7 +48,7 @@ Windows users have access to Word's Document Inspector, which is more thorough t
 6. Click **Remove All** next to any categories showing results
 7. Save the document
 
-This removes most common fields: author name, last modified by, comments, and document properties. For complete removal, particularly of fields like company name and total editing time, use [PrivMeta](/) before sending the document. It takes the same number of steps and guarantees all metadata files are cleared.
+Word's inspector can remove common properties and can also offer separate controls for comments and tracked changes. PrivMeta is useful for consistently clearing package properties and author identities, but neither tool should be described as a universal guarantee for arbitrary embedded objects.
 
 ## What Metadata Does a Word Document Contain?
 
@@ -68,7 +68,7 @@ A DOCX file is a ZIP archive containing multiple XML files. Three of these store
 
 **Company Name** comes from the Office installation. A corporate licence means your organisation's name is embedded in every document you create. Sharing documents externally exposes this without any visible indication in the document itself.
 
-**Tracked changes and comments** are stored separately from the metadata files above, but they are equally important to remove before sharing. Word's Document Inspector handles these, or you can accept all changes and delete all comments manually before saving a final version.
+**Tracked changes and comments** are stored separately from package properties. PrivMeta preserves their text and markup so cleaning does not silently change the editorial state, but removes recognised author/account attributes, dates and revision-session IDs. Accept all changes and delete comments manually if their content itself is sensitive.
 
 ### Why this has caused real problems
 
@@ -78,6 +78,6 @@ The risk is not dramatic in everyday situations. But the fix is quick and free, 
 
 ## Remove the Metadata Before You Send
 
-The safest approach is to strip the metadata before the document leaves your device. [PrivMeta removes metadata from your Word documents](/) in your browser in seconds. Nothing is uploaded, no account is needed, and the cleaned document is ready to download immediately.
+A useful precaution is to remove targeted document properties before the document leaves your device, then review the visible text, comments, tracked changes, embedded objects and filename yourself. [PrivMeta cleans documented Word metadata structures](/) in the browser without a file upload or account.
 
 If you also work with PDFs, see our guide on [removing metadata from a PDF](/blog/remove-metadata-from-pdf-guide) for the same in-browser process.

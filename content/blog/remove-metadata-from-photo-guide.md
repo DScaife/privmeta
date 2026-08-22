@@ -4,7 +4,7 @@ description: "Remove EXIF data from JPG, PNG, and WEBP photos in your browser. G
 date: "2025-12-18"
 ---
 
-Every photo you share may be broadcasting your location, device, and the exact moment it was taken. This guide shows how to remove that metadata from your photos completely. Directly in your browser, with no upload required.
+Some photos expose location, device, and capture-time fields. This guide shows how to remove common documented metadata structures directly in your browser without uploading the photo for processing.
 
 ---
 
@@ -59,7 +59,7 @@ Steps:
 - On iPhone: Use “Share” → “Options” → Toggle off “Location” and “All Photos Data.”
 - On Android: Use built-in gallery settings or third-party apps.
 
-Unlike the OS tools above, [PrivMeta](/) removes all EXIF fields, including GPS, serial number, and software tags, in a single step, without installing anything.
+[PrivMeta](/) removes the recognised EXIF segment containing common GPS, serial-number and software fields, plus targeted XMP, IPTC and comment structures, in a single step.
 
 ---
 

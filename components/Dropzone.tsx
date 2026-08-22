@@ -4,7 +4,14 @@ import React, { useCallback, useRef, useState } from "react";
 import { File as FileIcon, X, Loader2, CheckCircle2, XCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import Typography from "./Typography";
-import { MAX_FILE_SIZE_BYTES, MAX_FILE_COUNT, ACCEPTED_FILE_TYPES } from "@/utils/constants";
+import {
+  MAX_FILE_SIZE_BYTES,
+  MAX_FILE_COUNT,
+  MAX_TOTAL_FILE_SIZE_MB,
+  ACCEPTED_FILE_TYPES,
+  getKindForFilename,
+  getTotalFileSizeBytes,
+} from "@/utils/constants";
 
 export type FileStatus = "idle" | "processing" | "done" | "failed";
 
@@ -20,22 +27,16 @@ type DropzoneProps = {
   processing: boolean;
 };
 
-const acceptedMimeTypes = Object.keys(ACCEPTED_FILE_TYPES);
-const acceptedExtensionsLabel = Array.from(new Set(Object.values(ACCEPTED_FILE_TYPES).flatMap(({ extensions }) => extensions)))
-  .map((ext) => ext.replace(/^\./, "").toUpperCase())
-  .join(" · ");
+const acceptedExtensions = Array.from(new Set(Object.values(ACCEPTED_FILE_TYPES).flatMap(({ extensions }) => extensions)));
+const acceptedExtensionsLabel = acceptedExtensions.map((ext) => ext.replace(/^\./, "").toUpperCase()).join(" · ");
 
 export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onFileRemove, onError, processing }: DropzoneProps) {
   const [highlight, setHighlight] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const isAcceptedType = (file: File) => acceptedMimeTypes.includes(file.type);
+  const isAcceptedType = (file: File) => getKindForFilename(file.name) !== undefined;
   const isAcceptedSize = (file: File) => file.size <= MAX_FILE_SIZE_BYTES;
-
-  const hasValidExtension = (file: File) => {
-    const exts = ACCEPTED_FILE_TYPES[file.type]?.extensions ?? [];
-    return exts.some((ext) => file.name.toLowerCase().endsWith(ext));
-  };
+  const queuedSizeMb = getTotalFileSizeBytes(fileStore.map(({ file }) => file)) / (1024 * 1024);
 
   const handleFiles = useCallback(
     (files: FileList | File[]) => {
@@ -44,7 +45,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
         const newFiles: File[] = [];
 
         for (const file of fileArray) {
-          if (!isAcceptedType(file) || !hasValidExtension(file)) {
+          if (!isAcceptedType(file)) {
             onError("unsupported_format");
             return;
           }
@@ -140,7 +141,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
           if (!processing) handleDrop(e);
         }}
       >
-        <input ref={fileInputRef} type="file" multiple accept={acceptedMimeTypes.join(",")} onChange={handleChange} className="hidden" />
+        <input ref={fileInputRef} type="file" multiple accept={acceptedExtensions.join(",")} onChange={handleChange} className="hidden" />
         <div className="flex flex-col items-center gap-6 text-foreground">
           <div className="flex flex-col items-center text-center leading-tight">
             <Typography as="p" variant="label" className="leading-tight">
@@ -185,7 +186,7 @@ export default function Dropzone({ fileStore, fileStatuses, onFilesAccepted, onF
           </ul>
         )}
         <Typography as="p" variant="bodySm" weight={500} muted className="absolute right-(--space-xl) bottom-(--space-md)">
-          {`${fileStore.length}/${MAX_FILE_COUNT}`}
+          {`${fileStore.length}/${MAX_FILE_COUNT} files · ${queuedSizeMb.toFixed(1)}/${MAX_TOTAL_FILE_SIZE_MB} MB`}
         </Typography>
       </div>
     </div>

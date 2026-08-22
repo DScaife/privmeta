@@ -35,7 +35,7 @@ Metadata can reveal sensitive information even when the main content seems harml
 
 ## The PrivMeta Solution
 
-If you want to remove metadata safely without compromising your files, **PrivMeta** offers a privacy-first solution that runs entirely in your browser. Unlike other tools that upload your files to external servers, PrivMeta processes everything locally on your device. Your files never leave your computer.
+If you want to remove documented metadata structures without sending file bytes to a processing service, **PrivMeta** runs its cleaners in your browser. The website may make ordinary asset and operational-telemetry requests, but the cleaning path does not upload file contents or file names.
 
 Try PrivMeta today to:
 
@@ -56,6 +56,6 @@ Understanding metadata is the first step to digital privacy. By being aware of t
 
 ## Remove Your File Metadata Now
 
-Now you know what metadata is and what it can reveal. [PrivMeta](/) lets you strip it from any file, photos, documents, PDFs, video, audio, entirely in your browser. Nothing is uploaded.
+Now you know what metadata is and what it can reveal. [PrivMeta](/) removes documented metadata structures from its supported photo, document, PDF, video and audio formats in your browser without uploading file bytes.
 
 [Remove Metadata Free](/)

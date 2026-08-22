@@ -1,6 +1,6 @@
 ---
 title: "How to Strip Metadata from Photos. Fast and Private."
-description: "Strip metadata from photos in your browser in seconds. GPS, device details and timestamps removed. Your files never leave your device. Free."
+description: "Remove targeted GPS, device and timestamp metadata structures from supported photos in your browser without a file upload."
 date: "2026-04-19"
 ---
 
@@ -10,7 +10,7 @@ Most people who want to strip photo metadata are not doing anything exotic. They
 
 ## How to Strip Metadata from Photos in Your Browser
 
-[PrivMeta](/) strips all EXIF metadata from photos locally in your browser. Nothing is uploaded to a server. The processing happens using JavaScript on your device, which means your photos stay with you throughout.
+[PrivMeta](/) removes targeted EXIF, XMP, IPTC and comment structures from supported photos locally in your browser. File bytes are not uploaded to a processing server.
 
 **Supported formats:** JPEG, JPG, PNG, WEBP, GIF
 
@@ -63,7 +63,7 @@ More specifically:
 
 No. Photo quality is completely unaffected.
 
-EXIF data is stored in a separate section of the image file, entirely distinct from the pixel data. Removing it does not touch the pixels. The image is visually identical and retains the same resolution and colour depth.
+For JPEG, EXIF is stored separately from compressed image data, so PrivMeta can remove the relevant segments without recompressing the picture. Static PNG and WebP use browser raster re-encoding instead; their dimensions are preserved, but byte-for-byte pixel or colour-profile equivalence is not claimed.
 
 File size decreases slightly because the metadata section is no longer present. The difference is small, typically a few kilobytes, and has no visual impact.
 

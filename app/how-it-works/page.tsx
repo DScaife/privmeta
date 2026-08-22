@@ -6,11 +6,11 @@ import Typography from "@/components/Typography";
 
 export const metadata: Metadata = {
   title: "How it Works - Private Metadata Removal",
-  description: "See how PrivMeta removes metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
+  description: "See how PrivMeta removes targeted metadata from supported files in your browser, with no account or file upload.",
   alternates: { canonical: "https://www.privmeta.com/how-it-works" },
   openGraph: {
     title: "How it Works - Private Metadata Removal",
-    description: "See how PrivMeta removes metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
+    description: "See how PrivMeta removes targeted metadata from supported files in your browser, with no account or file upload.",
     url: "https://www.privmeta.com/how-it-works",
     siteName: "PrivMeta",
     type: "website",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "How it Works - Private Metadata Removal",
-    description: "See how PrivMeta removes metadata privately from images, videos, audio, PDFs, and documents. Free, no account, no uploads.",
+    description: "See how PrivMeta removes targeted metadata from supported files in your browser, with no account or file upload.",
     images: ["/og-image.png"],
   },
 };
@@ -38,10 +38,10 @@ const faqSchema = {
     },
     {
       "@type": "Question",
-      name: "Is PrivMeta completely private?",
+      name: "Are my files uploaded?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, PrivMeta was designed with privacy as the core principle. Since all processing happens in your browser, there are no server interactions with your files. You can even use it offline after the initial page load.",
+        text: "No. File bytes are read and cleaned in your browser and are not sent to PrivMeta, Cloudflare, Sentry, or another processing service. The website may still make ordinary requests for page assets and operational telemetry, but those requests do not include your file contents or file names.",
       },
     },
     {
@@ -49,7 +49,7 @@ const faqSchema = {
       name: "What types of metadata does PrivMeta remove?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "We remove EXIF data from images (location, camera settings), document metadata (author, revision history), PDF properties, and video/audio metadata. Our algorithms target metadata while preserving essential file contents.",
+        text: "PrivMeta targets documented metadata structures for each supported format: image EXIF/XMP/IPTC, standard PDF properties, DOCX package and author identities, common audio tags, and MP4/MOV or Matroska container metadata. Exact coverage and limitations are documented publicly.",
       },
     },
     {
@@ -57,7 +57,7 @@ const faqSchema = {
       name: "How can I remove metadata from photos privately?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "PrivMeta lets you remove EXIF data from JPG, PNG, GIF, and WEBP images directly in your browser. Simply add your photos, and we'll strip all metadata while keeping your images 100% private.",
+        text: "PrivMeta removes EXIF, XMP, IPTC and comment structures targeted by its JPG, PNG, GIF and WebP cleaners. JPEG image data and GIF frames are copied without re-encoding; static PNG and WebP images are raster re-encoded by the browser.",
       },
     },
     {
@@ -65,7 +65,15 @@ const faqSchema = {
       name: "Is there a truly private way to clean document metadata?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes! PrivMeta removes metadata from PDFs and DOCX files entirely client-side. Unlike cloud-based tools, we never upload your sensitive documents to external servers.",
+        text: "PrivMeta removes standard PDF properties and identifiers, plus DOCX document properties and author/account identities, entirely client-side. It does not redact visible document content; DOCX comment text and tracked-change markup are intentionally preserved.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Does a successful clean guarantee that a file is anonymous?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. PrivMeta removes the documented structures it recognises, but visible or audible content, filenames, unknown metadata structures, comments, and other application-specific data may still identify someone. Review sensitive files before sharing them.",
       },
     },
   ],
@@ -81,7 +89,7 @@ export default function HowItWorks() {
       {/* Hero */}
       <section className="w-full">
         <Typography as="h1" variant="hero">
-          Every file you share carries hidden data. PrivMeta strips it out entirely in your browser, before anything leaves your device.
+          PrivMeta removes targeted privacy-sensitive metadata in your browser, before your file is shared.
         </Typography>
       </section>
 
@@ -100,7 +108,7 @@ export default function HowItWorks() {
                 Drop your files.
               </Typography>
               <Typography variant="body" muted>
-                The app reads them directly in your browser. Nothing is uploaded or sent to a server - ever.
+                The app reads them directly in your browser. File bytes are not uploaded or sent to a processing server.
               </Typography>
             </div>
           </div>
@@ -114,7 +122,8 @@ export default function HowItWorks() {
                 Metadata is stripped.
               </Typography>
               <Typography variant="body" muted>
-                Location, camera details, author info, revision history - removed from the file while the content itself is preserved.
+                Recognised location, camera, author, document-property and media-tag structures are removed while essential file content is
+                preserved.
               </Typography>
             </div>
           </div>
@@ -133,6 +142,30 @@ export default function HowItWorks() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="w-full flex flex-col gap-(--space-lg)">
+        <Typography as="h2" variant="label" muted>
+          Coverage and limitations
+        </Typography>
+        <Typography variant="body" muted>
+          Metadata formats are extensible, so no tool can safely promise that every unknown field in every file is gone. PrivMeta removes
+          documented structures for each supported format and fails instead of guessing when a container cannot be parsed safely. It does
+          not redact visible or audible content. DOCX comment text and tracked-change markup are preserved, although their author identities,
+          dates and revision-session IDs are cleaned.
+        </Typography>
+        <Typography variant="body" muted>
+          The exact removal targets, preservation behaviour, test evidence and known limitations are documented in the project&apos;s{" "}
+          <a
+            className="underline"
+            href="https://github.com/DScaife/privmeta/blob/master/docs/PRIVACY_AND_FORMAT_COVERAGE.md"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            format coverage audit
+          </a>
+          .
+        </Typography>
       </section>
 
       <Divider />
@@ -158,13 +191,13 @@ export default function HowItWorks() {
           <div className="flex flex-col gap-(--space-sm)">
             <Typography variant="label">Video</Typography>
             <Typography variant="body" muted>
-              MP4, MOV, MKV, AVI, WEBM
+              MP4, MOV, MKV, WEBM
             </Typography>
           </div>
           <div className="flex flex-col gap-(--space-sm)">
             <Typography variant="label">Audio</Typography>
             <Typography variant="body" muted>
-              MP3, WAV, FLAC, AAC, OGG, M4A
+              MP3, WAV, FLAC, AAC, M4A
             </Typography>
           </div>
         </div>
@@ -202,11 +235,12 @@ export default function HowItWorks() {
 
           <div className="flex flex-col gap-(--space-sm)">
             <Typography as="h3" variant="bodyLg" weight={600}>
-              Is PrivMeta completely private?
+              Are my files uploaded?
             </Typography>
             <Typography variant="body" muted>
-              Yes. Since all processing happens in your browser, there are no server interactions with your files. You can even use it
-              offline after the initial page load. The source code is viewable on{" "}
+              No. File bytes are read and cleaned in your browser and are not sent to a processing server. The site may still make ordinary
+              requests for page assets and operational telemetry, but those requests do not include file contents or file names. The source
+              code is viewable on{" "}
               <a className="underline" href="https://github.com/DScaife/privmeta/tree/master" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
@@ -219,8 +253,8 @@ export default function HowItWorks() {
               What types of metadata does PrivMeta remove?
             </Typography>
             <Typography variant="body" muted>
-              EXIF data from images (location, camera settings), document properties (author, revision history), PDF metadata, and
-              video/audio tags. The algorithm targets metadata while preserving the file content itself.
+              PrivMeta targets documented structures for each format: image EXIF/XMP/IPTC, standard PDF properties, DOCX package and author
+              identities, common audio tags, and MP4/MOV or Matroska container metadata. See the coverage audit above for exact details.
             </Typography>
           </div>
 
@@ -229,8 +263,8 @@ export default function HowItWorks() {
               How can I remove metadata from photos privately?
             </Typography>
             <Typography variant="body" muted>
-              Add your JPG, PNG, or WEBP image to the dropzone. PrivMeta strips the EXIF data - including GPS coordinates and device info -
-              and returns a clean file, directly in your browser.
+              Add a JPG, PNG, WEBP or GIF image to the dropzone. PrivMeta removes the metadata structures targeted for that format, including
+              common GPS and device fields, and returns the result directly in your browser.
             </Typography>
           </div>
 
@@ -239,8 +273,19 @@ export default function HowItWorks() {
               Is there a private way to clean document metadata?
             </Typography>
             <Typography variant="body" muted>
-              Yes. PrivMeta processes PDFs and DOCX files entirely in your browser. Unlike cloud tools, your documents are never uploaded to
-              external servers.
+              Yes. PrivMeta processes PDFs and DOCX files entirely in your browser. It removes standard PDF properties and DOCX document
+              properties and author identities. It does not redact visible content, and it preserves DOCX comments and tracked-change markup.
+            </Typography>
+          </div>
+
+          <div className="flex flex-col gap-(--space-sm)">
+            <Typography as="h3" variant="bodyLg" weight={600}>
+              Does a successful clean guarantee that a file is anonymous?
+            </Typography>
+            <Typography variant="body" muted>
+              No. Visible images, text, voices, filenames and unknown application-specific structures can still identify someone. PrivMeta
+              verifies the metadata structures it targets; you should still review sensitive content and rename sensitive filenames before
+              sharing.
             </Typography>
           </div>
         </div>

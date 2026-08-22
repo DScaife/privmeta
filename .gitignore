@@ -12,9 +12,19 @@
 
 # testing
 /coverage
+/test-results/
+/privacy-results/
+/benchmark-results/
+
+# Real privacy fixtures may contain identifying metadata. Keep their directory
+# structure, but never commit the files placed inside it.
+/tests/privacy/fixtures/real/**
+!/tests/privacy/fixtures/real/**/
+!/tests/privacy/fixtures/real/**/.gitkeep
 
 # next.js
 /.next/
+/.next-privacy/
 /out/
 
 # production
@@ -33,11 +43,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
-# self-hosted ffmpeg core (copied from node_modules by scripts/copy-ffmpeg-core.mjs)
-/public/ffmpeg/
-
 # vercel
 .vercel
+
+# cloudflare / wrangler
+.wrangler
 
 # typescript
 *.tsbuildinfo

@@ -1,6 +1,6 @@
 ---
 title: "Remove Metadata from Audio Files"
-description: "Strip hidden tags from MP3, FLAC, WAV, and other audio files privately in your browser. No upload, no software to install. Try it free, no sign-up needed."
+description: "Strip targeted tags from MP3, FLAC, WAV, AAC and M4A files in your browser. No file upload, software install or sign-up."
 date: "2026-02-18"
 ---
 
@@ -8,7 +8,7 @@ Audio files are often overlooked when people think about metadata privacy. Image
 
 ## What Metadata Do Audio Files Contain?
 
-Audio metadata is stored in tags embedded in the file. Different formats use different tag systems, but the most common are **ID3** (used by MP3), **Vorbis comments** (FLAC, OGG), and **iTunes atoms** (M4A, AAC).
+Audio metadata is stored in tags or container structures embedded in the file. Different formats use different systems: **ID3/APE** for MP3, **Vorbis comments** for FLAC and OGG, RIFF chunks for WAV, and **iTunes/QuickTime atoms** for M4A. Raw ADTS AAC has no general-purpose native tag container, although some files carry non-standard ID3 or APE tags.
 
 Common metadata fields across audio formats include:
 
@@ -70,9 +70,9 @@ When distributing music through platforms, some metadata fields are publicly vis
 
 ### PrivMeta. Private, Client-Side Processing
 
-PrivMeta uses FFmpeg (running locally in your browser via WebAssembly) to strip metadata from audio files without re-encoding them. The audio quality is preserved exactly:
+PrivMeta uses small, format-specific JavaScript parsers to remove recognised tags without transcoding the audio:
 
-**Supported formats:** MP3, WAV, FLAC, AAC, OGG, M4A
+**Supported formats:** MP3, WAV, FLAC, AAC, M4A
 
 1. Visit [PrivMeta](/)
 2. Drop your audio files into the upload area
@@ -89,7 +89,7 @@ For batch processing:
 ffmpeg -i input.mp3 -map_metadata -1 -c copy output.mp3
 ```
 
-The `-map_metadata -1` flag removes all metadata streams. The `-c copy` flag copies the audio stream without re-encoding, preserving quality.
+The `-map_metadata -1` flag removes standard global metadata and `-c copy` avoids audio transcoding. Format-specific attachments or unusual tag locations may need additional options, so verify the output.
 
 ### MP3Tag (Windows/macOS)
 
@@ -97,7 +97,7 @@ MP3Tag is a free desktop tag editor. Select your files, select all tags, and del
 
 ## What About Embedded Album Art?
 
-Embedded album artwork images can themselves contain EXIF data (photographer name, software, copyright). When PrivMeta strips audio metadata using `-map_metadata -1`, the embedded artwork is also removed as part of the metadata stream.
+Embedded album artwork images can themselves contain EXIF data (photographer name, software, copyright). PrivMeta removes the conventional artwork structures it targets, including MP3 attached-picture frames, FLAC picture blocks, and M4A metadata atoms.
 
 If you need to keep artwork but still protect privacy, you can re-attach a clean version of the image (stripped through PrivMeta's image cleaner first) after the audio metadata is removed.
 
@@ -109,10 +109,10 @@ If you need to keep artwork but still protect privacy, you can re-attach a clean
 - Before submitting audio to clients when encoder/software details are confidential
 - When anonymising audio evidence or testimony recordings
 
-If you also need to strip metadata from video files, see our guide on [removing metadata from video files](/blog/remove-metadata-from-video-guide). MP4, MOV, AVI, and more, all processed in-browser.
+If you also need to strip metadata from video files, see our guide on [removing metadata from video files](/blog/remove-metadata-from-video-guide). MP4, MOV, MKV, and WebM are processed in-browser.
 
 ## Try It Now
 
-Clean your audio files privately. MP3, FLAC, WAV, and more. No uploads required.
+Clean targeted audio metadata privately. MP3, FLAC, WAV, AAC, and M4A are supported with no file upload.
 
 [Remove Audio Metadata Now](/)

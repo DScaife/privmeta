@@ -1,6 +1,6 @@
 ---
 title: "How to Remove Metadata from a PDF. Free, No Software."
-description: "Remove hidden author details, creation dates and document history from PDFs in your browser. Your files never leave your device. Free, no account."
+description: "Remove standard PDF properties, XMP and document identifiers in your browser. No file upload, free, and no account."
 date: "2026-04-19"
 ---
 
@@ -10,7 +10,7 @@ Remove metadata from a PDF before sending it and that hidden information stays p
 
 ## How to Remove Metadata from a PDF in Your Browser
 
-[PrivMeta](/) removes PDF metadata directly in your browser. Your file is never uploaded to a server.
+[PrivMeta](/) removes standard PDF properties, XMP and the trailer identifier directly in your browser without uploading the file for processing.
 
 1. Go to [PrivMeta](/)
 2. Drop your PDF into the upload area
@@ -19,7 +19,7 @@ Remove metadata from a PDF before sending it and that hidden information stays p
 
 The document's text, images, and layout are completely untouched. Only the hidden metadata is removed. The process takes a few seconds and requires no software installation or account.
 
-PrivMeta removes both the Info dictionary (which stores author, title, subject, keywords, creator, and producer) and the XMP metadata stream. After processing, the PDF contains no identifiable metadata fields.
+PrivMeta removes the standard Info dictionary fields, the catalog XMP Metadata reference, and the trailer ID. It does not redact visible text or inspect annotations, forms, attachments, and arbitrary application-specific content for personal information.
 
 ## What Metadata Does a PDF Contain?
 
@@ -67,7 +67,7 @@ File size decreases slightly because the metadata fields are no longer present, 
 
 ## Remove PDF Metadata Before You Share
 
-The fastest and most private way to [remove metadata from your PDFs](/) is to do it in your browser before the file goes anywhere. PrivMeta handles this in seconds, with no upload, no account, and no software to install.
+One client-side option is to [clean standard PDF metadata with PrivMeta](/) before the file is shared. It requires no file-processing upload, account, or software installation. Review visible text, annotations, forms, attachments and the filename separately.
 
 If you also work with Word documents, see our guide on [removing metadata from a Word document](/blog/remove-metadata-from-word-document) for the same in-browser process.
 

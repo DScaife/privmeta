@@ -28,7 +28,7 @@ You do not need to overhaul your entire setup at once. Here are a handful of hab
 
 **Remove data from files before sharing them.** Files carry hidden information. A Word document contains the author's name and revision history. A photo contains GPS coordinates and device details. A PDF can include the software used to create it, the company name, and modification timestamps. None of this is visible when someone opens the file, but it travels with the file when you share it.
 
-One habit worth building is stripping this data before you send anything. [PrivMeta](/) does this in your browser in a few seconds, without uploading your files anywhere. It supports photos, documents, PDFs, audio, and video. One small step that removes a category of unintentional sharing most people have never thought about.
+One habit worth building is cleaning documented metadata structures before you send a file. [PrivMeta](/) does this in your browser without uploading file bytes. It supports selected photo, document, PDF, audio, and video formats. This removes one category of unintentional sharing, while visible content and filenames still need review.
 
 **Keep your software updated.** Security vulnerabilities in old software are one of the most common ways data gets exposed. Enabling automatic updates for your operating system and apps removes most of this risk with no effort on your part.
 
@@ -56,4 +56,4 @@ Small things add up. A password manager and occasional permission reviews get yo
 
 ## One Habit You Can Start Right Now
 
-Removing metadata from files before sharing them is one of the simplest digital hygiene habits to act on immediately. [Try PrivMeta free in your browser](/) on any photo, document, or video you are about to share. It takes ten seconds, and your files never leave your device.
+Removing targeted metadata before sharing is a simple digital-hygiene habit. [Try PrivMeta free in your browser](/) on a supported photo, document, audio, or video file; its bytes are cleaned locally rather than uploaded for processing.

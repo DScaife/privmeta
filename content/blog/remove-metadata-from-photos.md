@@ -1,6 +1,6 @@
 ---
 title: "How to Remove Metadata from Photos."
-description: "Remove GPS location, camera details and timestamps from photos in your browser. Your files never leave your device. Works on iPhone, Android and Mac. Free."
+description: "Remove targeted GPS, camera and timestamp metadata structures from supported photos in a compatible browser without a file upload."
 date: "2026-04-19"
 ---
 
@@ -27,7 +27,7 @@ For a full breakdown of EXIF fields and what they mean, see our guide on [what E
 
 ## How to Remove Metadata from Photos in Your Browser
 
-[PrivMeta](/) removes all EXIF metadata from photos directly in your browser. This works on any device including iPhone, Android, Mac, and Windows. Your photos are never uploaded to a server.
+[PrivMeta](/) removes targeted EXIF, XMP, IPTC and comment structures from supported photos directly in a compatible browser. Photo bytes are not uploaded to a processing server.
 
 **Supported formats:** JPEG, JPG, PNG, WEBP, GIF
 
@@ -56,13 +56,13 @@ This is not a theoretical risk. Journalists have used geotagged photos to locate
 
 Removing the geotag before sharing is the only way to be certain the location information is gone. Relying on a platform to strip it for you is a different thing entirely. Platform behaviour varies, changes without notice, and cannot be verified after the fact.
 
-[PrivMeta](/) removes GPS coordinates along with all other EXIF fields in a single step, in your browser, before the image goes anywhere.
+[PrivMeta](/) removes the EXIF segment that carries standard GPS coordinates and other common camera fields, in your browser before sharing.
 
 ## Does Removing Metadata Affect Photo Quality?
 
 No. Removing metadata has no effect on image quality whatsoever.
 
-EXIF data is stored in a separate section of the image file, completely distinct from the pixel data that makes up the actual photo. When metadata is removed, the pixel data is left entirely untouched. The image looks identical at every zoom level and retains its full resolution.
+In JPEG files, EXIF is stored separately from compressed image data, so PrivMeta removes the relevant segments without recompressing the photo. Static PNG and WebP files are raster re-encoded by the browser, so the visual content and dimensions are preserved but byte-for-byte equivalence is not claimed.
 
 File size decreases slightly because the metadata section is no longer present, but the difference is negligible and has no visual impact.
 
@@ -84,10 +84,10 @@ This works without installing any app. The photo is processed locally in Safari 
 
 **Sharing directly from the Photos app:** iOS does give you a basic option to share photos without location data. When you tap Share and select a recipient, you may see an **Options** button at the top of the share sheet. Tapping this lets you turn off location for that share action. However, this only removes GPS coordinates and only in that moment. It does not remove other EXIF fields such as device model, timestamp, or lens data, and it does not produce a cleaned file you can keep or reuse.
 
-For a properly stripped file you can share anywhere, use [PrivMeta](/) in Safari to remove metadata from photos on your iPhone before sending.
+For more control before sharing, use [PrivMeta](/) in a compatible browser to clean the documented metadata structures it recognises, then inspect the result.
 
 ## Share Photos Without the Hidden Details
 
 Your photos contain more information than most people realise. GPS coordinates, device details, and timestamps are all embedded by default and travel with every image you share.
 
-[Remove metadata from your photos at PrivMeta](/) before you send them. It works in your browser on any device, takes a few seconds, and your photos never leave your device during the process. No account, no install, no upload.
+[Remove targeted metadata from supported photos at PrivMeta](/) before sending them. Cleaning runs in a compatible browser with no account, install, or file-processing upload.
