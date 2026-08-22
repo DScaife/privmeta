@@ -17,7 +17,6 @@ import JSZip from "jszip";
 import ClearAllButton from "@/components/ClearAllButton";
 import ShareFunctions from "@/components/ShareFunctions";
 import Hero from "@/components/Hero";
-import DisableInternet from "@/components/DisableInternet";
 
 type ErrorType =
   | "file_count"
@@ -92,18 +91,6 @@ export default function Home() {
   const [processing, setProcessing] = useState<boolean>(false);
 
   useEffect(() => {
-    const infoTimeout = setTimeout(() => {
-      toast.info("Your files stay local", {
-        id: "local-processing",
-        duration: 10000,
-        description: "Cleaning runs in your browser. File bytes are not uploaded.",
-        action: {
-          label: "Got it",
-          onClick: () => {},
-        },
-      });
-    }, 2000);
-
     const bmcTimeout = setTimeout(() => {
       toast.info("Like the app?", {
         id: "support-bmc",
@@ -119,7 +106,6 @@ export default function Home() {
     }, 60000);
 
     return () => {
-      clearTimeout(infoTimeout);
       clearTimeout(bmcTimeout);
     };
   }, []);
@@ -290,7 +276,6 @@ export default function Home() {
           </Button>
         </div>
       </div>
-      <DisableInternet />
       <div className="h-0.75 w-full bg-foreground" />
       <ShareFunctions />
     </div>

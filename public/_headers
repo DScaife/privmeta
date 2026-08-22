@@ -1,7 +1,10 @@
-# Cloudflare Pages header rules - replaces the headers() function that used to
-# live in next.config.ts. headers() doesn't run under `output: export` since
+# Cloudflare static-asset header rules replace the headers() function that used
+# to live in next.config.ts. headers() doesn't run under `output: export` since
 # there's no Next.js server in production, so this is the equivalent.
-# https://developers.cloudflare.com/pages/configuration/headers/
+# https://developers.cloudflare.com/workers/static-assets/headers/
+
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
 
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
