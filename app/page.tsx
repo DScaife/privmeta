@@ -17,6 +17,7 @@ import JSZip from "jszip";
 import ClearAllButton from "@/components/ClearAllButton";
 import ShareFunctions from "@/components/ShareFunctions";
 import Hero from "@/components/Hero";
+import { recordSuccessfulClean, SUPPORT_URL, suppressSupportPrompts } from "@/utils/supportPrompts";
 
 type ErrorType =
   | "file_count"
@@ -90,25 +91,28 @@ export default function Home() {
   const [fileStatuses, setFileStatuses] = useState<Record<string, FileStatus>>({});
   const [processing, setProcessing] = useState<boolean>(false);
 
-  useEffect(() => {
-    const bmcTimeout = setTimeout(() => {
-      toast.info("Like the app?", {
-        id: "support-bmc",
-        description: "Support this project on Buy Me a Coffee.",
-        duration: 10000,
-        action: {
-          label: "Support",
-          onClick: () => {
-            window.open("https://buymeacoffee.com/privco", "_blank");
-          },
-        },
-      });
-    }, 60000);
+  const showSuccessfulDownloadToast = () => {
+    const supportPrompt = recordSuccessfulClean();
 
-    return () => {
-      clearTimeout(bmcTimeout);
-    };
-  }, []);
+    if (!supportPrompt) {
+      toast.success("Download ready");
+      return;
+    }
+
+    toast.success("Download ready", {
+      id: "support-bmc",
+      description: supportPrompt.description,
+      duration: 10000,
+      dismissible: true,
+      action: {
+        label: "Support",
+        onClick: () => {
+          suppressSupportPrompts();
+          window.open(SUPPORT_URL, "_blank", "noopener,noreferrer");
+        },
+      },
+    });
+  };
 
   const handleFilesAccepted = (newFiles: File[]) => {
     const totalCount = fileStore.length + newFiles.length;
@@ -233,8 +237,8 @@ export default function Home() {
         URL.revokeObjectURL(url);
       }
 
-      if (failedCount === 0) {
-        toast.success("Download ready ✨");
+      if (failedCount === 0 && cleanedFiles.length > 0) {
+        showSuccessfulDownloadToast();
       } else if (cleanedFiles.length > 0) {
         toast.warning(`Download ready - ${failedCount} file${failedCount > 1 ? "s" : ""} failed to process`);
       } else if (animatedCount !== failedCount) {

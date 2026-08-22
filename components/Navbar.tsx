@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Code } from "lucide-react";
 import Link from "next/link";
 import Typography from "./Typography";
+import { SUPPORT_URL, suppressSupportPrompts } from "@/utils/supportPrompts";
 
 const BMC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 55" fill="none" className="w-4/5 h-auto size-24" aria-hidden="true">
@@ -62,7 +63,7 @@ const Navbar = () => {
         </div>
 
         <div className="relative">
-          <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
+          <Link href={SUPPORT_URL} target="_blank" rel="noopener noreferrer" onClick={() => suppressSupportPrompts()}>
             <Button
               aria-label="Support PrivMeta on Buy Me a Coffee"
               className="w-52 sm:w-56 md:w-64 p-(--space-xl) type-fluid type-button-feature text-foreground bg-white dark:bg-foreground dark:border-background hover:bg-muted dark:hover:bg-foreground/80 border-2 border-foreground"

@@ -7,6 +7,7 @@ import { Bookmark, Copy, Check, Coffee } from "lucide-react";
 import Typography from "./Typography";
 import Link from "next/link";
 import { toast } from "sonner";
+import { SUPPORT_URL, suppressSupportPrompts } from "@/utils/supportPrompts";
 
 const ShareFunctions = () => {
   const SHARE_URL = "https://privmeta.com/";
@@ -122,7 +123,7 @@ const ShareFunctions = () => {
         <Typography variant="label" className="w-44 lg:w-(--share-width)">
           Support this project
         </Typography>
-        <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
+        <Link href={SUPPORT_URL} target="_blank" rel="noopener noreferrer" onClick={() => suppressSupportPrompts()}>
           <Button
             size="lg"
             className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2 w-full"
