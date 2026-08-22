@@ -117,19 +117,21 @@ const ShareFunctions = () => {
         </div>
       </div>
 
-      {/* Bookmark */}
+      {/* BMC */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md)">
         <Typography variant="label" className="w-44 lg:w-(--share-width)">
-          Come back!
+          Support this project
         </Typography>
-        <Button
-          size="lg"
-          className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
-          onClick={handleBookmark}
-        >
-          <Bookmark className="size-5" />
-          Bookmark page
-        </Button>
+        <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
+          <Button
+            size="lg"
+            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2 w-full"
+            aria-label="Support me on Buy Me a Coffee"
+          >
+            <Coffee className="size-5" />
+            Buy me a coffee
+          </Button>
+        </Link>
       </div>
 
       {/* Link */}
@@ -154,21 +156,19 @@ const ShareFunctions = () => {
         </button>
       </div>
 
-      {/* BMC */}
+      {/* Bookmark */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-(--space-md)">
         <Typography variant="label" className="w-44 lg:w-(--share-width)">
-          Support this project
+          Come back!
         </Typography>
-        <Link href="https://buymeacoffee.com/privco" target="_blank" rel="noopener noreferrer">
-          <Button
-            size="lg"
-            className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2 w-full"
-            aria-label="Support me on Buy Me a Coffee"
-          >
-            <Coffee className="size-5" />
-            Buy me a coffee
-          </Button>
-        </Link>
+        <Button
+          size="lg"
+          className="type-fluid type-button bg-background hover:bg-muted/50 text-foreground border-foreground border-2"
+          onClick={handleBookmark}
+        >
+          <Bookmark className="size-5" />
+          Bookmark page
+        </Button>
       </div>
     </div>
   );
