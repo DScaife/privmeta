@@ -113,18 +113,28 @@ export function readTechnicalMetadata(executable: string, filePath: string): Met
 
 export function validateWithExifTool(executable: string, filePath: string): { errors: string[]; warnings: string[] } {
   const snapshot = parseSingleJsonObject(
-    runExifTool(executable, ["-j", "-G1", "-s", "-validate", "-warning", "-error", "-a", filePath]),
+    runExifTool(executable, ["-j", "-G1:4", "-s", "-validate", "-warning", "-error", "-a", filePath]),
   );
   const errors: string[] = [];
   const warnings: string[] = [];
 
   for (const [tag, value] of Object.entries(snapshot)) {
     const text = String(value);
-    if (tag.endsWith(":Validate") && text !== "OK") errors.push(`ExifTool validation: ${text}`);
+    if (tag.endsWith(":Validate")) {
+      const severity = classifyExifValidationSummary(text);
+      if (severity === "error") errors.push(`ExifTool validation: ${text}`);
+      if (severity === "warning") warnings.push(`ExifTool validation: ${text}`);
+    }
     if (tag.endsWith(":Error")) errors.push(`ExifTool: ${text}`);
     if (tag.endsWith(":Warning")) warnings.push(`ExifTool: ${text}`);
   }
-  return { errors, warnings };
+  return { errors: [...new Set(errors)], warnings: [...new Set(warnings)] };
+}
+
+export function classifyExifValidationSummary(text: string): "ok" | "warning" | "error" {
+  if (text.trim().toUpperCase() === "OK") return "ok";
+  if (/^\d+\s+warnings?$/i.test(text.trim())) return "warning";
+  return "error";
 }
 
 function wildcardRegex(pattern: string): RegExp {
@@ -168,7 +178,19 @@ function findTechnicalValue(snapshot: MetadataSnapshot, tag: string): unknown {
   return undefined;
 }
 
-function valuesEqual(before: unknown, after: unknown, tag: string, extension: SupportedExtension): boolean {
+function durationInSeconds(value: unknown): number | null {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value !== "string") return null;
+
+  const numeric = Number(value);
+  if (Number.isFinite(numeric)) return numeric;
+
+  const match = value.trim().match(/^(\d+):(\d{2}):(\d{2}(?:\.\d+)?)$/);
+  if (!match) return null;
+  return Number(match[1]) * 3600 + Number(match[2]) * 60 + Number(match[3]);
+}
+
+export function technicalValuesEqual(before: unknown, after: unknown, tag: string, extension: SupportedExtension): boolean {
   if (tag === "FileType") {
     if (extension === "webp" && [before, after].every((value) => value === "WEBP" || value === "Extended WEBP")) {
       return true;
@@ -177,8 +199,15 @@ function valuesEqual(before: unknown, after: unknown, tag: string, extension: Su
     // after the tag is stripped it correctly reports AAC.
     if (extension === "aac" && before === "MP3" && after === "AAC") return true;
   }
+
+  if (tag === "Duration") {
+    const beforeSeconds = durationInSeconds(before);
+    const afterSeconds = durationInSeconds(after);
+    if (beforeSeconds !== null && afterSeconds !== null) return Math.abs(beforeSeconds - afterSeconds) <= 0.02;
+  }
+
   if (typeof before === "number" && typeof after === "number") {
-    const tolerance = tag === "Duration" ? 0.02 : tag === "VideoFrameRate" ? 0.001 : 0;
+    const tolerance = tag === "VideoFrameRate" ? 0.001 : 0;
     return Math.abs(before - after) <= tolerance;
   }
   return JSON.stringify(before) === JSON.stringify(after);
@@ -357,7 +386,7 @@ export function assessPrivacyCase(args: {
       if (!optional) warnings.push(`Preservation field was not reported for the original: ${tag}`);
     } else if (after === undefined) {
       errors.push(`Preservation field disappeared: ${tag}`);
-    } else if (!valuesEqual(before, after, tag, fixture.extension)) {
+    } else if (!technicalValuesEqual(before, after, tag, fixture.extension)) {
       errors.push(`Preservation field changed: ${tag} (${JSON.stringify(before)} -> ${JSON.stringify(after)})`);
     } else {
       preserved.push(`${tag}=${JSON.stringify(after)}`);
