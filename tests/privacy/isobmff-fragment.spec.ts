@@ -61,6 +61,7 @@ test("removes a fragmented metadata track and its timed samples", () => {
 
   const cleaned = stripIsobmffBoxes(input);
   expect(cleaned).not.toBeNull();
+  if (!cleaned) throw new Error("Expected the fragmented fixture to be cleaned");
   expect(cleaned?.length).toBe(input.length);
   expect(new TextDecoder().decode(cleaned)).not.toContain("PRIVMETA_TEST_FRAGMENT_SAMPLE");
 

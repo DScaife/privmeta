@@ -15,7 +15,9 @@
     "privacy:record-mp4": "node tests/privacy/generate-fragmented-mp4-fixture.mjs",
     "privacy:seed": "node tests/privacy/seed-fixtures.mjs",
     "privacy:test": "node tests/privacy/generate-mediarecorder-fixture.mjs && node tests/privacy/generate-fragmented-mp4-fixture.mjs && playwright test --config=tests/privacy/playwright.config.ts",
-    "privacy:test:headed": "playwright test --config=tests/privacy/playwright.config.ts --headed"
+    "privacy:test:headed": "playwright test --config=tests/privacy/playwright.config.ts --headed",
+    "benchmark:compare": "node tests/benchmark/run-comparison.mjs",
+    "benchmark:branches": "node tests/benchmark/run-branches.mjs"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.53.1",

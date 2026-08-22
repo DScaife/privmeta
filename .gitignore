@@ -14,6 +14,7 @@
 /coverage
 /test-results/
 /privacy-results/
+/benchmark-results/
 
 # Real privacy fixtures may contain identifying metadata. Keep their directory
 # structure, but never commit the files placed inside it.
