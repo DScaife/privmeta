@@ -39,7 +39,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "Free & Private Metadata Remover",
-  description: "Remove targeted metadata from supported images, videos, audio, PDFs, and documents. Free, no account, no file uploads.",
+  description:
+    "Remove targeted metadata from supported images, videos, audio, PDFs, and documents. Free, no account, no file uploads.",
   keywords: [
     "remove metadata from image",
     "remove metadata from photo",
@@ -129,7 +130,8 @@ export default function RootLayout({
                 url: "https://www.privmeta.com/web-app-manifest-192x192.png",
               },
               image: "https://www.privmeta.com/og-image.png",
-              description: "Remove targeted metadata from supported files with client-side processing and no file uploads.",
+              description:
+                "Remove targeted metadata from supported files with client-side processing and no file uploads.",
               foundingDate: "2025-01-01",
               applicationCategory: "WebApplication",
               operatingSystem: "All",
@@ -153,13 +155,23 @@ export default function RootLayout({
           <Script
             defer
             src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon={JSON.stringify({ token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN })}
+            data-cf-beacon={JSON.stringify({
+              token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN,
+            })}
           />
         )}
       </head>
 
-      <body suppressHydrationWarning className={`antialiased min-h-screen flex flex-col ${avenirNext.variable} font-avenir`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body
+        suppressHydrationWarning
+        className={`antialiased min-h-screen flex flex-col ${avenirNext.variable} font-avenir`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <TooltipProvider>
             <div className="flex flex-col flex-1 items-center">
               <div className="max-w-(--max-content-width) flex flex-col flex-1 w-full h-full px-(--space-xl)">
