@@ -2,6 +2,7 @@
 title: "OSINT Metadata Tracking: How to Protect Yourself"
 description: "Learn how investigators use metadata for OSINT tracking, discover privacy risks in your digital footprint, and protect yourself from unwanted surveillance."
 date: "2025-10-20"
+updated: "2026-08-29"
 ---
 
 Open Source Intelligence (OSINT) analysts use publicly available information to build detailed profiles of individuals. Metadata, the hidden information in your digital files, provides a treasure trove of tracking data. Let's examine how this works and how you can protect yourself.

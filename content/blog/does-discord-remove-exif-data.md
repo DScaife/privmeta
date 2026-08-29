@@ -2,6 +2,7 @@
 title: "Does Discord Remove EXIF Data? Do Not Rely on It."
 description: "Discord may omit common EXIF from processed images, but that is not a privacy guarantee. Learn what can vary and how to check a file before sharing."
 date: "2026-04-19"
+updated: "2026-08-29"
 ---
 
 **Discord commonly serves processed image copies without the original photo's EXIF data, but you should not rely on Discord to remove it for you.** Behaviour can vary with the client, file format, upload route, and future platform changes. More importantly, the original file has already left your device before Discord can process it.

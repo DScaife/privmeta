@@ -2,6 +2,7 @@
 title: "Remove Hidden Metadata from Your Photos"
 description: "Your photos contain hidden EXIF data: GPS location, camera model, timestamps. Remove it instantly in your browser. No upload, no account needed. Try it free."
 date: "2025-10-27"
+updated: "2026-08-29"
 ---
 
 Every photo you take contains a hidden layer of information called metadata. This digital footprint reveals more than you might expect, from your location to your camera model. Let's explore what's hiding in your images and how to protect your privacy.

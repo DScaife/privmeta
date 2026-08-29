@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   title: "Free & Private Metadata Remover",
   description:
     "Remove targeted metadata from supported images, videos, audio, PDFs, and documents. Free, no account, no file uploads.",
+  alternates: {
+    canonical: "https://www.privmeta.com/",
+  },
   keywords: [
     "remove metadata from image",
     "remove metadata from photo",
