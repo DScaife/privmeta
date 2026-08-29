@@ -2,6 +2,7 @@
 title: "Remove Metadata Before Uploading to ChatGPT or Gemini"
 description: "Clean hidden location, device, author and timestamp metadata from supported files before uploading them to ChatGPT, Gemini, or another AI service."
 date: "2026-03-15"
+updated: "2026-08-29"
 ---
 
 When you attach a file to ChatGPT, Gemini, Claude, or another AI service, you send the whole file, not only the text, picture, or recording you can see and hear. Hidden metadata can accompany that content unless it is removed first.

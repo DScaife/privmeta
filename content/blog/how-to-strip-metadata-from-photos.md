@@ -2,6 +2,7 @@
 title: "How to Remove Metadata from Photos. Free and Private."
 description: "Remove GPS, camera, timestamp, EXIF, XMP and IPTC metadata from supported photos in your browser. Free, private, and no file upload."
 date: "2026-04-19"
+updated: "2026-08-29"
 ---
 
 Photos can reveal more than the image itself. A file may also contain GPS coordinates, the phone or camera model, capture time, editing software, creator details, and a small embedded preview. This hidden information can travel with the photo when it is emailed, uploaded, or shared as a file.

@@ -9,6 +9,7 @@ export type BlogPost = {
   title: string;
   description: string;
   date: string;
+  updated?: string;
   readingTime: number;
   /** Raw markdown body (without frontmatter) */
   content: string;
@@ -44,6 +45,7 @@ export function getPost(slug: string): BlogPost | null {
     title: data.title || "",
     description: data.description || "",
     date: data.date || "",
+    updated: data.updated || undefined,
     readingTime: estimateReadingTime(content),
     content,
   };

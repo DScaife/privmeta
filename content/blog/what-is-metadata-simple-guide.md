@@ -2,6 +2,7 @@
 title: "What Is Metadata? Hidden Data Explained"
 description: "Metadata is hidden data in every photo, document, and PDF: your location, name, edit history and more. Remove it free in your browser. No sign-up needed."
 date: "2025-11-20"
+updated: "2026-08-29"
 ---
 
 Metadata is "data about data", information that describes other information. Think of it like a digital ID card for your files. Just like your ID card has your name, photo, and birth date without containing your actual body, metadata describes a file without being the main content.

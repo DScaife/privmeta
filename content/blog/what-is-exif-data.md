@@ -2,6 +2,7 @@
 title: "EXIF Data: The Privacy Risk in Every Photo"
 description: "EXIF data is hidden inside every photo. GPS coordinates, camera model, timestamps. Learn what it reveals, then remove it free in your browser. No sign-up."
 date: "2026-02-05"
+updated: "2026-08-29"
 ---
 
 Every photo taken with a modern camera or smartphone contains far more than the visible image. Buried inside the file is a structured block of hidden data called **EXIF**, and it can tell a complete stranger exactly where you were, what device you used, and when the photo was taken down to the millisecond. The good news: you can strip all of it in seconds, directly in your browser, without uploading the file anywhere.
