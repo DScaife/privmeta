@@ -39,7 +39,7 @@ If you want to remove documented metadata structures without sending file bytes 
 
 Try PrivMeta today to:
 
-- [Remove hidden location data from photos](/blog/remove-metadata-from-photo-guide)
+- [Remove hidden location data from photos](/blog/how-to-strip-metadata-from-photos)
 - [Strip authorship details from Word documents](/blog/remove-metadata-from-word-document)
 - [Clean metadata from PDFs](/blog/remove-metadata-from-pdf-guide)
 - [Remove metadata from audio files](/blog/remove-metadata-from-audio-files)

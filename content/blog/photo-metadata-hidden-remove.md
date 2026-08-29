@@ -70,7 +70,7 @@ Every photo you take contains a hidden layer of information called metadata. Thi
 
 Take control of your digital footprint today by auditing and cleaning your photo metadata. With tools like PrivMeta, privacy protection is just a drag-and-drop away.
 
-For a full walkthrough of all removal methods, Windows, Mac, mobile, and in-browser, see our [photo metadata removal guide](/blog/remove-metadata-from-photo-guide).
+For a full walkthrough of all removal methods, Windows, Mac, mobile, and in-browser, see our [photo metadata removal guide](/blog/how-to-strip-metadata-from-photos).
 
 ## Remove Your Photo Metadata Now
 

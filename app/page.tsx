@@ -253,7 +253,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    document.title = processing ? "Cleaning metadata..." : "PrivMeta";
+    document.title = processing ? "Cleaning metadata..." : "Free & Private Metadata Remover";
   }, [processing]);
 
   return (
