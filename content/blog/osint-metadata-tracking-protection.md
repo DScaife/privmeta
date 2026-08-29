@@ -37,7 +37,7 @@ Open Source Intelligence (OSINT) analysts use publicly available information to 
 
 1. **Regularly clean files** before sharing online:
 
-   - [Remove EXIF data from photos](/blog/remove-metadata-from-photo-guide): GPS coordinates, camera model, timestamps
+   - [Remove EXIF data from photos](/blog/how-to-strip-metadata-from-photos): GPS coordinates, camera model, timestamps
    - [Strip author information from Word documents](/blog/remove-metadata-from-word-document): name, edit history, company
    - [Clear metadata from PDFs](/blog/remove-metadata-from-pdf-guide): author, creator app, modification dates
 

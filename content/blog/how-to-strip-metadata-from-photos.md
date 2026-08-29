@@ -1,76 +1,97 @@
 ---
-title: "How to Strip Metadata from Photos. Fast and Private."
-description: "Remove targeted GPS, device and timestamp metadata structures from supported photos in your browser without a file upload."
+title: "How to Remove Metadata from Photos. Free and Private."
+description: "Remove GPS, camera, timestamp, EXIF, XMP and IPTC metadata from supported photos in your browser. Free, private, and no file upload."
 date: "2026-04-19"
 ---
 
-Stripping metadata from a photo means removing the hidden data that cameras and smartphones embed automatically when you take a picture. The visible image stays exactly as it is. What changes is the invisible layer underneath: GPS coordinates, device information, timestamps, and camera settings that travel silently with every photo you share.
+Photos can reveal more than the image itself. A file may also contain GPS coordinates, the phone or camera model, capture time, editing software, creator details, and a small embedded preview. This hidden information can travel with the photo when it is emailed, uploaded, or shared as a file.
 
-Most people who want to strip photo metadata are not doing anything exotic. They are sharing images publicly, sending files to clients, or cleaning up before uploading somewhere. The process takes a few seconds with the right tool and works entirely in your browser.
+This guide explains how to remove the documented metadata structures PrivMeta recognises while keeping the visible photo on your device.
 
-## How to Strip Metadata from Photos in Your Browser
+## How to Remove Metadata from Photos in Your Browser
 
-[PrivMeta](/) removes targeted EXIF, XMP, IPTC and comment structures from supported photos locally in your browser. File bytes are not uploaded to a processing server.
+[PrivMeta](/) removes targeted EXIF, XMP, IPTC and comment structures locally in a compatible browser. Photo bytes are not uploaded to a processing server.
 
-**Supported formats:** JPEG, JPG, PNG, WEBP, GIF
+**Supported formats:** JPEG, JPG, PNG, WEBP, and GIF
 
-1. Go to [PrivMeta](/)
-2. Drop your photo or photos into the upload area
-3. Click **Remove metadata**
-4. Download the cleaned files
+1. Open [PrivMeta's free metadata remover](/).
+2. Add one or more photos.
+3. Select **Remove metadata**.
+4. Download the cleaned files.
 
-You can process multiple photos at once. The result is a file that looks identical to the original but with the hidden data layer completely removed. Works on any device: Mac, Windows, iPhone, Android, Chromebook.
+Single files download directly. Multiple photos are cleaned and bundled into a ZIP in the browser.
 
-## What Does Stripping Metadata Actually Remove?
+## What Photo Metadata Can Contain
 
-Stripping metadata removes the EXIF data embedded in the photo file. This covers more fields than most people expect.
+EXIF is the best-known form of photo metadata, but it is not the only one. Depending on the format and the software that created the file, a photo can contain:
 
-**GPS coordinates.** Latitude and longitude of where the photo was taken, often accurate to within a few metres. Sometimes altitude too.
+- **GPS coordinates and altitude** showing where it was captured
+- **Capture date and time**, sometimes including time-zone information
+- **Camera or phone make and model**
+- **Lens and exposure settings**, including focal length, aperture, shutter speed, and ISO
+- **Editing software** used to process or export the image
+- **Creator and copyright fields** populated by cameras or editing applications
+- **XMP and IPTC records** used by publishing and photography workflows
+- **Comments and embedded previews** stored separately from the main image
 
-**Device make and model.** The exact phone or camera that captured the image, including the specific model name.
+For a deeper explanation of these fields, see [what EXIF data is and what it can reveal](/blog/what-is-exif-data).
 
-**Timestamp.** The date and time the photo was taken, precise to the second.
+## How to Remove GPS Location from a Photo
 
-**Lens and camera settings.** Focal length, aperture, shutter speed, ISO. On a dedicated camera, this can reveal which lens was used and how the shot was set up.
+Location coordinates stored in EXIF are commonly called a geotag. If a geotag is preserved, a recipient can extract the latitude and longitude with ordinary metadata-inspection software.
 
-**Software.** The application used to edit or export the image. If the photo was processed in Lightroom, Photoshop, or any other tool, that information is in the file.
+PrivMeta's JPEG cleaner removes the targeted EXIF segment containing standard GPS fields. Its supported static PNG and WebP cleaners re-encode the visible raster in the browser, producing a new file without the original ancillary metadata structures. GIF comments, plain-text extensions, XMP application data, and other non-animation application extensions are removed while animation data is preserved.
 
-**Copyright and creator fields.** Named author information, copyright strings, and attribution data that some cameras and editing tools populate automatically.
+Cleaning the file before sharing is different from relying on a destination platform to clean it later: the metadata is removed before the file leaves your device.
 
-**Embedded thumbnail.** A small preview image stored inside the file as a separate EXIF field, removed along with everything else.
+## Removing Photo Metadata on iPhone or Android
 
-What is not touched: the actual image pixels. The photo looks identical at every zoom level and retains its full resolution.
+PrivMeta works in a compatible mobile browser without installing an app:
 
-Scrubbing this data matters most when sharing photos publicly, because all of these fields are readable by anyone with a basic metadata viewer, available free online.
+1. Open [PrivMeta](/) in Safari, Chrome, or another compatible browser.
+2. Tap the file area and choose the photo.
+3. Select **Remove metadata**.
+4. Save the cleaned result.
 
-## When Should You Strip Photo Metadata?
+Some mobile sharing interfaces let you omit location for one share action. That can be useful, but it is not the same as creating a reusable cleaned file or removing every supported metadata structure. Cleaning a copy gives you a file that can be inspected and shared through more than one service.
 
-Any time you share a photo where you would not want the recipient to know where it was taken, what device you used, or when it was captured.
+## Removing Photo Metadata on Windows, Mac, or Chromebook
 
-More specifically:
+The browser process is the same on desktop systems: add the photo, clean it, and download the result. No desktop package or account is required.
 
-**Sharing publicly or on social media.** Platforms like Instagram and Facebook strip EXIF data at upload in most cases, but this is not guaranteed across all file types and sharing methods. Platform behaviour also changes without notice. Scrubbing the metadata yourself before uploading is the only way to be certain it is gone before the file leaves your device. For a detailed breakdown of how specific platforms handle this, see our post on [whether Discord, Instagram and WhatsApp remove EXIF data](/blog/does-discord-remove-exif-data).
+Operating systems also include metadata controls, but their coverage varies by format and version. If you use one of those controls, inspect the resulting file rather than assuming that every metadata family was removed.
 
-**Sending images to clients or colleagues.** A photo sent as an email attachment or via a file transfer goes unchanged, with all metadata intact. The recipient gets the full EXIF payload whether they asked for it or not.
+## Does Removing Metadata Affect Image Quality?
 
-**Submitting to stock photo sites.** Stock libraries vary in how they handle uploaded metadata. Stripping before submission removes the ambiguity.
+The answer depends on the image format.
 
-**Publishing on a website or blog.** Images published on the web are downloadable. Anyone who saves the image gets the metadata too.
+**JPEG and JPG:** PrivMeta removes recognised metadata segments without decoding or recompressing the image. The encoded image data is copied, so image quality is preserved.
 
-**Messaging apps.** WhatsApp strips metadata from photos sent as images, but not necessarily from files sent as documents. Other apps vary. The only reliable option is stripping the metadata yourself before the file goes anywhere.
+**Static PNG and WebP:** These formats are decoded and raster re-encoded by the browser. Dimensions and visible content are preserved, but byte-for-byte pixel data, colour profiles, and exact encoding are not claimed to be identical.
 
-## Does Stripping Metadata Reduce Image Quality?
+**GIF:** Metadata extensions are removed without changing image frames or animation timing.
 
-No. Photo quality is completely unaffected.
+Animated PNG and WebP files are rejected because browser raster re-encoding would flatten them to a single frame.
 
-For JPEG, EXIF is stored separately from compressed image data, so PrivMeta can remove the relevant segments without recompressing the picture. Static PNG and WebP use browser raster re-encoding instead; their dimensions are preserved, but byte-for-byte pixel or colour-profile equivalence is not claimed.
+## When Should You Clean a Photo?
 
-File size decreases slightly because the metadata section is no longer present. The difference is small, typically a few kilobytes, and has no visual impact.
+Consider removing metadata before:
 
-You can strip metadata from photos you intend to print at full size, publish at high resolution, or deliver to clients without any concern about quality.
+- Posting in a public community or social network
+- Emailing an original image or sending it as a file attachment
+- Sharing photos of a home, workplace, school, or private event
+- Publishing images on a website where visitors can download the original file
+- Sending work to a client when creator, device, or software fields are unnecessary
+- Uploading a photo to an AI service for analysis or editing
 
-## Strip the Metadata Before You Share
+Some services transform images and commonly omit metadata from the delivered copy, but processing varies by platform, file type, and upload route. See the separate guides to [Discord image metadata](/blog/does-discord-remove-exif-data) and [Instagram photo metadata](/blog/does-instagram-remove-exif-data) for why platform processing should not be treated as a pre-upload privacy control.
 
-The habit is simple. Before a photo goes anywhere, [strip the metadata from your photos using PrivMeta](/) first. It takes a few seconds in your browser, works on any device, and costs nothing.
+## What Metadata Removal Does Not Do
 
-No upload, no account, no software to install. Your photos stay on your device throughout the process.
+Metadata cleaning does not remove information that is visible in the image. Faces, addresses, documents, reflections, vehicle registrations, landmarks, and other visual details still require review. The filename may also reveal information and should be checked separately.
+
+No cleaner can safely promise to recognise every private or application-specific structure in every file. PrivMeta targets documented structures for its supported formats and fails unsupported cases rather than presenting an unverified universal guarantee.
+
+## Clean the Photo Before You Share It
+
+[Remove metadata from supported photos with PrivMeta](/) before sending or uploading them. Cleaning runs in your browser, requires no account, and does not upload the photo to a processing server.

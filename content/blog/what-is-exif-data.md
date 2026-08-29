@@ -89,7 +89,7 @@ File cleaning runs locally in the browser. No account or file upload is required
 
 For JPEG files specifically, PrivMeta uses targeted EXIF removal that preserves image quality without re-encoding. The pixels remain identical.
 
-For a step-by-step walkthrough covering Windows, Mac, and mobile methods too, see our [photo metadata removal guide](/blog/remove-metadata-from-photo-guide).
+For a step-by-step walkthrough covering Windows, Mac, and mobile methods too, see our [photo metadata removal guide](/blog/how-to-strip-metadata-from-photos).
 
 ### Smartphone Settings
 
