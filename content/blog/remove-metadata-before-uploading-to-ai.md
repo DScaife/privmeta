@@ -4,7 +4,7 @@ description: "Clean hidden location, device, author and timestamp metadata from 
 date: "2026-03-15"
 ---
 
-When you attach a file to ChatGPT, Gemini, Claude, or another AI service, you send the whole file—not only the text, picture, or recording you can see and hear. Hidden metadata can accompany that content unless it is removed first.
+When you attach a file to ChatGPT, Gemini, Claude, or another AI service, you send the whole file, not only the text, picture, or recording you can see and hear. Hidden metadata can accompany that content unless it is removed first.
 
 Cleaning the file locally gives you control over documented metadata before the upload begins. It does not change the service's privacy policy, retention practices, or what can be inferred from the visible content.
 
